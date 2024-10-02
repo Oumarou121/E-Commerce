@@ -1,4 +1,4 @@
-import { getUserChange, getUserData } from './firebase.js';
+import { getUserChange, logout} from './firebase.js';
 
 //Header Section
 const navOpen = document.querySelector('.mobile-open-btn')
@@ -38,12 +38,13 @@ shoppingBag.addEventListener('click', ()=>{
     window.location.href = 'cart.html';
 })
 
-// const login_btn_open = document.getElementById('login-show');
-// const logout_btn = document.getElementById('logout-btn');
+const login_btn_open = document.getElementById('login-show');
+const logout_btn = document.getElementById('logout-btn');
 
-// logout_btn.addEventListener('click', ()=>{
-//     logout();
-// });
+logout_btn.addEventListener('click', ()=>{
+    logout();
+});
 
 getUserChange('login-show');
-getUserData('data-name', 'data-email', 'data-name1', 'data-adresse','data-ville', 'data-phone');
+// getUserData('data-name', 'data-email', 'data-name1', 'data-adresse','data-ville', 'data-phone');
+

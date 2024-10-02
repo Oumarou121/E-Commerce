@@ -22,7 +22,7 @@
     <!-- <link rel="stylesheet" href="css/shop.css"> -->
     <link rel="stylesheet" href="css/edit.css">
     <script src="js/index.js" type="module"></script>
-    <script src="js/edit.js" defer></script>
+    <script src="js/edit.js" type="module"></script>
     <title>Ecommerce Website</title>
 </head>
 <body class="home">
@@ -342,7 +342,7 @@
     <!-- ======================Modifier l'adresse Feature Section================================ -->
 
     <section class="first">
-        <div class="exit text-black" onclick="exit()">
+        <div id="exit" class="exit text-black">
             <i class="uil uil-arrow-left"></i>
             <p class="fs-150">Modifier l'adresse</p>
         </div>
@@ -353,76 +353,80 @@
     </section>
 
     <section class="second">
-      <form action="#" class="form">
-        <div class="column">
-            <div class="input-box1">
-              <label>Prénom</label>
-              <input type="text" placeholder="Entrez votre prénom" required />
-            </div>
-            <div class="input-box1">
-                <label>Nom</label>
-                <input type="text" placeholder="Entrez votre nom" required />
-              </div>
-        </div>
-        <div class="column">
-          <div class="input-box1">
-            <label>Téléphone mobile</label>
-            <input type="number" placeholder="Entrez votre numéro de téléphone" required />
-          </div>
-          <!-- <div class="input-box1">
-            <label>Birth Date</label>
-            <input type="date" placeholder="Enter birth date" required />
-          </div> -->
-          <div class="input-box1">
-            <label>Téléphone mobile supplémentaire</label>
-            <input type="number" placeholder="Entrez votre numéro de téléphone supplémentaire" required />
-          </div>
-        </div>
-        <div class="gender-box">
-          <h3>Gender</h3>
-          <div class="gender-option">
-            <div class="gender">
-              <input type="radio" id="check-male" name="gender" checked />
-              <label for="check-male">Homme</label>
-            </div>
-            <div class="gender">
-              <input type="radio" id="check-female" name="gender" />
-              <label for="check-female">Femme</label>
-            </div>
-            <div class="gender">
-              <input type="radio" id="check-other" name="gender" />
-              <label for="check-other">Je préfère ne pas le dire</label>
-            </div>
-          </div>
-        </div>
-        <div class="input-box1 address">
-          <label>Adresse</label>
-          <input type="text" placeholder="Entrez votre Adresse" required />
-          <input type="text" placeholder="Insérer les informations supplémentaires" required />
+        <form action="#" class="form">
           <div class="column">
-            <div class="select-box">
-              <select>
-                <option hidden>Country</option>
-                <option>Agadez</option>
-                <option>Diffa</option>
-                <option>Dosso</option>
-                <option>Maradi</option>
-                <option>Tahoua</option>
-                <option>Tillabéri</option>
-                <option>Zinder</option>
-                <option>Niamey</option>
-              </select>
-            </div>
-            <!-- <input type="text" placeholder="Enter your region" required /> -->
+              <div class="input-box1">
+                <label>Prénom</label>
+                <input type="text" placeholder="Entrez votre prénom" required />
+              </div>
+              <div class="input-box1">
+                  <label>Nom</label>
+                  <input type="text" placeholder="Entrez votre nom" required />
+                </div>
           </div>
-          <!-- <div class="column">
-            <input type="text" placeholder="Enter your region" required />
-            <input type="number" placeholder="Enter postal code" required />
-          </div> -->
-        </div>
-        <button>ENREGISTRER</button>
-      </form>
-    </section>
+          <div class="column">
+            <div class="input-box1">
+              <label>Téléphone mobile</label>
+              <input type="number" placeholder="Entrez votre numéro de téléphone" required />
+            </div>
+            <div class="input-box1">
+              <label>Téléphone mobile supplémentaire</label>
+              <input type="number" placeholder="Entrez votre numéro de téléphone supplémentaire" />
+            </div>
+          </div>
+          <div class="gender-box">
+            <h3>Gender</h3>
+            <div class="gender-option">
+              <div class="gender">
+                <input type="radio" id="check-male" name="gender" checked />
+                <label for="check-male">Homme</label>
+              </div>
+              <div class="gender">
+                <input type="radio" id="check-female" name="gender" />
+                <label for="check-female">Femme</label>
+              </div>
+              <div class="gender">
+                <input type="radio" id="check-other" name="gender" />
+                <label for="check-other">Je préfère ne pas le dire</label>
+              </div>
+            </div>
+          </div>
+          <div class="input-box1 address">
+            <label>Adresse</label>
+            <input type="text" placeholder="Entrez votre Adresse" required />
+            <input type="text" placeholder="Insérer les informations supplémentaires" required />
+            <div class="column">
+              <div class="select-box">
+                <select id="region-select" required>
+                 <option value="" disabled selected hidden>Sélectionnez une région</option>
+                    <option value="Agadez">Agadez</option>
+                    <option value="Diffa">Diffa</option>
+                    <option value="Dosso">Dosso</option>
+                    <option value="Maradi">Maradi</option>
+                    <option value="Tahoua">Tahoua</option>
+                    <option value="Tillabéri">Tillabéri</option>
+                    <option value="Zinder">Zinder</option>
+                    <option value="Niamey">Niamey</option>
+                </select>
+
+                <!-- <select id="region-select" required>
+                    <option value="" disabled selected hidden>Sélectionnez une région</option>
+                    <option value="Agadez">Agadez</option>
+                    <option value="Diffa">Diffa</option>
+                    <option value="Dosso">Dosso</option>
+                    <option value="Maradi">Maradi</option>
+                    <option value="Tahoua">Tahoua</option>
+                    <option value="Tillabéri">Tillabéri</option>
+                    <option value="Zinder">Zinder</option>
+                    <option value="Niamey">Niamey</option>
+                  </select> -->
+
+              </div>
+            </div>
+          </div>
+          <button>ENREGISTRER</button>
+        </form>
+      </section>
 
 
 

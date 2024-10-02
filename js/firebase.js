@@ -1,6 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
-import { getFirestore, doc, setDoc, getDoc} from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js';
+import { getFirestore, doc, setDoc, getDoc, updateDoc} from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js';
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -37,8 +37,8 @@ export async function signUp(name, email, password) {
         await setDoc(doc(db, "users", user.uid), {
             id: user.uid,
             email: email,
-            nom: name,
-            prenom: '',
+            nom: '',
+            prenom: name,
             phone1: '',
             phone2: '',
             genre: '',
@@ -167,6 +167,7 @@ export async function logout() {
     try {
         await signOut(auth); // Déconnexion de l'utilisateur
         console.log('Déconnexion réussie');
+        window.location.href = 'index.html';
         return {
             status: 200,
             message: 'Déconnexion réussie'
@@ -185,7 +186,7 @@ async function getUserName(uid) {
     const userDoc = await getDoc(doc(db, "users", uid));
     if (userDoc.exists()) {
         // console.log(userDoc.data());
-        return userDoc.data().nom + userDoc.data().prenom; // Retourne le nom de l'utilisateur
+        return `${userDoc.data().nom} ${userDoc.data().prenom}`; // Retourne le nom de l'utilisateur
     } else {
         console.log("Aucun document trouvé pour cet utilisateur");
         return null;
@@ -197,40 +198,41 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
-// Fonction pour récupérer le nom de l'utilisateur depuis Firestore
-export async function getUserData(displayElementId1, displayElementId2, displayElementId3, displayElementId4, displayElementId5, displayElementId6) {
-
-    onAuthStateChanged(auth, async (user) => {
-        const displayElement1 = document.getElementById(displayElementId1);
-        const displayElement2 = document.getElementById(displayElementId2);
-        const displayElement3 = document.getElementById(displayElementId3);
-        const displayElement4 = document.getElementById(displayElementId4);
-        const displayElement5 = document.getElementById(displayElementId5);
-        const displayElement6 = document.getElementById(displayElementId6);
-
-        if (user) {
-            // L'utilisateur est connecté, affiche ses informations
-            const userDoc = await getDoc(doc(db, "users", user.uid));
-            if (userDoc.exists()) {
-                displayElement1.innerHTML = userDoc.data().nom + userDoc.data().prenom;
-                displayElement2.innerHTML = userDoc.data().email;
-                displayElement3.innerHTML = userDoc.data().nom + userDoc.data().prenom;
-                displayElement4.innerHTML = `${userDoc.data().adresse} , ${userDoc.data().adresse_sup}`;
-                displayElement5.innerHTML = `${userDoc.data().region} , Niger`;
-                displayElement6.innerHTML = `+227 ${userDoc.data().phone1} / +227 ${userDoc.data().phone2}`;
-                // return userDoc.data();  Retourne le nom de l'utilisateur
+// Fonction pour récupérer les données de l'utilisateur
+export async function getUserDataValue() {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) {
+                        resolve(userDoc.data()); // Retourne les données utilisateur
+                    } else {
+                        console.log("Aucun document trouvé pour cet utilisateur");
+                        resolve(null); // Aucune donnée trouvée
+                    }
+                } catch (error) {
+                    reject(error); // Gère les erreurs
+                }
             } else {
-                console.log("Aucun document trouvé pour cet utilisateur");
-                return null;
+                resolve(null); // Aucun utilisateur connecté
             }
-        } else {
-            // Aucun utilisateur connecté
-            return null;
-        }
+        });
     });
-
-    
 }
 
-
-    
+// Fonction pour sauvegarder les données modifiées de l'utilisateur
+export async function updateUserData(userId, updatedData) {
+    try {
+        // Référence du document utilisateur dans Firestore
+        const userRef = doc(db, "users", userId);
+        
+        // Mise à jour des champs avec les nouvelles données
+        await updateDoc(userRef, updatedData);
+        
+        console.log("Les données utilisateur ont été mises à jour avec succès.");
+    } catch (error) {
+        console.error("Erreur lors de la mise à jour des données utilisateur :", error);
+        throw error; // Relancer l'erreur pour la gérer dans le fichier `edit.js`
+    }
+}
