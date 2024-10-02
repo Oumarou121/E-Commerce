@@ -1,0 +1,134 @@
+/* =============Detail Feature Section */
+
+.shop-feature{
+    width: 100vw;
+    place-items: center;
+    padding: 3rem 0;
+    display: grid;
+    /* text-decoration: underline; */
+}
+
+
+.product-list{
+    display: grid;
+}
+
+.shop-product{
+    display: grid;
+}
+/* =========Detail Section================== */
+
+.custom-hr {
+    border: 0;
+    height: 1px;
+    background-color: hsl(var(--clr-gray)); /* Couleur de la ligne */
+    width: 100%; /* Largeur de la ligne */
+    margin: 0 0; /* Espacement autour de la ligne */
+}
+
+.custom-hr1 {
+    border: 0;
+    height: 1px;
+    background-color: hsl(var(--clr-black)); /* Couleur de la ligne */
+    width: 100%; /* Largeur de la ligne */
+    margin: 0 0; /* Espacement autour de la ligne */
+}
+
+/* ================================== */
+
+/* color: hsl(var(--clr-black) / 0.8); */
+
+.first{
+    font-family: 'Poppins', sans-serif;
+    padding-bottom: 20px;
+}
+
+.title{
+    color: hsl(var(--clr-black) / 0.8);
+    padding: 0 20px;
+    padding-top: 10px;
+}
+
+.title-content{
+    display: flex;
+    justify-content: space-between;
+}
+
+.title-content i{
+    padding-right: 5px;
+} 
+
+.exit{
+    /* padding: 10px 0; */
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.exit i{
+    font-size: 2rem;
+}
+
+.third{
+    padding: 5px 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ======================================= */
+
+h2{
+    color: hsl(var(--clr-red));
+}
+
+/* ====================================== */
+
+.title-info,
+.title-adresse{
+    /* border-bottom: 1px solid #000; */
+    padding: 0 10px;
+}
+
+.info,
+.adresse{
+    border: 1px solid #000;
+}
+
+.info{
+    margin-right: 20px;
+}
+
+.info-content,
+.adresse-content{
+    padding: 0 10px;
+}
+
+.third{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.mode,
+.methode{
+    padding: 16px;
+}
+
+.mode h3,
+.methode h3{
+    font-size: 1rem;
+}
+
+.mode p,
+.methode p{
+    padding-top: 8px;
+}
+
+@media (max-width: 35em){
+    .third{
+        grid-template-columns: 1fr;
+    }
+
+    .info{
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+}

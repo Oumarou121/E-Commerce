@@ -1,0 +1,449 @@
+/* =============Shop Feature Section */
+
+.shop-feature{
+    width: 100vw;
+    place-items: center;
+    padding: 3rem 0;
+    display: grid;
+    /* text-decoration: underline; */
+}
+
+
+.product-list{
+    display: grid;
+}
+
+.shop-product{
+    display: grid;
+}
+/* =========About Section================== */
+
+.about-section{
+    width: 90vw;
+    margin-inline: auto;
+    margin-block: 4rem;
+    display: grid;
+    grid-template-areas: 
+    'one'
+    'two';
+}
+
+.about-section:nth-child(1){
+    grid-area: one;
+}
+
+.about-section:nth-child(2){
+    grid-area: two;
+}
+
+.about-section > * img{
+    border-radius: 2rem;
+    margin-bottom: 2rem;
+}
+
+.about-info{
+    padding-inline: 0.5rem;
+}
+
+.about-info p{
+    line-height: 1.8rem;
+}
+
+.about-btn{
+    margin-top: 3rem;
+}
+
+
+
+/* ==================Media Quries=== */
+
+@media (min-width: 60em){
+    .about-section{
+        grid-auto-columns: 1fr;
+        align-items: center;
+        --grid-gap: 3rem;
+        grid-template-areas: 
+        'two one three';
+    }
+
+    .about-info{
+        display: grid;
+        place-content: center;
+    }
+
+    .about-info > h3{
+        font-size: 1rem;
+    }
+}
+
+/* ============================= */
+
+.buttons{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+.buttons button{
+    background-color: #eee;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 10px;
+    font-family: Poppins;
+    font-size: large;
+    cursor: pointer;
+}
+.buttons svg{
+    width: 15px;
+}
+.buttons span{
+    background-color: #555454;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-left: 20px;
+}
+.buttons button:nth-child(2){
+    background-color: #2F2F2F;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #eee;
+    box-shadow: 0 10px 20px #2F2F2F77;
+}
+
+.buttons button:nth-child(1){
+    background-color: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    box-shadow: 0 10px 20px #2F2F2F77;
+}
+
+.buttons .favori{
+    background-color: white;
+}
+
+/* ============================= */
+
+.detail-bar{
+    float: left;
+    text-align: center;
+    padding: 10px;
+    border: solid 1px #eee;
+    background: #eee;
+    border-radius: 1rem;
+}
+
+.detail-bar img{
+    width: 50%;
+    height: 25%;
+}
+
+.div-image{
+    display: flex;
+    justify-content: center;
+}
+
+
+
+/* ============================ */
+
+*,
+::after,
+::before{
+    box-sizing: border-box;
+}
+
+.quantity{
+    width: 125px;
+    height: 50px;
+    /* background-color: #edeefa; */
+    padding: 15px;
+    display: inline-flex;
+    overflow: hidden;
+    align-items: center;
+    border-radius: 20px;
+}
+
+.btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: none;
+    width: 25px;
+    height: 25px;
+    font-size: 1rem;
+    background: 0 0;
+    color: #000;
+    cursor: pointer;
+}
+
+#qtyInput{
+    width: 100%;
+    border: none;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    color: #000;
+    background: 0 0;
+    flex: 1;
+    font-weight: 700;
+}
+
+#qtyInput:focus-visible{
+    outline: none;
+    
+}
+
+.prix{
+    margin-top: -25px;
+}
+
+.second{
+    /* margin: 0 40px; */
+    transition: transform 0.3s ease; /* Animation fluide */
+}
+
+.custom-hr {
+    border: 0;
+    height: 1px;
+    background-color: black; /* Couleur de la ligne */
+    width: 100%; /* Largeur de la ligne */
+    margin: 0 0; /* Espacement autour de la ligne */
+    /* margin-inline: 0.75em 1rem; */
+}
+
+/* =========================== */
+
+/* Style de la barre de navigation */
+.bar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center; /* Centre les éléments horizontalement */
+    position: relative;
+    /* background-color: #333; */
+    height: 60px;
+    align-items: center;
+}
+
+.bar-nav li {
+    position: relative;
+    margin: 0 20px;
+}
+
+.bar-nav li a {
+    text-decoration: none;
+    color: black;
+    padding: 10px 20px;
+    display: block;
+    font-weight: 700;
+    font-size: 1rem;
+    text-align: center;
+    position: relative;
+}
+
+/* Barre d'animation au-dessus de l'élément actif */
+.bar-nav li a::before {
+    content: '';
+    position: absolute;
+    top: -5px; /* Barre positionnée au-dessus du texte */
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: red;
+    transform: scaleX(0); /* La barre est invisible au départ */
+    transform-origin: center;
+    transition: transform 0.3s ease; /* Animation fluide */
+}
+
+/* Lorsque l'élément est survolé ou actif, la barre apparaît */
+/* .bar-nav li a:hover::before, */
+.bar-nav li a.active::before {
+    transform: scaleX(1); /* Barre visible au survol ou élément actif */
+}
+
+.bar-nav li a.active {
+    font-weight: bold;
+    background-color: #f5f5f5; /* Arrière-plan léger pour l'onglet actif */
+    color: red; /* Couleur rouge pour l'onglet actif */
+}
+
+/* ============================= */
+
+.container {
+    /* max-width: 600px; */
+    margin: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transform-origin: center;
+    transition: transform 0.3s ease; /* Animation fluide */
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.specs-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.specs-table tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.specs-table td {
+    padding: 10px;
+    font-size: 16px;
+}
+
+.specs-table td:first-child {
+    font-weight: bold;
+    color: #555;
+}
+
+.specs-table td:nth-child(2) {
+    text-align: right;
+    color: #333;
+}
+
+h3 {
+    text-align: left;
+    margin-top: 20px;
+    color: #333;
+}
+
+
+/* ================================ */
+
+.product-images{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center; /* Centre les éléments horizontalement */
+    position: relative;
+    /* background-color: #333; */
+    height: 100px;
+    align-items: center;
+}
+
+.product-images li {
+    position: relative;
+    margin: 0 20px;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.product-cover img {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* .thumb-container{
+    width: 100px;
+    height: 100px;
+} */
+
+
+/* Container de l'image principale */
+.product-cover {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#main-image {
+    max-width: 100%;
+    height: auto;
+    transition: opacity 0.5s ease;
+}
+
+/* Conteneur des images avec scroll horizontal */
+#webizoom {
+    overflow-x: auto;
+    white-space: nowrap;
+    margin: 10px 0;
+    scroll-behavior: smooth;
+    position: relative;
+}
+
+/* Chaque image en ligne dans le carrousel */
+.product-images {
+    display: inline-block;
+}
+
+.thumb-container {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.thumb-container img {
+    width: 100px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border 0.3s ease;
+}
+
+.thumb-container img:hover {
+    border: 2px solid red;
+}
+
+/* Conteneur des flèches */
+.scroll-box-arrows {
+    position: absolute;
+    bottom: 5%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* Pour positionner les flèches de chaque côté */
+    align-items: center;
+    transform: translateY(-50%);
+    pointer-events: none; /* Permettre le clic sur les images sous les flèches */
+}
+
+/* Position des flèches */
+#scroll-left, #scroll-right {
+    font-size: 36px;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.6); /* Fond semi-transparent */
+    padding: 10px;
+    border-radius: 50%; /* Forme ronde pour les flèches */
+    cursor: pointer;
+    pointer-events: all; /* Permettre les clics sur les flèches */
+    z-index: 10;
+}
+
+/* S'assurer que le conteneur ne dépasse pas les bords de l'écran */
+.images-container {
+    position: relative;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+/* =============================== */
+
+.third{
+    text-align: center;
+}
+
+.title{
+    padding-top: 20px;
+}
+
+.all{
+    position: relative;
+}
+
+.tab-content{
+    position: relative;
+}
