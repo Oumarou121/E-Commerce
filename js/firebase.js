@@ -21,10 +21,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 export async function signUp(name, email, password) {
     // Affiche le spinner avant de commencer la requête
     document.getElementById('loading-spinner').style.display = 'block';
@@ -44,7 +40,7 @@ export async function signUp(name, email, password) {
             id: user.uid,
             email: email,
             nom: '',
-            prenom: name,
+            prenom: capitalizeFirstLetter(name),
             phone1: '',
             phone2: '',
             genre: '',
@@ -215,11 +211,6 @@ async function getUserName(uid) {
     }
 }
 
-function capitalizeFirstLetter(string) {
-    if (!string) return string; // Vérifie si la chaîne n'est pas vide
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-}
-
 // Fonction pour récupérer les données de l'utilisateur
 export async function getUserDataValue() {
     return new Promise((resolve, reject) => {
@@ -262,4 +253,13 @@ export async function updateUserData(userId, updatedData) {
         // Masque le spinner après la requête
         document.getElementById('loading-spinner').style.display = 'none';
     }
+}
+
+function capitalizeFirstLetter(string) {
+    if (!string) return string; // Vérifie si la chaîne n'est pas vide
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
