@@ -16,6 +16,9 @@ edit.addEventListener('click', ()=>{
 })
 
 async function displayUserData() {
+    // Affiche le spinner
+    document.getElementById('loading-spinner').style.display = 'block';
+
     const displayElement1 = document.getElementById('data-name');
     const displayElement2 = document.getElementById('data-email');
     const displayElement3 = document.getElementById('data-name1');
@@ -37,7 +40,11 @@ async function displayUserData() {
         }
     } catch (error) {
         console.error('Erreur lors de la récupération des données utilisateur:', error);
+    }finally{
+         // Masque le spinner après la requête
+         document.getElementById('loading-spinner').style.display = 'none';
     }
+
 }
 
 displayUserData();

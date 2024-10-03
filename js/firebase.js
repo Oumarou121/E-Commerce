@@ -21,7 +21,14 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export async function signUp(name, email, password) {
+    // Affiche le spinner avant de commencer la requête
+    document.getElementById('loading-spinner').style.display = 'block';
+
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -33,7 +40,6 @@ export async function signUp(name, email, password) {
             };
         }
 
-        // Sauvegarder les informations utilisateur dans Firestore
         await setDoc(doc(db, "users", user.uid), {
             id: user.uid,
             email: email,
@@ -44,27 +50,29 @@ export async function signUp(name, email, password) {
             genre: '',
             adresse: '',
             adresse_sup: '',
-            region: '' 
-            
+            region: ''
         });
 
-        // Retourne un statut de succès
         return {
             status: 200,
             message: 'Inscription réussie'
         };
     } catch (error) {
-        // Retourne un statut d'erreur avec le message
         return {
-            status: 400, // Statut d'erreur personnalisée, par exemple 400 pour mauvaise requête
+            status: 400,
             message: error.message
         };
+    } finally {
+        // Masque le spinner après que la requête soit terminée (succès ou échec)
+        document.getElementById('loading-spinner').style.display = 'none';
     }
 }
 
 export async function signIn(email, password) {
+    // Affiche le spinner
+    document.getElementById('loading-spinner').style.display = 'block';
+
     try {
-        // Tente de connecter l'utilisateur avec email et mot de passe
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
@@ -75,21 +83,25 @@ export async function signIn(email, password) {
             };
         }
 
-        // Si la connexion réussit, retourne un statut 200 (succès)
         return {
             status: 200,
             message: 'Connexion réussie'
         };
     } catch (error) {
-        // Capture l'erreur et retourne un statut 400 avec un message d'erreur
         return {
             status: 400,
             message: error.message
         };
+    } finally {
+        // Masque le spinner après la requête
+        document.getElementById('loading-spinner').style.display = 'none';
     }
 }
 
 export async function resetPassword(email) {
+    // Affiche le spinner
+    document.getElementById('loading-spinner').style.display = 'block';
+
     try {
         // Envoie un email de réinitialisation de mot de passe
         await sendPasswordResetEmail(auth, email);
@@ -117,6 +129,9 @@ export async function resetPassword(email) {
             status: 400,
             message: errorMessage
         };
+    } finally {
+        // Masque le spinner après la requête
+        document.getElementById('loading-spinner').style.display = 'none';
     }
 }
 
@@ -164,9 +179,13 @@ export function getUserChange(displayElementId) {
 
 // Fonction pour déconnecter l'utilisateur
 export async function logout() {
+    // Affiche le spinner
+    document.getElementById('loading-spinner').style.display = 'block';    
+    await delay(250);
+
     try {
         await signOut(auth); // Déconnexion de l'utilisateur
-        console.log('Déconnexion réussie');
+        // console.log('Déconnexion réussie');
         window.location.href = 'index.html';
         return {
             status: 200,
@@ -178,6 +197,9 @@ export async function logout() {
             status: 400,
             message: error.message
         };
+    } finally {
+        // Masque le spinner après la requête
+        document.getElementById('loading-spinner').style.display = 'none';
     }
 }
 
@@ -186,7 +208,7 @@ async function getUserName(uid) {
     const userDoc = await getDoc(doc(db, "users", uid));
     if (userDoc.exists()) {
         // console.log(userDoc.data());
-        return `${userDoc.data().nom} ${userDoc.data().prenom}`; // Retourne le nom de l'utilisateur
+        return `${userDoc.data().prenom} ${userDoc.data().nom}`; // Retourne le nom de l'utilisateur
     } else {
         console.log("Aucun document trouvé pour cet utilisateur");
         return null;
@@ -223,6 +245,8 @@ export async function getUserDataValue() {
 
 // Fonction pour sauvegarder les données modifiées de l'utilisateur
 export async function updateUserData(userId, updatedData) {
+    // Affiche le spinner
+    document.getElementById('loading-spinner').style.display = 'block';
     try {
         // Référence du document utilisateur dans Firestore
         const userRef = doc(db, "users", userId);
@@ -234,5 +258,8 @@ export async function updateUserData(userId, updatedData) {
     } catch (error) {
         console.error("Erreur lors de la mise à jour des données utilisateur :", error);
         throw error; // Relancer l'erreur pour la gérer dans le fichier `edit.js`
+    } finally {
+        // Masque le spinner après la requête
+        document.getElementById('loading-spinner').style.display = 'none';
     }
 }

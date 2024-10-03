@@ -285,16 +285,39 @@
                 <button class="login-btn" type="submit" data-action="continue">Sing Up</button>
                 <button class="login-btn login__btn--secondary" type="button" data-action="back" id="back-register-btn">Back</button>
             </form>
-
            
             </div>
         </div>
     </div>
 
-    <script>
-
-    </script>
-    
+    <!-- Ajoute cet élément dans ton HTML -->
+    <div id="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+    <style>
+        .spinner {
+          border: 4px solid rgb(255, 255, 255);
+          border-left-color: #000;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          animation: spin 1s linear infinite;
+        }
+      
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      
+        #loading-spinner {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 1000; /* Met le chargement devant les autres éléments */
+        }
+    </style>
 </body>
 
 </html>

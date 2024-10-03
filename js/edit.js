@@ -26,6 +26,8 @@ exit_btn.addEventListener('click', ()=> {
 
 // Assurez-vous que ce script est exécuté après que le DOM est chargé
 document.addEventListener("DOMContentLoaded", async () => {
+     // Masque le spinner après la requête
+     document.getElementById('loading-spinner').style.display = 'block';
     try {
         const userData = await getUserDataValue(); // Récupère les données utilisateur
 
@@ -51,6 +53,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     } catch (error) {
         console.error('Erreur lors de la récupération des données utilisateur:', error);
+    }finally {
+        // Masque le spinner après la requête
+        document.getElementById('loading-spinner').style.display = 'none';
     }
 });
 
@@ -85,7 +90,7 @@ document.querySelector('.form').addEventListener('submit', async (event) => {
         await updateUserData(userId, updatedData);
 
         // Afficher un message de succès ou rediriger l'utilisateur
-        alert('Les données utilisateur ont été mises à jour avec succès.');
+        // alert('Les données utilisateur ont été mises à jour avec succès.');
     } catch (error) {
         console.error("Erreur lors de la mise à jour des données :", error);
         alert("Une erreur est survenue lors de la mise à jour des données.");
