@@ -1288,20 +1288,22 @@ async function LoadListProducts() {
 
                 const cartIcon = productElement.querySelector('.add-to-cart');
                 const isCart = await isInCart(product.id);
-
+                            
                 if (isCart) {
                     cartIcon.classList.add('in-cart');
                 }
-
+                
                 cartIcon.addEventListener('click', async (event) => {
                     event.stopPropagation();
-
+                
                     if (cartIcon.classList.contains('in-cart')) {
+                        // Si le produit est déjà dans le panier, on le retire
                         await removeFromCart(product.id);
                         cartIcon.classList.remove('in-cart');
-                        showAlert('Le produit a été ajouté à votre panier!');
+                        showAlert('Le produit a été retiré de votre panier!');
                     } else {
-                        await addToCart(product.id);
+                        // Si le produit n'est pas dans le panier, on l'ajoute avec une quantité par défaut (1)
+                        await addToCart(product.id, 1); // Quantité par défaut de 1
                         cartIcon.classList.add('in-cart');
                         showAlert('Le produit a été ajouté à votre panier!');
                     }

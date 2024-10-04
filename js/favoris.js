@@ -1,37 +1,7 @@
-// // Fonction pour supprimer un article du panier
-// function deleteItem(button) {
-//     let cartItem = button.closest('.cart-item');  // Trouver l'article parent
-//     cartItem.remove();  // Supprimer l'élément du DOM
-
-//     // Vérifier si le panier est vide après la suppression
-//     checkIfCartIsEmpty();
-
-//     // Mettre à jour le total global après la suppression
-//     updateCartTotal();
-// }
-
-// // Fonction pour vérifier si le panier est vide
-// function checkIfCartIsEmpty() {
-//     let cartItems = document.querySelectorAll('.cart-item');
-//     let emptyCartMessage = document.getElementById('emptyCartMessage');
-    
-//     if (cartItems.length === 0) {
-//         // Si le panier est vide, afficher le message "Cart Is Empty"
-//         emptyCartMessage.style.display = 'flex';
-//     } else {
-//         // Si le panier contient des articles, masquer le message "Cart Is Empty"
-//         emptyCartMessage.style.display = 'none';
-//     }
-// }
-
-// // Mettre à jour le total au chargement de la page et vérifier si le panier est vide
-// window.onload = function() {
-//     checkIfCartIsEmpty();
-// };
-
 import { getFavorites, getProductById, removeFavorite, isInCart, removeFromCart, addToCart } from './firebase.js'; 
 
 async function loadFavorites() {
+    document.getElementById('loading-spinner').style.display = 'block';
     const favoritesListElement = document.getElementById('cart-items');
     const emptyCartMessage = document.getElementById('emptyCartMessage');
 
@@ -39,8 +9,6 @@ async function loadFavorites() {
     const favoritesIds = await getFavorites();
 
     console.log(favoritesIds);
-    // Vider le conteneur avant d'ajouter les produits
-    // favoritesListElement.innerHTML = '';
 
     if (favoritesIds.length === 0) {
         // Afficher le message de panier vide
@@ -83,29 +51,39 @@ async function loadFavorites() {
                 // Ajouter l'élément au DOM
                 favoritesListElement.appendChild(productElement);
 
+                document.getElementById('loading-spinner').style.display = 'none';
+
                 // Ajouter un événement pour supprimer le produit des favoris
                 productElement.querySelector('.Delete').addEventListener('click', async () => {
                     await removeFavorite(product.id);  // Supprime le produit des favoris
                     productElement.remove();           // Supprime l'élément de la liste HTML
                     showAlert('Produit supprimé des favoris');
+
+                    // Vérification si la liste des favoris est maintenant vide
+                    const remainingItems = favoritesListElement.querySelectorAll('.cart-item');
+                    if (remainingItems.length === 0) {
+                        emptyCartMessage.style.display = 'flex'; // Afficher le message de panier vide
+                    }
                 });
 
                 const cartIcon = productElement.querySelector('.add-to-cart');
                 const isCart = await isInCart(product.id);
-
+                            
                 if (isCart) {
                     cartIcon.classList.add('in-cart');
                 }
-
+                
                 cartIcon.addEventListener('click', async (event) => {
                     event.stopPropagation();
-
+                
                     if (cartIcon.classList.contains('in-cart')) {
+                        // Si le produit est déjà dans le panier, on le retire
                         await removeFromCart(product.id);
                         cartIcon.classList.remove('in-cart');
-                        showAlert('Le produit a été retiré à votre panier!');
+                        showAlert('Le produit a été retiré de votre panier!');
                     } else {
-                        await addToCart(product.id);
+                        // Si le produit n'est pas dans le panier, on l'ajoute avec une quantité par défaut (1)
+                        await addToCart(product.id, 1); // Quantité par défaut de 1
                         cartIcon.classList.add('in-cart');
                         showAlert('Le produit a été ajouté à votre panier!');
                     }
@@ -113,6 +91,7 @@ async function loadFavorites() {
             }
         }
     }
+    document.getElementById('loading-spinner').style.display = 'none';
 }
 
 // Appel de la fonction pour charger les favoris
@@ -142,3 +121,6 @@ function showAlert(message) {
     }, 3500);
 }
 
+document.getElementById('exit').addEventListener('click', () => {
+    window.location.href = 'index.html';
+})

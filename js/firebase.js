@@ -36,11 +36,12 @@ export async function signUp(name, email, password) {
             };
         }
 
+        // Ajout du nouvel utilisateur dans Firestore avec les informations de base
         await setDoc(doc(db, "users", user.uid), {
             id: user.uid,
             email: email,
             nom: '',
-            prenom: capitalizeFirstLetter(name),
+            prenom: capitalizeFirstLetter(name), // Fonction de capitalisation (à définir)
             phone1: '',
             phone2: '',
             genre: '',
@@ -48,7 +49,11 @@ export async function signUp(name, email, password) {
             adresse_sup: '',
             region: '',
             role: 'client',
-            favoris: []
+            favoris: [], // Favoris initialisé à un tableau vide
+            cart: {
+                // Clé (ID produit) : Valeur (détails du favori)
+                // Ex : 'productId123': { qty: 1, dateAdded: '2023-10-04' }
+            } // Initialisation en tant qu'objet vide
         });
 
         return {
@@ -65,6 +70,7 @@ export async function signUp(name, email, password) {
         document.getElementById('loading-spinner').style.display = 'none';
     }
 }
+
 
 export async function signIn(email, password) {
     // Affiche le spinner
@@ -378,8 +384,8 @@ export async function isFavorite(productId) {
     return false;
 }
 
-// Fonction pour ajouter un produit au panier
-export const addToCart = async (productId) => {
+// Fonction pour ajouter un produit au panier avec une quantité par défaut (sans incrémenter)
+export const addToCart = async (productId, quantity = 1) => {
     const userId = auth.currentUser ? auth.currentUser.uid : null; // Vérifie si l'utilisateur est connecté
     if (!userId) {
         console.error('Aucun utilisateur connecté pour ajouter au panier');
@@ -388,11 +394,22 @@ export const addToCart = async (productId) => {
     
     try {
         const userDoc = doc(db, 'users', userId);
-        await setDoc(userDoc, {
-            cart: arrayUnion(productId) // Ajoute le productId à la liste du panier
-        }, { merge: true });
+        const docSnap = await getDoc(userDoc);
         
-        console.log(`Produit ${productId} ajouté au panier de l'utilisateur ${userId}`);
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            const cart = data.cart || {}; // Récupérer l'objet cart, ou initialiser un objet vide
+
+            // Si le produit est déjà dans le panier, ne pas modifier la quantité, sinon l'ajouter avec la quantité spécifiée
+            if (!cart[productId]) {
+                cart[productId] = { id : productId, qty: quantity }; // Ajouter le produit avec la quantité spécifiée
+            }
+
+            // Mise à jour du panier dans Firestore
+            await setDoc(userDoc, { cart }, { merge: true });
+
+            console.log(`Produit ${productId} ajouté au panier avec une quantité de ${cart[productId].qty} pour l'utilisateur ${userId}`);
+        }
     } catch (error) {
         console.error('Erreur lors de l\'ajout du produit au panier', error);
     }
@@ -408,11 +425,23 @@ export const removeFromCart = async (productId) => {
     
     try {
         const userDoc = doc(db, 'users', userId);
-        await updateDoc(userDoc, {
-            cart: arrayRemove(productId) // Retire le productId de la liste du panier
-        });
-        
-        console.log(`Produit ${productId} retiré du panier de l'utilisateur ${userId}`);
+        const docSnap = await getDoc(userDoc);
+
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            const cart = data.cart || {}; // Récupérer l'objet cart, ou initialiser un objet vide
+
+            if (cart[productId]) {
+                delete cart[productId]; // Supprimer le produit du panier
+
+                // Mise à jour du panier dans Firestore
+                await setDoc(userDoc, { cart }, { merge: true });
+
+                console.log(`Produit ${productId} retiré du panier de l'utilisateur ${userId}`);
+            } else {
+                console.log(`Produit ${productId} non trouvé dans le panier de l'utilisateur ${userId}`);
+            }
+        }
     } catch (error) {
         console.error('Erreur lors du retrait du produit du panier', error);
     }
@@ -432,14 +461,16 @@ export const isInCart = async (productId) => {
         
         if (docSnap.exists()) {
             const data = docSnap.data();
-            return data.cart ? data.cart.includes(productId) : false;
+            const cart = data.cart || {}; // Récupérer l'objet cart, ou initialiser un objet vide
+
+            return !!cart[productId]; // Retourne true si le produit est dans le panier
         }
-        return false; // Si le document n'existe pas, le produit n'est pas dans le panier
+        return false; // Si le document n'existe pas ou que le produit n'est pas dans le panier
     } catch (error) {
         console.error('Erreur lors de la vérification du panier', error);
         return false;
     }
-};
+}
 
 // Fonction pour récupérer les données de l'utilisateur
 export async function getFavorites() {
@@ -481,5 +512,95 @@ export const removeFavorite = async (productId) => {
         console.log(`Produit ${productId} supprimé des favoris de l'utilisateur ${userId}`);
     } catch (error) {
         console.error('Erreur lors de la suppression du favori', error);
+    }
+};
+
+// Fonction pour récupérer tous les articles du panier
+export const getCartItems = () => {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const userDoc = doc(db, 'users', user.uid);
+                    const docSnap = await getDoc(userDoc);
+
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        const cart = data.cart || {}; // Récupérer l'objet cart ou initialiser un objet vide
+                        console.log(cart);
+                        // Retourne les articles du panier sous forme de tableau
+                        const cartItems = Object.entries(cart).map(([productId, { qty }]) => ({
+                            id: productId,
+                            qty: qty
+                        }));
+                        resolve(cartItems); // Résoudre la promesse avec les articles du panier
+                    } else {
+                        console.log('Aucun panier trouvé pour cet utilisateur');
+                        resolve([]); // Aucun panier trouvé
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des articles du panier', error);
+                    reject(error); // Rejeter en cas d'erreur
+                }
+            } else {
+                resolve([]); // Aucun utilisateur connecté
+            }
+        });
+    });
+};
+
+// Fonction pour augmenter la quantité d'un produit dans le panier
+export const increaseQuantity = async (productId) => {
+    const userId = auth.currentUser ? auth.currentUser.uid : null; // Vérifie si l'utilisateur est connecté
+    if (!userId) {
+        console.error('Aucun utilisateur connecté pour mettre à jour le panier');
+        return;
+    }
+
+    try {
+        const userDoc = doc(db, 'users', userId);
+        const userSnap = await getDoc(userDoc);
+
+        if (userSnap.exists()) {
+            const cart = userSnap.data().cart || {};
+            if (cart[productId]) {
+                cart[productId].qty += 1; // Augmente la quantité
+            } else {
+                // Si le produit n'est pas dans le panier, vous pouvez l'ajouter avec une quantité de 1
+                cart[productId] = { qty: 1 };
+            }
+            await updateDoc(userDoc, { cart }); // Met à jour le panier dans Firestore
+        }
+    } catch (error) {
+        console.error('Erreur lors de l\'augmentation de la quantité du produit', error);
+    }
+};
+
+
+// Fonction pour diminuer la quantité d'un produit dans le panier
+export const decreaseQuantity = async (productId) => {
+    const userId = auth.currentUser ? auth.currentUser.uid : null; // Vérifie si l'utilisateur est connecté
+    if (!userId) {
+        console.error('Aucun utilisateur connecté pour mettre à jour le panier');
+        return;
+    }
+
+    try {
+        const userDoc = doc(db, 'users', userId);
+        const userSnap = await getDoc(userDoc);
+
+        if (userSnap.exists()) {
+            const cart = userSnap.data().cart || {};
+            if (cart[productId]) {
+                if (cart[productId].qty > 1) {
+                    cart[productId].qty -= 1; // Diminue la quantité
+                } else {
+                    delete cart[productId]; // Supprime le produit si la quantité atteint 0
+                }
+                await updateDoc(userDoc, { cart }); // Met à jour le panier dans Firestore
+            }
+        }
+    } catch (error) {
+        console.error('Erreur lors de la diminution de la quantité du produit', error);
     }
 };

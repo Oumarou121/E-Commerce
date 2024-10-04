@@ -21,9 +21,9 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/shop.css">
     <link rel="stylesheet" href="css/cart.css">
-    <script src="js/index.js" defer></script>
-    <script src="js/shop.js" defer></script>
-    <script src="js/cart.js" defer></script>
+    <script src="js/index.js" type="module"></script>
+    <!-- <script src="js/shop.js" defer></script> -->
+    <script src="js/cart.js" type="module"></script>
     <title>Ecommerce Website</title>
 </head>
 <body class="home">
@@ -380,13 +380,13 @@
                 </div>
         
                 <!-- Message de panier vide -->
-                <div class="cart vide bold-800 flex" id="emptyCartMessage" style="display: none;">
+                <div class="cart vide bold-800 flex" id="emptyCartMessage">
                     <i class="uil uil-shopping-cart-alt"></i>
                     <p>Cart Is Empty</p>
                 </div>
         
                 <!-- Représentation d'un article -->
-                <li class="cart-item" data-unit-price="125000">
+                <!-- <li class="cart-item" data-unit-price="125000">
                     <div class="image">
                         <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
                     </div>
@@ -395,69 +395,22 @@
                     </div>
                     <div class="Price text-black">125,000 FCFA</div>
                     <div class="quantity">
-                        <button class="btn minus" type="button" onclick="decrement(this)">
+                        <button class="btn minus" type="button">
                             <i class="uil uil-minus"></i>
                         </button>
                         <input type="text" value="1" class="qtyInput" readonly>
-                        <button class="btn plus" type="button" onclick="increment(this)">
+                        <button class="btn plus" type="button">
                             <i class="uil uil-plus"></i>
                         </button>
                     </div>
                     <div class="totalPrice text-black">125,000 FCFA</div>
-                    <div class="delete text-red" onclick="deleteItem(this)">
+                    <div class="delete text-red">
                         <i class="uil uil-trash"></i>
                     </div>
-                </li>
+                </li> -->
         
                 <!-- Autres articles peuvent être ajoutés ici de la même manière -->
                 
-                <!-- Représentation d'un article -->
-                <li class="cart-item" data-unit-price="125000">
-                    <div class="image">
-                        <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-                    </div>
-                    <div class="name text-black fs-100">
-                        SMARTPHONE VIVO Y03 4/64 / VERT
-                    </div>
-                    <div class="Price text-black">125,000 FCFA</div>
-                    <div class="quantity">
-                        <button class="btn minus" type="button" onclick="decrement(this)">
-                            <i class="uil uil-minus"></i>
-                        </button>
-                        <input type="text" value="1" class="qtyInput" readonly>
-                        <button class="btn plus" type="button" onclick="increment(this)">
-                            <i class="uil uil-plus"></i>
-                        </button>
-                    </div>
-                    <div class="totalPrice text-black">125,000 FCFA</div>
-                    <div class="delete text-red" onclick="deleteItem(this)">
-                        <i class="uil uil-trash"></i>
-                    </div>
-                </li>
-
-                <!-- Représentation d'un article -->
-                <li class="cart-item" data-unit-price="125000">
-                    <div class="image">
-                        <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-                    </div>
-                    <div class="name text-black fs-100">
-                        SMARTPHONE VIVO Y03 4/64 / VERT
-                    </div>
-                    <div class="Price text-black">125,000 FCFA</div>
-                    <div class="quantity">
-                        <button class="btn minus" type="button" onclick="decrement(this)">
-                            <i class="uil uil-minus"></i>
-                        </button>
-                        <input type="text" value="1" class="qtyInput" readonly>
-                        <button class="btn plus" type="button" onclick="increment(this)">
-                            <i class="uil uil-plus"></i>
-                        </button>
-                    </div>
-                    <div class="totalPrice text-black">125,000 FCFA</div>
-                    <div class="delete text-red" onclick="deleteItem(this)">
-                        <i class="uil uil-trash"></i>
-                    </div>
-                </li>
 
             </ul>
         
