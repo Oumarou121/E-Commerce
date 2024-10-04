@@ -21,9 +21,9 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/shop.css">
     <link rel="stylesheet" href="css/favoris.css">
-    <script src="js/index.js" defer></script>
-    <script src="js/shop.js" defer></script>
-    <script src="js/favoris.js" defer></script>
+    <script src="js/index.js" type="module"></script>
+    <!-- <script src="js/shop.js" defer></script> -->
+    <script src="js/favoris.js" type="module"></script>
     <title>Ecommerce Website</title>
 </head>
 <body class="home">
@@ -374,7 +374,7 @@
     <section class="main">
       
         <div class="cart">
-            <ul class="cart-items">
+            <ul class="cart-items" id="cart-items">
                 <div class="shopping flex">
                     <p>Favoris Basket</p>
                 </div>
@@ -386,7 +386,7 @@
                 </div>
         
                 <!-- Représentation d'un article -->
-                <li class="cart-item" data-unit-price="125000">
+                <!-- <li class="cart-item" data-unit-price="125000">
                     <div class="image">
                         <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
                     </div>
@@ -407,57 +407,9 @@
                             SUPPRIMER
                         </div>
                     </div>
-                </li>
+                </li> -->
         
                 <!-- Autres articles peuvent être ajoutés ici de la même manière -->
-                
-                <!-- Représentation d'un article -->
-                <li class="cart-item" data-unit-price="125000">
-                    <div class="image">
-                        <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-                    </div>
-                    <div class="div-name">
-                        <div class="name text-black fs-100">
-                            SMARTPHONE VIVO Y03 4/64 / VERT
-                        </div>
-                        <div></div>
-                        <div class="Price text-black">125,000 FCFA</div>
-                    </div>
-                    <div class="div-btn">
-                        <div class="Add text-black">
-                            <i class="uil uil-shopping-cart-alt"></i>
-                            Ajouter
-                        </div>
-                        <div class="Delete text-red" onclick="deleteItem(this)">
-                            <i class="uil uil-trash"></i>
-                            SUPPRIMER
-                        </div>
-                    </div>
-                </li>
-
-                <!-- Représentation d'un article -->
-                <li class="cart-item" data-unit-price="125000">
-                    <div class="image">
-                        <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-                    </div>
-                    <div class="div-name">
-                        <div class="name text-black fs-100">
-                            SMARTPHONE VIVO Y03 4/64 / VERT
-                        </div>
-                        <div></div>
-                        <div class="Price text-black">125,000 FCFA</div>
-                    </div>
-                    <div class="div-btn">
-                        <div class="Add text-black">
-                            <i class="uil uil-shopping-cart-alt"></i>
-                            Ajouter
-                        </div>
-                        <div class="Delete text-red" onclick="deleteItem(this)">
-                            <i class="uil uil-trash"></i>
-                            SUPPRIMER
-                        </div>
-                    </div>
-                </li>
 
             </ul>
         

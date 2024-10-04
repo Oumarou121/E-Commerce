@@ -1,26 +1,26 @@
-// Fonction pour basculer le statut de favori
-document.querySelectorAll('.icon-heart').forEach(icon => {
-    const productId = icon.dataset.id;
+// // Fonction pour basculer le statut de favori
+// document.querySelectorAll('.icon-heart').forEach(icon => {
+//     const productId = icon.dataset.id;
 
-    // Vérifier si le produit est déjà marqué comme favori dans localStorage
-    if (localStorage.getItem(`fav-product-${productId}`) === 'true') {
-        icon.classList.add('active', 'bi-heart-fill');
-        icon.classList.remove('bi-heart');
-    }
+//     // Vérifier si le produit est déjà marqué comme favori dans localStorage
+//     if (localStorage.getItem(`fav-product-${productId}`) === 'true') {
+//         icon.classList.add('active', 'bi-heart-fill');
+//         icon.classList.remove('bi-heart');
+//     }
 
-    icon.addEventListener('click', function() {
-        // Basculer entre favori et non-favori
-        if (icon.classList.contains('bi-heart')) {
-            icon.classList.remove('bi-heart');
-            icon.classList.add('bi-heart-fill', 'active');
-            localStorage.setItem(`fav-product-${productId}`, 'true');
-        } else {
-            icon.classList.remove('bi-heart-fill', 'active');
-            icon.classList.add('bi-heart');
-            localStorage.setItem(`fav-product-${productId}`, 'false');
-        }
-    });
-});
+//     icon.addEventListener('click', function() {
+//         // Basculer entre favori et non-favori
+//         if (icon.classList.contains('bi-heart')) {
+//             icon.classList.remove('bi-heart');
+//             icon.classList.add('bi-heart-fill', 'active');
+//             localStorage.setItem(`fav-product-${productId}`, 'true');
+//         } else {
+//             icon.classList.remove('bi-heart-fill', 'active');
+//             icon.classList.add('bi-heart');
+//             localStorage.setItem(`fav-product-${productId}`, 'false');
+//         }
+//     });
+// });
 
 // ==================================================================================================================
 
@@ -1208,3 +1208,185 @@ document.querySelectorAll('select').forEach(selectElement1 => {
     });
 });
 
+// ================================================================
+
+// import { getProductsList } from './firebase.js';
+
+// async function LoadListProducts() {
+//     // Affiche le spinner
+//     document.getElementById('loading-spinner').style.display = 'block';
+
+    
+//     try {
+//         const ProductsList = await getProductsList();
+//         if (ProductsList) {
+//             console.log(ProductsList);
+//         } else {
+//             console.log('Aucun Produits disponible');
+//         }
+//     } catch (error) {
+//         console.log('Erreur lors de la récupération des produits', error);
+//     }finally{
+//          // Masque le spinner après la requête
+//          document.getElementById('loading-spinner').style.display = 'none';
+//     }
+
+// }
+
+// LoadListProducts();
+
+import { getProductsList, addToFavorites, removeFromFavorites, isFavorite, addToCart, removeFromCart, isInCart } from './firebase.js';
+
+async function LoadListProducts() {
+    document.getElementById('loading-spinner').style.display = 'block';
+
+    try {
+        const ProductsList = await getProductsList();
+        const productsContainer = document.querySelector('.shop-product');
+
+        if (ProductsList.length > 0) {
+            productsContainer.innerHTML = '';
+
+            const formatPrice = (price) => {
+                return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            };
+
+
+            ProductsList.forEach(async product => {
+                const productElement = document.createElement('div');
+                productElement.classList.add('sim-product');
+
+                productElement.innerHTML = `
+                    <img src="${product.images[0]}" alt="${product.name}">
+                    <div class="product-info">
+                        <p class="fs-poppins fs-50 bold-500 text-blue">${product.name}</p>
+                        <p class="fs-montserrat fs-5 text-des">
+                            <strong>Référence : ${product.reference}</strong><br>
+                            ${product.description}
+                        </p>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-image"><img src="${product.marque}" alt="Product Icon"></div>
+                        <div class="detail-text">
+                            <div class="detail-prix text-red fs-100 bold-700">
+                                <span class="price">${formatPrice(product.price)}</span> FCFA
+                            </div>
+                            <div class="detail-dispo">
+                                <span class="${(product.stock > 0) ? 'text-green' : 'text-red'} fs-50">
+                                    ${(product.stock > 0) ? 'En stock' : 'Indisponible'}
+                                </span>
+                            </div>
+                            <div class="detail-el">
+                                <i class="uil uil-shopping-cart-alt text-white add-to-cart" data-id="${product.id}"></i>
+                                <i class="bi bi-heart icon-heart text-white" data-id="${product.id}"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                productsContainer.appendChild(productElement);
+
+                const cartIcon = productElement.querySelector('.add-to-cart');
+                const isCart = await isInCart(product.id);
+
+                if (isCart) {
+                    cartIcon.classList.add('in-cart');
+                }
+
+                cartIcon.addEventListener('click', async (event) => {
+                    event.stopPropagation();
+
+                    if (cartIcon.classList.contains('in-cart')) {
+                        await removeFromCart(product.id);
+                        cartIcon.classList.remove('in-cart');
+                        showAlert('Le produit a été ajouté à votre panier!');
+                    } else {
+                        await addToCart(product.id);
+                        cartIcon.classList.add('in-cart');
+                        showAlert('Le produit a été ajouté à votre panier!');
+                    }
+                });
+
+                const heartIcon = productElement.querySelector('.icon-heart');
+                const isFav = await isFavorite(product.id);
+
+                if (isFav) {
+                    heartIcon.classList.add('favorited');
+                }
+
+                heartIcon.addEventListener('click', async (event) => {
+                    event.stopPropagation();
+
+                    if (heartIcon.classList.contains('favorited')) {
+                        await removeFromFavorites(product.id);
+                        heartIcon.classList.remove('favorited');
+                        showFavoriteAlert('Le produit a été retiré de votre liste.');
+                    } else {
+                        await addToFavorites(product.id);
+                        heartIcon.classList.add('favorited');
+                        showFavoriteAlert('Le produit a été ajouté à votre liste.');
+                    }
+                });
+            });
+        } else {
+            productsContainer.innerHTML = '<p>Aucun produit disponible.</p>';
+        }
+    } catch (error) {
+        console.log('Erreur lors de la récupération des produits', error);
+        productsContainer.innerHTML = '<p>Erreur lors du chargement des produits.</p>';
+    } finally {
+        document.getElementById('loading-spinner').style.display = 'none';
+    }
+}
+
+// Fonction pour afficher l'alerte au centre de l'écran
+function showAlert(message) {
+    const alertBox = document.createElement('div');
+    alertBox.classList.add('alert', 'show');
+    alertBox.innerHTML = `
+    <span class="text-black">${message}<a href="/cart.html"> Voir votre panier.</a></span>
+    <span class="close-btn">&times;</span>
+    `;
+    
+    document.body.appendChild(alertBox);
+
+    alertBox.querySelector('.close-btn').addEventListener('click', () => {
+        alertBox.classList.add('hide');
+    });
+
+    setTimeout(() => {
+        alertBox.classList.add('hide');
+    }, 5000);
+
+    setTimeout(() => {
+        alertBox.remove();
+    }, 5500);
+}
+
+// Fonction pour afficher l'alerte de favoris
+function showFavoriteAlert(message) {
+    const alertBox = document.createElement('div');
+    alertBox.classList.add('alert', 'show');
+    alertBox.innerHTML = `
+        <span class="text-black">${message}<a href="/favoris.html"> Voir votre liste.</a></span>
+        <span class="close-btn">&times;</span>
+    `;
+    
+    document.body.appendChild(alertBox);
+
+    alertBox.querySelector('.close-btn').addEventListener('click', () => {
+        alertBox.classList.add('hide');
+    });
+
+    setTimeout(() => {
+        alertBox.classList.add('hide');
+    }, 5000);
+
+    setTimeout(() => {
+        alertBox.remove();
+    }, 5500);
+}
+
+
+
+LoadListProducts();

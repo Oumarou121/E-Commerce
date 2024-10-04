@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/shop.css">
     <script src="js/index.js" type="module"></script>
-    <script src="js/shop.js" defer></script>
+    <script src="js/shop.js" type="module"></script>
     <title>Ecommerce Website</title>
 </head>
 <body class="home">
@@ -738,6 +738,11 @@
         <div id="loading-spinner" style="display: none;">
             <div class="spinner"></div>
         </div>
+
+        <!-- <div id="favori" class="add">
+            <div>Le produit a été ajouté à votre liste. <span>Voir votre liste.</span></div>
+        </div> -->
+
         <style>
             .spinner {
               border: 4px solid rgba(0, 0, 0, 0.1);
@@ -747,7 +752,7 @@
               height: 40px;
               animation: spin 1s linear infinite;
             }
-          
+
             @keyframes spin {
               to {
                 transform: rotate(360deg);
@@ -761,7 +766,9 @@
               transform: translate(-50%, -50%);
               z-index: 1000; /* Met le chargement devant les autres éléments */
             }
+
         </style>
+        
     </header>
 
     <!-- ======================End Header Section================================ -->
@@ -834,273 +841,7 @@
       <!-- ===================Shop Product===================== -->
 
       <section class="shop-product">
-
-        <div class="sim-product">
-            <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-
-          <div class="product-info">
-              <p class="fs-poppins fs-50 bold-500 text-blue">SMARTPHONE VIVO Y03 4/64 / VERT</p>
-
-              <p class="fs-montserrat fs-5 text-des"><strong>Référence : VIVO-Y03-4/64-VR</strong><br>
-                Double SIM - Ecran 6.51" HD+ 1600 × 720
-                pixels LCD (IPS) - Processeur Octa-core 
-                - RAM 2 Go - Mémoire 32 Go - Funtouch OS
-                 12 (Android 12) - Caméra arrière 8 MP + Flash,
-                  Frontale 5 MP - 4G - Wifi - Bluetooth 5.0 - 
-                  Batterie 5000 mAh - Puissance de rechargement
-                   10 W - Couleur Gris - Garantie 1 an
-              </p>
-          </div>
-
-          <div class="detail">
-              <div class="detail-image"><img src="image/vivo-icon.jpg" alt="VIVO Icon"></div>
-              <div class="detail-text">
-                <div class="detail-prix text-red fs-100 bold-700"> <span class="price">125.000</span> FCFA</div>
-                <div class="detail-dispo"><span class="in-stock text-green fs-50">En stock</span></div>
-                <div class="detail-el">
-                  <i class="uil uil-shopping-cart-alt text-white"></i>
-                  <i class="bi bi-heart icon-heart text-white" data-id="1"></i>
-                </div>
-              </div>
-          </div>
-        </div>
-        
-        <!-- ================================================================= -->
-
-        <div class="sim-product">
-          <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-
-          <div class="product-info">
-              <p class="fs-poppins fs-50 bold-500 text-blue">SMARTPHONE VIVO Y03 4/64 / VERT</p>
-
-              <p class="fs-montserrat fs-5 text-des"><strong>Référence : VIVO-Y03-4/64-VR</strong><br>
-                  Double SIM - Ecran 6.56" HD + LCD (IPS) -  Résolution : 1600 × 720
-                  pixels  - Taux de rafaîchissement : 90Hz - Processeur : MediaTek 
-                  Helio G85 (2 GHz, Dual core, Cortex A75 + 1.8 GHz, Hexa Core, Cortex
-                  A55) -  RAM 8 Go (4 Go extensible jusqu'à 8Go)  - Mémoire 64 Go - 
-                  Funtouch OS  (Android 14) - Caméra arrière 13 MP + 0.08 MP -  
-                  Caméra Frontale 5 MP - 4G - IP54 : Résistance à la Poussière et à 
-                  l'Eau -  Wifi - Bluetooth 5.0 - GPS -  Batterie 5000 mAh - Charge 
-                  rapide 10 W - Couleur : Vert - Garantie 1 an
-              </p>
-          </div>
-
-          <div class="detail">
-              <div class="detail-image"><img src="image/vivo-icon.jpg" alt="VIVO Icon"></div>
-              <div class="detail-text">
-                <div class="detail-prix text-red fs-100 bold-700"> <span class="price">125.000</span> FCFA</div>
-                <div class="detail-dispo"><span class="in-stock text-green fs-50">En stock</span></div>
-                <div class="detail-el">
-                  <i class="uil uil-shopping-cart-alt text-white"></i>
-                  <i class="bi bi-heart icon-heart text-white" data-id="2"></i>
-                </div>
-              </div>
-          </div>
-        </div>
-        
-        <!-- ================================================================= -->
-
-        <div class="sim-product">
-          <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-
-          <div class="product-info">
-              <p class="fs-poppins fs-50 bold-500 text-blue">SMARTPHONE VIVO Y03 4/64 / VERT</p>
-
-              <p class="fs-montserrat fs-5 text-des"><strong>Référence : VIVO-Y03-4/64-VR</strong><br>
-                  Double SIM - Ecran 6.56" HD + LCD (IPS) -  Résolution : 1600 × 720
-                  pixels  - Taux de rafaîchissement : 90Hz - Processeur : MediaTek 
-                  Helio G85 (2 GHz, Dual core, Cortex A75 + 1.8 GHz, Hexa Core, Cortex
-                  A55) -  RAM 8 Go (4 Go extensible jusqu'à 8Go)  - Mémoire 64 Go - 
-                  Funtouch OS  (Android 14) - Caméra arrière 13 MP + 0.08 MP -  
-                  Caméra Frontale 5 MP - 4G - IP54 : Résistance à la Poussière et à 
-                  l'Eau -  Wifi - Bluetooth 5.0 - GPS -  Batterie 5000 mAh - Charge 
-                  rapide 10 W - Couleur : Vert - Garantie 1 an
-              </p>
-          </div>
-
-          <div class="detail">
-              <div class="detail-image"><img src="image/vivo-icon.jpg" alt="VIVO Icon"></div>
-              <div class="detail-text">
-                <div class="detail-prix text-red fs-100 bold-700"> <span class="price">125.000</span> FCFA</div>
-                <div class="detail-dispo"><span class="in-stock text-green fs-50">En stock</span></div>
-                <div class="detail-el">
-                  <i class="uil uil-shopping-cart-alt text-white"></i>
-                  <i class="bi bi-heart icon-heart text-white"  data-id="3"></i>
-                </div>
-              </div>
-          </div>
-        </div>
-        
-        <!-- ================================================================= -->
-
-        <div class="sim-product">
-          <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-
-          <div class="product-info">
-              <p class="fs-poppins fs-50 bold-500 text-blue">SMARTPHONE VIVO Y03 4/64 / VERT</p>
-
-              <p class="fs-montserrat fs-5 text-des"><strong>Référence : VIVO-Y03-4/64-VR</strong><br>
-                  Double SIM - Ecran 6.56" HD + LCD (IPS) -  Résolution : 1600 × 720
-                  pixels  - Taux de rafaîchissement : 90Hz - Processeur : MediaTek 
-                  Helio G85 (2 GHz, Dual core, Cortex A75 + 1.8 GHz, Hexa Core, Cortex
-                  A55) -  RAM 8 Go (4 Go extensible jusqu'à 8Go)  - Mémoire 64 Go - 
-                  Funtouch OS  (Android 14) - Caméra arrière 13 MP + 0.08 MP -  
-                  Caméra Frontale 5 MP - 4G - IP54 : Résistance à la Poussière et à 
-                  l'Eau -  Wifi - Bluetooth 5.0 - GPS -  Batterie 5000 mAh - Charge 
-                  rapide 10 W - Couleur : Vert - Garantie 1 an
-              </p>
-          </div>
-
-          <div class="detail">
-              <div class="detail-image"><img src="image/vivo-icon.jpg" alt="VIVO Icon"></div>
-              <div class="detail-text">
-                <div class="detail-prix text-red fs-100 bold-700"> <span class="price">125.000</span> FCFA</div>
-                <div class="detail-dispo"><span class="in-stock text-green fs-50">En stock</span></div>
-                <div class="detail-el">
-                  <i class="uil uil-shopping-cart-alt text-white"></i>
-                  <i class="bi bi-heart icon-heart text-white"  data-id="4"></i>
-                </div>
-              </div>
-          </div>
-        </div>
-        
-        <!-- ================================================================= -->
-
-        <div class="sim-product">
-          <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-
-          <div class="product-info">
-              <p class="fs-poppins fs-50 bold-500 text-blue">SMARTPHONE VIVO Y03 4/64 / VERT</p>
-
-              <p class="fs-montserrat fs-5 text-des"><strong>Référence : VIVO-Y03-4/64-VR</strong><br>
-                  Double SIM - Ecran 6.56" HD + LCD (IPS) -  Résolution : 1600 × 720
-                  pixels  - Taux de rafaîchissement : 90Hz - Processeur : MediaTek 
-                  Helio G85 (2 GHz, Dual core, Cortex A75 + 1.8 GHz, Hexa Core, Cortex
-                  A55) -  RAM 8 Go (4 Go extensible jusqu'à 8Go)  - Mémoire 64 Go - 
-                  Funtouch OS  (Android 14) - Caméra arrière 13 MP + 0.08 MP -  
-                  Caméra Frontale 5 MP - 4G - IP54 : Résistance à la Poussière et à 
-                  l'Eau -  Wifi - Bluetooth 5.0 - GPS -  Batterie 5000 mAh - Charge 
-                  rapide 10 W - Couleur : Vert - Garantie 1 an
-              </p>
-          </div>
-
-          <div class="detail">
-              <div class="detail-image"><img src="image/vivo-icon.jpg" alt="VIVO Icon"></div>
-              <div class="detail-text">
-                <div class="detail-prix text-red fs-100 bold-700"> <span class="price">125.000</span> FCFA</div>
-                <div class="detail-dispo"><span class="in-stock text-green fs-50">En stock</span></div>
-                <div class="detail-el">
-                  <i class="uil uil-shopping-cart-alt text-white"></i>
-                  <i class="bi bi-heart icon-heart text-white"  data-id="5"></i>
-                </div>
-              </div>
-          </div>
-        </div>
-        
-        <!-- ================================================================= -->
-
-
-        <div class="sim-product">
-          <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-
-          <div class="product-info">
-              <p class="fs-poppins fs-50 bold-500 text-blue">SMARTPHONE VIVO Y03 4/64 / VERT</p>
-
-              <p class="fs-montserrat fs-5 text-des"><strong>Référence : VIVO-Y03-4/64-VR</strong><br>
-                  Double SIM - Ecran 6.56" HD + LCD (IPS) -  Résolution : 1600 × 720
-                  pixels  - Taux de rafaîchissement : 90Hz - Processeur : MediaTek 
-                  Helio G85 (2 GHz, Dual core, Cortex A75 + 1.8 GHz, Hexa Core, Cortex
-                  A55) -  RAM 8 Go (4 Go extensible jusqu'à 8Go)  - Mémoire 64 Go - 
-                  Funtouch OS  (Android 14) - Caméra arrière 13 MP + 0.08 MP -  
-                  Caméra Frontale 5 MP - 4G - IP54 : Résistance à la Poussière et à 
-                  l'Eau -  Wifi - Bluetooth 5.0 - GPS -  Batterie 5000 mAh - Charge 
-                  rapide 10 W - Couleur : Vert - Garantie 1 an
-              </p>
-          </div>
-
-          <div class="detail">
-              <div class="detail-image"><img src="image/vivo-icon.jpg" alt="VIVO Icon"></div>
-              <div class="detail-text">
-                <div class="detail-prix text-red fs-100 bold-700"> <span class="price">125.000</span> FCFA</div>
-                <div class="detail-dispo"><span class="in-stock text-green fs-50">En stock</span></div>
-                <div class="detail-el">
-                  <i class="uil uil-shopping-cart-alt text-white"></i>
-                  <i class="bi bi-heart icon-heart text-white"  data-id="6"></i>
-                </div>
-              </div>
-          </div>
-        </div>
-        
-        <!-- ================================================================= -->
-
-
-        <div class="sim-product">
-          <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-
-          <div class="product-info">
-              <p class="fs-poppins fs-50 bold-500 text-blue">SMARTPHONE VIVO Y03 4/64 / VERT</p>
-
-              <p class="fs-montserrat fs-5 text-des"><strong>Référence : VIVO-Y03-4/64-VR</strong><br>
-                  Double SIM - Ecran 6.56" HD + LCD (IPS) -  Résolution : 1600 × 720
-                  pixels  - Taux de rafaîchissement : 90Hz - Processeur : MediaTek 
-                  Helio G85 (2 GHz, Dual core, Cortex A75 + 1.8 GHz, Hexa Core, Cortex
-                  A55) -  RAM 8 Go (4 Go extensible jusqu'à 8Go)  - Mémoire 64 Go - 
-                  Funtouch OS  (Android 14) - Caméra arrière 13 MP + 0.08 MP -  
-                  Caméra Frontale 5 MP - 4G - IP54 : Résistance à la Poussière et à 
-                  l'Eau -  Wifi - Bluetooth 5.0 - GPS -  Batterie 5000 mAh - Charge 
-                  rapide 10 W - Couleur : Vert - Garantie 1 an
-              </p>
-          </div>
-
-          <div class="detail">
-              <div class="detail-image"><img src="image/vivo-icon.jpg" alt="VIVO Icon"></div>
-              <div class="detail-text">
-                <div class="detail-prix text-red fs-100 bold-700"> <span class="price">125.000</span> FCFA</div>
-                <div class="detail-dispo"><span class="in-stock text-green fs-50">En stock</span></div>
-                <div class="detail-el">
-                  <i class="uil uil-shopping-cart-alt text-white"></i>
-                  <i class="bi bi-heart icon-heart text-white"  data-id="7"></i>
-                </div>
-              </div>
-          </div>
-        </div>
-        
-        <!-- ================================================================= -->
-
-
-        <div class="sim-product">
-          <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-
-          <div class="product-info">
-              <p class="fs-poppins fs-50 bold-500 text-blue">SMARTPHONE VIVO Y03 4/64 / VERT</p>
-
-              <p class="fs-montserrat fs-5 text-des"><strong>Référence : VIVO-Y03-4/64-VR</strong><br>
-                  Double SIM - Ecran 6.56" HD + LCD (IPS) -  Résolution : 1600 × 720
-                  pixels  - Taux de rafaîchissement : 90Hz - Processeur : MediaTek 
-                  Helio G85 (2 GHz, Dual core, Cortex A75 + 1.8 GHz, Hexa Core, Cortex
-                  A55) -  RAM 8 Go (4 Go extensible jusqu'à 8Go)  - Mémoire 64 Go - 
-                  Funtouch OS  (Android 14) - Caméra arrière 13 MP + 0.08 MP -  
-                  Caméra Frontale 5 MP - 4G - IP54 : Résistance à la Poussière et à 
-                  l'Eau -  Wifi - Bluetooth 5.0 - GPS -  Batterie 5000 mAh - Charge 
-                  rapide 10 W - Couleur : Vert - Garantie 1 an
-              </p>
-          </div>
-
-          <div class="detail">
-              <div class="detail-image"><img src="image/vivo-icon.jpg" alt="VIVO Icon"></div>
-              <div class="detail-text">
-                <div class="detail-prix text-red fs-100 bold-700"> <span class="price">125.000</span> FCFA</div>
-                <div class="detail-dispo"><span class="in-stock text-green fs-50">En stock</span></div>
-                <div class="detail-el">
-                  <i class="uil uil-shopping-cart-alt text-white"></i>
-                  <i class="bi bi-heart icon-heart text-white"  data-id="8"></i>
-                </div>
-              </div>
-          </div>
-        </div>
-        
-        <!-- ================================================================= -->
-
+ 
       </section>
               
       </div>

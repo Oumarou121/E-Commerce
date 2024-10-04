@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/product.css">
     <script src="js/index.js" type="module"></script>
-    <script src="js/product.js" defer></script>
+    <script src="js/product.js" type="module"></script>
     <title>Ecommerce Website</title>
 </head>
 <body class="home">
@@ -378,7 +378,7 @@
         <!-- <div>
           <p class="fs-montserrat text-black">Home <span aria-haspopup="true" class="margin"></span>Product</p>
         </div> -->
-        <h2 class="fs-poppins fs-200 bold-700">SMARTPHONE VIVO Y03 4/64 / VERT</h2>
+        <h2 class="fs-poppins fs-200 bold-700" id="name"></h2>
       </section>
   
       <!-- ======================Shop Feature Section================================ -->
@@ -386,39 +386,20 @@
     <!-- ======================Shop Section================================ -->
 
     <!-- Main Content -->
-<section class="about-section grid">
+
+    <section class="about-section grid">
         <section class="page-content" id="content">              
             <div class="images-container">
-                <!-- Image principale -->
                 <div class="product-cover">
-                    <img src="image/vivo.jpg" alt="image principale" id="main-image">
+                    <img src="" alt="image principale" id="main-image">
                 </div>        
         
-                <!-- Liste des vignettes avec scroll horizontal -->
                 <div id="webizoom" class="scroll">
-                    <ul class="product-images">
-                        <li class="thumb-container">
-                            <img src="image/vivo.jpg" alt="Vignette 1" data-large="image/vivo.jpg">
-                        </li>
-                        <li class="thumb-container">
-                            <img src="image/vivo1.jpg" alt="Vignette 2" data-large="image/vivo1.jpg">
-                        </li>
-                        <li class="thumb-container">
-                            <img src="image/vivo2.jpg" alt="Vignette 3" data-large="image/vivo2.jpg">
-                        </li>
-                        <li class="thumb-container">
-                            <img src="image/vivo3.jpg" alt="Vignette 4" data-large="image/vivo3.jpg">
-                        </li>
-                        <li class="thumb-container">
-                            <img src="image/vivo4.jpg" alt="Vignette 5" data-large="image/vivo4.jpg">
-                        </li>
-                        <li class="thumb-container">
-                            <img src="image/vivo5.jpg" alt="Vignette 6" data-large="image/vivo5.jpg">
-                        </li>
+                    <ul class="product-images" id="thumbnail-list">
+                        <!-- Les vignettes seront ajoutées ici par JavaScript -->
                     </ul>
                 </div>
-        
-                <!-- Flèches de défilement à gauche et à droite de la liste des vignettes -->
+
                 <div class="scroll-box-arrows">
                     <i class="uil uil-angle-left" id="scroll-left"></i>
                     <i class="uil uil-angle-right" id="scroll-right"></i>
@@ -427,36 +408,27 @@
         </section> 
         
         <div class="about-info">
-        <!-- <h1 class="fs-montserrat fs-500 text-black">Beats</h1> -->
-          <p class="fs-montserrat fs-50"><STRong>Référence : VIVO-Y03-4/64-VR</STRong><br><br>
-            Double SIM - Ecran 6.56" HD + LCD (IPS) -  Résolution : 1600 × 720
-            pixels  - Taux de rafaîchissement : 90Hz - Processeur : MediaTek 
-            Helio G85 (2 GHz, Dual core, Cortex A75 + 1.8 GHz, Hexa Core, Cortex
-            A55) -  RAM 8 Go (4 Go extensible jusqu'à 8Go)  - Mémoire 64 Go - 
-            Funtouch OS  (Android 14) - Caméra arrière 13 MP + 0.08 MP -  
-            Caméra Frontale 5 MP - 4G - IP54 : Résistance à la Poussière et à 
-            l'Eau -  Wifi - Bluetooth 5.0 - GPS -  Batterie 5000 mAh - Charge 
-            rapide 10 W - Couleur : Vert - Garantie 1 an</p>
-  
+            <p class="fs-montserrat fs-50"><strong id="product-reference">Référence : VIVO-Y03-4/64-VR</strong><br><br>
+                <span id="product-description"></span>
+            </p>
+
             <div class="about-btn">
-              <button class="large-btn bg-red text-white fs-poppins">Shop Now</button>
+                <button class="large-btn bg-red text-white fs-poppins">Shop Now</button>
             </div>
         </div>
+
         <div class="detail-bar">
-            <div class="div-image"><img src="image/vivo-icon.jpg" alt=""></div>
-            <div class="prix text-red fs-300 bold-700"> <span class="price">125.000</span> FCFA</div>
-            <div class="dispo fs-150">Disponibilté : <span class="in-stock text-green">En stock</span></div>
+            <div class="div-image"><img src="" alt="" id="marque-icon"></div>
+            <div class="prix text-red fs-300 bold-700"> <span class="price" id="product-price"></span></div>
+            <div class="dispo fs-150">Disponibilité : <span class="in-stock text-green" id="product-stock"></span></div>
             <div class="qty fs-150">
                 <span class="control-label">Quantité</span>
-                <!-- <br> -->
                 <div class="quantity">
-                    <button class="btn minus" type="button" onclick="decrement()">
-                        <!-- <i class="fa-solid fa-minus"></i> -->
+                    <button class="btn minus" type="button" id="decrement">
                         <i class="uil uil-minus"></i>
                     </button>
                     <input type="text" value="1" id="qtyInput" readonly>
-                    <button class="btn minus" type="button" onclick="increment()">
-                        <!-- <i class="fa-solid fa-plus"></i> -->
+                    <button class="btn plus" type="button" id="increment">
                         <i class="uil uil-plus"></i>
                     </button>
                 </div>
@@ -476,8 +448,8 @@
                 </button>
             </div>
         </div>
-        
     </section>
+
     <section class="second">
         <div>
             <hr class="custom-hr">
@@ -490,70 +462,19 @@
         </nav>
 
         <div class="all">
-        <div class="container1 tab-content" id="description">
-            <h2>Fiche Technique</h2>
-            <table class="specs-table">
-                <tr>
-                    <td>Mémoire</td>
-                    <td>32 Go</td>
-                </tr>
-                <tr>
-                    <td>Réseau</td>
-                    <td>4G</td>
-                </tr>
-                <tr>
-                    <td>Garantie</td>
-                    <td>1 An</td>
-                </tr>
-                <tr>
-                    <td>Taille De L'écran</td>
-                    <td>Supérieur à 6"</td>
-                </tr>
-                <tr>
-                    <td>Taux De Rafraîchissement</td>
-                    <td>90 Hz</td>
-                </tr>
-                <tr>
-                    <td>Type Processeur</td>
-                    <td>Octa Core</td>
-                </tr>
-                <tr>
-                    <td>RAM</td>
-                    <td>3 Go</td>
-                </tr>
-                <tr>
-                    <td>Système</td>
-                    <td>Android</td>
-                </tr>
-                <tr>
-                    <td>Appareil Photo</td>
-                    <td>8MP</td>
-                </tr>
-                <tr>
-                    <td>Couleur</td>
-                    <td>Gris</td>
-                </tr>
-            </table>
-    
-            <!-- <h3>Références Spécifiques</h3> -->
-        </div>
-        <!-- style="display:none;" -->
-        <!-- style="transform:scale(0);" -->
-        <div class="container1 tab-content" id="reviews" style="display:none;" style="transform:scale(0);">
-            <div class="reviews-section">
-                <p>(2 avis clients)</p>
-                <div class="review">
-                    <strong>John Doe</strong>
-                    <p>Produit excellent, je le recommande !</p>
-                </div>
-                <div class="review">
-                    <strong>Jane Doe</strong>
-                    <p>Très bon rapport qualité-prix.</p>
+            <div class="container1 tab-content" id="description">
+                <h2>Fiche Technique</h2>
+                <table class="specs-table" id="specs-table">
+                    <!-- Les spécifications seront ajoutées ici par JavaScript -->
+                </table>
+            </div>
+            <div class="container1 tab-content" id="reviews" style="display:none;">
+                <div class="reviews-section" id="reviews-section">
+                    <p>(0 avis clients)</p>
+                    <!-- Les avis seront ajoutés ici par JavaScript -->
                 </div>
             </div>
         </div>
-    </div>
-
     </section>
 
     <section class="third">
