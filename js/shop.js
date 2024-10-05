@@ -1284,6 +1284,11 @@ async function LoadListProducts() {
                     </div>
                 `;
 
+                // Redirection vers la page de détails lors du clic sur le produit
+                productElement.addEventListener('click', () => {
+                    window.location.href = `product.html?id=${product.id}`;
+                });
+
                 productsContainer.appendChild(productElement);
 
                 const cartIcon = productElement.querySelector('.add-to-cart');
