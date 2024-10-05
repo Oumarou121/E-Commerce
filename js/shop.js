@@ -1,30 +1,3 @@
-// // Fonction pour basculer le statut de favori
-// document.querySelectorAll('.icon-heart').forEach(icon => {
-//     const productId = icon.dataset.id;
-
-//     // Vérifier si le produit est déjà marqué comme favori dans localStorage
-//     if (localStorage.getItem(`fav-product-${productId}`) === 'true') {
-//         icon.classList.add('active', 'bi-heart-fill');
-//         icon.classList.remove('bi-heart');
-//     }
-
-//     icon.addEventListener('click', function() {
-//         // Basculer entre favori et non-favori
-//         if (icon.classList.contains('bi-heart')) {
-//             icon.classList.remove('bi-heart');
-//             icon.classList.add('bi-heart-fill', 'active');
-//             localStorage.setItem(`fav-product-${productId}`, 'true');
-//         } else {
-//             icon.classList.remove('bi-heart-fill', 'active');
-//             icon.classList.add('bi-heart');
-//             localStorage.setItem(`fav-product-${productId}`, 'false');
-//         }
-//     });
-// });
-
-// ==================================================================================================================
-
-
 // Ajouter un événement de clic pour changer le content du span
 document.querySelectorAll('.filtre-span').forEach(function(icon) {
     icon.addEventListener('click', function() {
@@ -37,52 +10,22 @@ document.querySelectorAll('.filtre-span').forEach(function(icon) {
 function spanFonction(spanId) {
     const icon = document.querySelector(`.filtre-span[span-id="${spanId}"]`);
     if (icon) {
-        if (icon.classList.contains('span-minus')) {
-            icon.classList.remove('span-minus');
-            icon.classList.add('span-plus');
-        } else if (icon.classList.contains('span-plus')) {
-            icon.classList.remove('span-plus');
-            icon.classList.add('span-minus');
-        } else {
-            // Par défaut, on applique la première rotation à -90 degrés
-            icon.classList.add('span-minus');
-        }
+        icon.classList.toggle('span-plus');
+        icon.classList.toggle('span-minus');
     }
 
-    if(spanId == 1){
-        const content1 = document.querySelector('.second-content1');
-        if (content1.style.display === 'block') {
-            content1.style.display = 'none';
-        } else {
-            content1.style.display = 'block';
-        }
-    }
+    const contents = [
+        '.second-content1',
+        '.second-content2',
+        '.third-content1',
+        '.third-content2'
+    ];
 
-    if(spanId == 2){
-        const content2 = document.querySelector('.second-content2');
-        if (content2.style.display === 'block') {
-            content2.style.display = 'none';
-        } else {
-            content2.style.display = 'block';
-        }
-    }
+    const index = parseInt(spanId) - 1; // Soustraire 1 car les indices commencent à 0
+    const content = document.querySelector(contents[index]);
 
-    if(spanId == 3){
-        const content3 = document.querySelector('.third-content1');
-        if (content3.style.display === 'block') {
-            content3.style.display = 'none';
-        } else {
-            content3.style.display = 'block';
-        }
-    }
-
-    if(spanId == 4){
-        const content4 = document.querySelector('.third-content2');
-        if (content4.style.display === 'block') {
-            content4.style.display = 'none';
-        } else {
-            content4.style.display = 'block';
-        }
+    if (content) {
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
     }
 }
 
@@ -98,192 +41,70 @@ document.querySelectorAll('.filtre-top').forEach(function(icon) {
 function toggleRotation(filtreId) {
     const icon = document.querySelector(`.icon-arrow[filtre-id="${filtreId}"]`);
     if (icon) {
-        if (icon.classList.contains('rotated-minus')) {
-            icon.classList.remove('rotated-minus');
-            icon.classList.add('rotated-plus');
-        } else if (icon.classList.contains('rotated-plus')) {
-            icon.classList.remove('rotated-plus');
-            icon.classList.add('rotated-minus');
-        } else {
-            // Par défaut, on applique la première rotation à -90 degrés
-            icon.classList.add('rotated-minus');
-        }
+        icon.classList.toggle('rotated-plus');
+        icon.classList.toggle('rotated-minus');
     }
 
-    if(filtreId == 1){
-        const content = document.querySelector('.first-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
+    const contents = [
+        '.first-content',
+        '.price-content',
+        '.fabricants-content',
+        '.processeur-content',
+        '.memoire-content',
+        '.stockage-content',
+        '.taille-de-ecran-content',
+        '.garantie-content',
+        '.type-processeur-content',
+        '.ecran-tactile-content',
+        '.carte-graphique-content',
+        '.se-content',
+        '.taille-ecran-content',
+        '.type-ecran-content',
+        '.sim-content',
+        '.ram-content'
+    ];
 
-    if(filtreId == 2){
-        const content = document.querySelector('.price-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
+    const index = parseInt(filtreId) - 1; // Soustraire 1 car les indices commencent à 0
+    const content = document.querySelector(contents[index]);
 
-    if(filtreId == 3){
-        const content = document.querySelector('.fabricants-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 4){
-        const content = document.querySelector('.processeur-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 5){
-        const content = document.querySelector('.memoire-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 6){
-        const content = document.querySelector('.stockage-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 7){
-        const content = document.querySelector('.taille-de-ecran-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 8){
-        const content = document.querySelector('.garantie-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 9){
-        const content = document.querySelector('.type-processeur-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 10){
-        const content = document.querySelector('.ecran-tactile-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 11){
-        const content = document.querySelector('.carte-graphique-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 12){
-        const content = document.querySelector('.se-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 13){
-        const content = document.querySelector('.taille-ecran-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 14){
-        const content = document.querySelector('.type-ecran-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 15){
-        const content = document.querySelector('.sim-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 16){
-        const content = document.querySelector('.ram-content');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
+    if (content) {
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
     }
 }
 
 // ===============================================================================================
 
 
-// Fonction pour ajouter ou mettre à jour le filtr-item de prix
-function updatePriceFilter(min, max) {
-    let priceFilterItem = document.querySelector('.filtre-item.price');
+// Fonction générique pour ajouter ou mettre à jour le filtre de prix
+function updatePriceFilter(min, max, isDesktop = false) {
+    const filterClass = isDesktop ? '.filtre-item-desktop.price' : '.filtre-item.price';
+    const selectedFiltersClass = isDesktop ? '.selectedFilters-desktop' : '.selectedFilters';
+
+    let priceFilterItem = document.querySelector(filterClass);
 
     if (!priceFilterItem) {
         // Si l'élément n'existe pas encore, créer un nouvel élément filtr-item
         priceFilterItem = document.createElement('div');
-        priceFilterItem.classList.add('filtre-item', 'price');
-        
+        priceFilterItem.classList.add(isDesktop ? 'filtre-item-desktop' : 'filtre-item', 'price');
+
         // Ajouter un conteneur pour le texte et le bouton
         const filterContent = document.createElement('span');
-        filterContent.classList.add('filter-content');
-        
+        filterContent.classList.add(isDesktop ? 'filter-content-desktop' : 'filter-content');
+
         // Ajouter le bouton de suppression (croix)
         const removeBtn = document.createElement('i');
         removeBtn.classList.add('uil', 'uil-times');
-        removeBtn.style.cursor = 'pointer'; // S'assurer que le curseur change pour indiquer la cliquabilité
+        removeBtn.style.cursor = 'pointer'; // Indiquer que le bouton est cliquable
         removeBtn.addEventListener('click', () => {
             // Réinitialiser les sliders et les inputs
-            rangeInput[0].value = rangeInput[0].min;
-            rangeInput[1].value = rangeInput[1].max;
-            priceInput[0].value = rangeInput[0].min;
-            priceInput[1].value = rangeInput[1].max;
-            updatePriceSlider();  //Mise à jour visuelle du slider
+            const rangeInputs = document.querySelectorAll(isDesktop ? ".range-input-desktop input" : ".range-input input");
+            const priceInputs = document.querySelectorAll(isDesktop ? ".price-input-desktop input" : ".price-input input");
+            rangeInputs[0].value = rangeInputs[0].min;
+            rangeInputs[1].value = rangeInputs[1].max;
+            priceInputs[0].value = rangeInputs[0].min;
+            priceInputs[1].value = rangeInputs[1].max;
+            updatePriceSlider(isDesktop);  // Mise à jour visuelle du slider
             priceFilterItem.remove(); // Supprimer l'élément de filtre
-
         });
 
         // Ajouter le contenu et le bouton à l'élément filtr-item
@@ -291,163 +112,76 @@ function updatePriceFilter(min, max) {
         priceFilterItem.appendChild(removeBtn);
 
         // Ajouter l'élément de filtre au conteneur des filtres sélectionnés
-        document.querySelector('.selectedFilters').appendChild(priceFilterItem);
+        document.querySelector(selectedFiltersClass).appendChild(priceFilterItem);
     }
 
     // Mettre à jour le texte de l'élément avec les nouvelles valeurs
-    const filterContent = priceFilterItem.querySelector('.filter-content');
+    const filterContent = priceFilterItem.querySelector(isDesktop ? '.filter-content-desktop' : '.filter-content');
     filterContent.textContent = `Prix - ${min} - ${max} FCFA`;
 }
 
-// Fonction pour mettre à jour la partie visuelle du slider
-function updatePriceSlider() {
-    let minVal = parseInt(rangeInput[0].value);
-    let maxVal = parseInt(rangeInput[1].value);
-    priceInput[0].value = minVal;
-    priceInput[1].value = maxVal;
-    range.style.left = ((minVal / rangeInput[0].max) * 100) + "%";
-    range.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+// Fonction générique pour mettre à jour la partie visuelle du slider
+function updatePriceSlider(isDesktop = false) {
+    const rangeInputs = document.querySelectorAll(isDesktop ? ".range-input-desktop input" : ".range-input input");
+    const priceInputs = document.querySelectorAll(isDesktop ? ".price-input-desktop input" : ".price-input input");
+    const range = document.querySelector(isDesktop ? ".slider-desktop .progress" : ".slider .progress");
+
+    let minVal = parseInt(rangeInputs[0].value);
+    let maxVal = parseInt(rangeInputs[1].value);
+    priceInputs[0].value = minVal;
+    priceInputs[1].value = maxVal;
+
+    range.style.left = ((minVal / rangeInputs[0].max) * 100) + "%";
+    range.style.right = 100 - (maxVal / rangeInputs[1].max) * 100 + "%";
 
     // Mettre à jour l'élément filtr-item de prix
-    updatePriceFilter(minVal, maxVal);
+    updatePriceFilter(minVal, maxVal, isDesktop);
 }
 
-// Prix
-const rangeInput = document.querySelectorAll(".range-input input"),
-priceInput = document.querySelectorAll(".price-input input"),
-range = document.querySelector(".slider .progress");
-let priceGap = 5000;
+// Prix et écouteurs d'événements
+const priceGap = 5000;
 
-// Écouter les changements dans les inputs de prix
-priceInput.forEach(input => {
-    input.addEventListener("input", e => {
-        let minPrice = parseInt(priceInput[0].value),
-            maxPrice = parseInt(priceInput[1].value);
-        
-        if ((maxPrice - minPrice >= priceGap) && maxPrice <= rangeInput[1].max) {
-            if (e.target.className === "input-min") {
-                rangeInput[0].value = minPrice;
-            } else {
-                rangeInput[1].value = maxPrice;
+// Gérer les entrées et les sliders pour mobile
+function setupPriceInputsAndSliders(isDesktop = false) {
+    const rangeInputs = document.querySelectorAll(isDesktop ? ".range-input-desktop input" : ".range-input input");
+    const priceInputs = document.querySelectorAll(isDesktop ? ".price-input-desktop input" : ".price-input input");
+
+    priceInputs.forEach(input => {
+        input.addEventListener("input", e => {
+            let minPrice = parseInt(priceInputs[0].value),
+                maxPrice = parseInt(priceInputs[1].value);
+
+            if ((maxPrice - minPrice >= priceGap) && maxPrice <= rangeInputs[1].max) {
+                if (e.target.className === (isDesktop ? "input-min" : "input-min")) {
+                    rangeInputs[0].value = minPrice;
+                } else {
+                    rangeInputs[1].value = maxPrice;
+                }
+                updatePriceSlider(isDesktop); // Mise à jour visuelle et de l'élément filtr-item
             }
-            updatePriceSlider(); // Mise à jour visuelle et de l'élément filtr-item
-        }
-    });
-});
-
-// Écouter les changements dans les sliders de prix
-rangeInput.forEach(input => {
-    input.addEventListener("input", e => {
-        let minVal = parseInt(rangeInput[0].value),
-            maxVal = parseInt(rangeInput[1].value);
-
-        if ((maxVal - minVal) < priceGap) {
-            if (e.target.className === "range-min") {
-                rangeInput[0].value = maxVal - priceGap;
-            } else {
-                rangeInput[1].value = minVal + priceGap;
-            }
-        }
-        updatePriceSlider(); // Mise à jour visuelle et de l'élément filtr-item
-    });
-});
-
-// ===================================================================================
-
-// Fonction pour ajouter ou mettre à jour le filtr-item de prix
-function updatePriceFilter1(min, max) {
-    let priceFilterItem1 = document.querySelector('.filtre-item-desktop.price');
-
-    if (!priceFilterItem1) {
-        // Si l'élément n'existe pas encore, créer un nouvel élément filtr-item
-        priceFilterItem1 = document.createElement('div');
-        priceFilterItem1.classList.add('filtre-item-desktop', 'price');
-        
-        // Ajouter un conteneur pour le texte et le bouton
-        const filterContent1 = document.createElement('span');
-        filterContent1.classList.add('filter-content-desktop');
-        
-        // Ajouter le bouton de suppression (croix)
-        const removeBtn1 = document.createElement('i');
-        removeBtn1.classList.add('uil', 'uil-times');
-        removeBtn1.style.cursor = 'pointer'; // S'assurer que le curseur change pour indiquer la cliquabilité
-        removeBtn1.addEventListener('click', () => {
-            // Réinitialiser les sliders et les inputs
-            rangeInput1[0].value = rangeInput1[0].min;
-            rangeInput1[1].value = rangeInput1[1].max;
-            priceInput1[0].value = rangeInput1[0].min;
-            priceInput1[1].value = rangeInput1[1].max;
-            updatePriceSlider1();  //Mise à jour visuelle du slider
-            priceFilterItem1.remove(); // Supprimer l'élément de filtre
-
         });
+    });
 
-        // Ajouter le contenu et le bouton à l'élément filtr-item
-        priceFilterItem1.appendChild(filterContent1);
-        priceFilterItem1.appendChild(removeBtn1);
+    rangeInputs.forEach(input => {
+        input.addEventListener("input", e => {
+            let minVal = parseInt(rangeInputs[0].value),
+                maxVal = parseInt(rangeInputs[1].value);
 
-        // Ajouter l'élément de filtre au conteneur des filtres sélectionnés
-        document.querySelector('.selectedFilters-desktop').appendChild(priceFilterItem1);
-    }
-
-    // Mettre à jour le texte de l'élément avec les nouvelles valeurs
-    const filterContent1 = priceFilterItem1.querySelector('.filter-content-desktop');
-    filterContent1.textContent = `Prix - ${min} - ${max} FCFA`;
+            if ((maxVal - minVal) < priceGap) {
+                if (e.target.className === (isDesktop ? "range-min" : "range-min")) {
+                    rangeInputs[0].value = maxVal - priceGap;
+                } else {
+                    rangeInputs[1].value = minVal + priceGap;
+                }
+            }
+            updatePriceSlider(isDesktop); // Mise à jour visuelle et de l'élément filtr-item
+        });
+    });
 }
 
-// Fonction pour mettre à jour la partie visuelle du slider
-function updatePriceSlider1() {
-    let minVal1 = parseInt(rangeInput1[0].value);
-    let maxVal1 = parseInt(rangeInput1[1].value);
-    priceInput1[0].value = minVal1;
-    priceInput1[1].value = maxVal1;
-    range1.style.left = ((minVal1 / rangeInput1[0].max) * 100) + "%";
-    range1.style.right = 100 - (maxVal1 / rangeInput1[1].max) * 100 + "%";
-
-    // Mettre à jour l'élément filtr-item de prix
-    updatePriceFilter1(minVal1, maxVal1);
-}
-
-// Prix-Desktop
-const rangeInput1 = document.querySelectorAll(".range-input-desktop input"),
-priceInput1 = document.querySelectorAll(".price-input-desktop input"),
-range1 = document.querySelector(".slider-desktop .progress");
-let priceGap1 = 5000;
-
-// Écouter les changements dans les inputs de prix
-priceInput1.forEach(input => {
-    input.addEventListener("input", e => {
-        let minPrice1 = parseInt(priceInput1[0].value),
-            maxPrice1 = parseInt(priceInput1[1].value);
-        
-        if ((maxPrice1 - minPrice1 >= priceGap1) && maxPrice1 <= rangeInput1[1].max) {
-            if (e.target.className === "input-min") {
-                rangeInput1[0].value = minPrice1;
-            } else {
-                rangeInput1[1].value = maxPrice1;
-            }
-            updatePriceSlider1(); // Mise à jour visuelle et de l'élément filtr-item
-        }
-    });
-});
-
-// Écouter les changements dans les sliders de prix
-rangeInput1.forEach(input => {
-    input.addEventListener("input", e => {
-        let minVal1 = parseInt(rangeInput1[0].value),
-            maxVal1 = parseInt(rangeInput1[1].value);
-
-        if ((maxVal1 - minVal1) < priceGap1) {
-            if (e.target.className === "range-min") {
-                rangeInput1[0].value = maxVal1 - priceGap1;
-            } else {
-                rangeInput1[1].value = minVal1 + priceGap1;
-            }
-        }
-        updatePriceSlider1(); // Mise à jour visuelle et de l'élément filtr-item
-    });
-});
-
+// Initialiser les écouteurs pour mobile et desktop
+setupPriceInputsAndSliders();
+setupPriceInputsAndSliders(true); // true pour desktop
 // ================================================================================================
 
 // Ajouter un événement de clic pour changer le content du span
@@ -462,52 +196,22 @@ document.querySelectorAll('.filtre-span').forEach(function(icon) {
 function spanFonction1(spanId) {
     const icon = document.querySelector(`.filtre-span[span-desktop-id="${spanId}"]`);
     if (icon) {
-        if (icon.classList.contains('span-minus')) {
-            icon.classList.remove('span-minus');
-            icon.classList.add('span-plus');
-        } else if (icon.classList.contains('span-plus')) {
-            icon.classList.remove('span-plus');
-            icon.classList.add('span-minus');
-        } else {
-            // Par défaut, on applique la première rotation à -90 degrés
-            icon.classList.add('span-minus');
-        }
+        icon.classList.toggle('span-plus');
+        icon.classList.toggle('span-minus');
     }
 
-    if(spanId == 1){
-        const content1 = document.querySelector('.second-content-desktop1');
-        if (content1.style.display === 'block') {
-            content1.style.display = 'none';
-        } else {
-            content1.style.display = 'block';
-        }
-    }
+    const contents = [
+        '.second-content-desktop1',
+        '.second-content-desktop2',
+        '.third-content-desktop1',
+        '.third-content-desktop2'
+    ];
 
-    if(spanId == 2){
-        const content2 = document.querySelector('.second-content-desktop2');
-        if (content2.style.display === 'block') {
-            content2.style.display = 'none';
-        } else {
-            content2.style.display = 'block';
-        }
-    }
+    const index = parseInt(spanId) - 1; // Soustraire 1 car les indices commencent à 0
+    const content = document.querySelector(contents[index]);
 
-    if(spanId == 3){
-        const content3 = document.querySelector('.third-content-desktop1');
-        if (content3.style.display === 'block') {
-            content3.style.display = 'none';
-        } else {
-            content3.style.display = 'block';
-        }
-    }
-
-    if(spanId == 4){
-        const content4 = document.querySelector('.third-content-desktop2');
-        if (content4.style.display === 'block') {
-            content4.style.display = 'none';
-        } else {
-            content4.style.display = 'block';
-        }
+    if (content) {
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
     }
 }
 
@@ -523,160 +227,34 @@ document.querySelectorAll('.filtre-top').forEach(function(icon) {
 function toggleRotation1(filtreId) {
     const icon = document.querySelector(`.icon-arrow[filtre-desktop-id="${filtreId}"]`);
     if (icon) {
-        if (icon.classList.contains('rotated-minus')) {
-            icon.classList.remove('rotated-minus');
-            icon.classList.add('rotated-plus');
-        } else if (icon.classList.contains('rotated-plus')) {
-            icon.classList.remove('rotated-plus');
-            icon.classList.add('rotated-minus');
-        } else {
-            // Par défaut, on applique la première rotation à -90 degrés
-            icon.classList.add('rotated-minus');
-        }
+        icon.classList.toggle('rotated-plus', icon.classList.contains('rotated-minus'));
+        icon.classList.toggle('rotated-minus', !icon.classList.contains('rotated-minus'));
     }
 
-    if(filtreId == 1){
-        const content = document.querySelector('.first-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
+    const contents = [
+        '.first-content-desktop',
+        '.price-content-desktop',
+        '.fabricants-content-desktop',
+        '.processeur-content-desktop',
+        '.memoire-content-desktop',
+        '.stockage-content-desktop',
+        '.taille-de-ecran-content-desktop',
+        '.garantie-content-desktop',
+        '.type-processeur-content-desktop',
+        '.ecran-tactile-content-desktop',
+        '.carte-graphique-content-desktop',
+        '.se-content-desktop',
+        '.taille-ecran-content-desktop',
+        '.type-ecran-content-desktop',
+        '.sim-content-desktop',
+        '.ram-content-desktop'
+    ];
 
-    if(filtreId == 2){
-        const content = document.querySelector('.price-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
+    const index = parseInt(filtreId) - 1; // Soustraire 1 car les indices commencent à 0
+    const content = document.querySelector(contents[index]);
 
-    if(filtreId == 3){
-        const content = document.querySelector('.fabricants-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 4){
-        const content = document.querySelector('.processeur-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 5){
-        const content = document.querySelector('.memoire-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 6){
-        const content = document.querySelector('.stockage-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 7){
-        const content = document.querySelector('.taille-de-ecran-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 8){
-        const content = document.querySelector('.garantie-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 9){
-        const content = document.querySelector('.type-processeur-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 10){
-        const content = document.querySelector('.ecran-tactile-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 11){
-        const content = document.querySelector('.carte-graphique-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 12){
-        const content = document.querySelector('.se-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 13){
-        const content = document.querySelector('.taille-ecran-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 14){
-        const content = document.querySelector('.type-ecran-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 15){
-        const content = document.querySelector('.sim-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
-    }
-
-    if(filtreId == 16){
-        const content = document.querySelector('.ram-content-desktop');
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-        } else {
-            content.style.display = 'block';
-        }
+    if (content) {
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
     }
 }
 

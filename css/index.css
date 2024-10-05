@@ -331,8 +331,12 @@ body{
     position: relative;
 }
 
+.header-login .uil-shopping-bag {
+    position: relative; /* Ajouté pour que l'élément soit en position relative */
+}
+
 .header-login .uil-shopping-bag::after{
-    content: '0';
+    content: attr(data-quantity);
     width: 1rem;
     position: absolute;
     background-color: hsl(var(--clr-red));

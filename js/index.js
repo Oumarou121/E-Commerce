@@ -1,4 +1,4 @@
-import { getUserChange, logout} from './firebase.js';
+import { getUserChange, logout, getTotalQuantityInCart} from './firebase.js';
 
 //Header Section
 const navOpen = document.querySelector('.mobile-open-btn')
@@ -46,5 +46,5 @@ logout_btn.addEventListener('click', ()=>{
 });
 
 getUserChange('login-show');
-// getUserData('data-name', 'data-email', 'data-name1', 'data-adresse','data-ville', 'data-phone');
 
+await getTotalQuantityInCart();

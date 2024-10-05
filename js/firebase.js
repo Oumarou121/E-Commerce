@@ -384,14 +384,14 @@ export async function isFavorite(productId) {
     return false;
 }
 
-// Fonction pour ajouter un produit au panier avec une quantité par défaut (sans incrémenter)
+// Fonction pour ajouter un produit au panier avec une quantité par défaut (ou mettre à jour la quantité)
 export const addToCart = async (productId, quantity = 1) => {
     const userId = auth.currentUser ? auth.currentUser.uid : null; // Vérifie si l'utilisateur est connecté
     if (!userId) {
         console.error('Aucun utilisateur connecté pour ajouter au panier');
         return;
     }
-    
+
     try {
         const userDoc = doc(db, 'users', userId);
         const docSnap = await getDoc(userDoc);
@@ -400,21 +400,25 @@ export const addToCart = async (productId, quantity = 1) => {
             const data = docSnap.data();
             const cart = data.cart || {}; // Récupérer l'objet cart, ou initialiser un objet vide
 
-            // Si le produit est déjà dans le panier, ne pas modifier la quantité, sinon l'ajouter avec la quantité spécifiée
-            if (!cart[productId]) {
-                cart[productId] = { id : productId, qty: quantity }; // Ajouter le produit avec la quantité spécifiée
+            // Si le produit est déjà dans le panier, mettre à jour la quantité
+            if (cart[productId]) {
+                cart[productId].qty = quantity; // Incrémente la quantité existante
+                console.log(`Quantité mise à jour pour le produit ${productId} : ${cart[productId].qty}`);
+                await getTotalQuantityInCart();
+            } else {
+                // Sinon, l'ajouter avec la quantité spécifiée
+                cart[productId] = { id: productId, qty: quantity }; // Ajouter le produit avec la quantité spécifiée
+                console.log(`Produit ${productId} ajouté au panier avec une quantité de ${quantity}`);
+                await getTotalQuantityInCart();
             }
 
             // Mise à jour du panier dans Firestore
             await setDoc(userDoc, { cart }, { merge: true });
-
-            console.log(`Produit ${productId} ajouté au panier avec une quantité de ${cart[productId].qty} pour l'utilisateur ${userId}`);
         }
     } catch (error) {
         console.error('Erreur lors de l\'ajout du produit au panier', error);
     }
 };
-
 // Fonction pour retirer un produit du panier
 export const removeFromCart = async (productId) => {
     const userId = auth.currentUser ? auth.currentUser.uid : null; // Vérifie si l'utilisateur est connecté
@@ -438,6 +442,7 @@ export const removeFromCart = async (productId) => {
                 await setDoc(userDoc, { cart }, { merge: true });
 
                 console.log(`Produit ${productId} retiré du panier de l'utilisateur ${userId}`);
+                await getTotalQuantityInCart();
             } else {
                 console.log(`Produit ${productId} non trouvé dans le panier de l'utilisateur ${userId}`);
             }
@@ -604,3 +609,38 @@ export const decreaseQuantity = async (productId) => {
         console.error('Erreur lors de la diminution de la quantité du produit', error);
     }
 };
+
+// Fonction pour récupérer la quantité totale dans le panier
+export const getTotalQuantityInCart = async () => {
+    onAuthStateChanged(auth, async (user) => {
+        console.log(user.uid)
+    try {
+        const userDoc = doc(db, 'users', user.uid);
+        const docSnap = await getDoc(userDoc);
+        
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            const cart = data.cart || {}; // Récupérer l'objet cart ou initialiser un objet vide
+            
+            // Calculer la quantité totale
+            const totalQuantity = Object.values(cart).reduce((total, item) => total + (item.qty || 0), 0);
+            // Mettre à jour l'affichage de la quantité dans le DOM
+            const bagQuantityElement = document.getElementById('cart-box');
+            
+            if (bagQuantityElement) {
+                bagQuantityElement.setAttribute('data-quantity', totalQuantity); // Mettre à jour l'attribut
+                console.log(bagQuantityElement.getAttribute('data-quantity'))
+            }
+
+            // return totalQuantity; // Retourne la quantité totale
+        } else {
+            console.warn('Aucun panier trouvé pour cet utilisateur');
+            // return 0; // Retourne 0 si aucun panier trouvé
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération de la quantité totale dans le panier', error);
+        // return 0; // Retourne 0 en cas d'erreur
+    }
+}
+)}
+

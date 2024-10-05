@@ -112,7 +112,7 @@ scrollRight.addEventListener('click', () => {
 
 // ====================================================================
 
-import { getProductById } from './firebase.js'; // Assurez-vous d'avoir cette fonction
+import { getProductById,  addToFavorites, removeFromFavorites, isFavorite, addToCart, isInCart, getCartItems} from './firebase.js'; // Assurez-vous d'avoir cette fonction
 
 function formatPrice(price) {
     // Assurez-vous que le prix est un nombre
@@ -257,4 +257,114 @@ document.getElementById('increment').addEventListener('click', () => {
 
 document.getElementById('decrement').addEventListener('click', () => {
     decrement();
- });
+});
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const favoriBtn = document.getElementById("add-favori");
+    const cartBtn = document.getElementById("add-cart");
+
+    // Supposons que le productId soit déjà disponible dans ton code
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+    try {
+        // Vérification initiale si le produit est dans les favoris
+        const isFavori = await isFavorite(productId);
+
+        // Mise à jour du bouton Favori en fonction de l'état actuel
+        if (isFavori) {
+            favoriBtn.classList.add("favorited");
+        } else {
+            favoriBtn.classList.remove("favorited");
+        }
+
+        // Gestion des favoris au clic
+        favoriBtn.addEventListener("click", async function () {
+            const isFavori = await isFavorite(productId);
+
+            if (isFavori) {
+                await removeFromFavorites(productId);
+                favoriBtn.classList.remove("favorited");
+                showFavoriteAlert('Le produit a été retiré de votre liste.');
+            } else {
+                await addToFavorites(productId);
+                favoriBtn.classList.add("favorited");
+                showFavoriteAlert('Le produit a été ajouté à votre liste.');
+            }
+        });
+
+        cartBtn.addEventListener("click", async function () {
+            const isInCartFlag = await isInCart(productId); // Vérifie si le produit est déjà dans le panier
+        
+            // Récupère la quantité entrée par l'utilisateur
+            const nbr = parseInt(qty.value); // Assure-toi que `qty` est l'élément input pour la quantité
+        
+            if (!isInCartFlag) {
+                // Si le produit n'est pas dans le panier, on l'ajoute avec la quantité spécifiée
+                await addToCart(productId, nbr);
+                console.log("Produit ajouté au panier avec une quantité de", nbr);
+                showAlert("Produit ajouté au panier avec une quantité de", nbr);
+            } else {
+                // Si le produit est déjà dans le panier, on récupère la quantité actuelle
+                const currentItem = await getCartItems(); // Récupère les articles du panier
+                const currentProduct = currentItem.find(item => item.id === productId);
+        
+                if (currentProduct) {
+                    const newQuantity = currentProduct.qty + nbr; // Incrémente la quantité
+                    await addToCart(productId, newQuantity); // Met à jour la quantité dans le panier
+                    console.log("Quantité du produit mise à jour à", newQuantity);
+                    showAlert("Quantité du produit mise à jour à", newQuantity);
+                }
+            }
+        });
+    } catch (error) {
+        console.error("Erreur:", error);
+    }
+});
+
+// Fonction pour afficher l'alerte au centre de l'écran
+function showAlert(message) {
+    const alertBox = document.createElement('div');
+    alertBox.classList.add('alert', 'show');
+    alertBox.innerHTML = `
+    <span class="text-black">${message}<a href="/cart.html"> Voir votre panier.</a></span>
+    <span class="close-btn">&times;</span>
+    `;
+    
+    document.body.appendChild(alertBox);
+
+    alertBox.querySelector('.close-btn').addEventListener('click', () => {
+        alertBox.classList.add('hide');
+    });
+
+    setTimeout(() => {
+        alertBox.classList.add('hide');
+    }, 5000);
+
+    setTimeout(() => {
+        alertBox.remove();
+    }, 5500);
+}
+
+// Fonction pour afficher l'alerte de favoris
+function showFavoriteAlert(message) {
+    const alertBox = document.createElement('div');
+    alertBox.classList.add('alert', 'show');
+    alertBox.innerHTML = `
+        <span class="text-black">${message}<a href="/favoris.html"> Voir votre liste.</a></span>
+        <span class="close-btn">&times;</span>
+    `;
+    
+    document.body.appendChild(alertBox);
+
+    alertBox.querySelector('.close-btn').addEventListener('click', () => {
+        alertBox.classList.add('hide');
+    });
+
+    setTimeout(() => {
+        alertBox.classList.add('hide');
+    }, 5000);
+
+    setTimeout(() => {
+        alertBox.remove();
+    }, 5500);
+}
