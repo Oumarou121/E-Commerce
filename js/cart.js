@@ -211,3 +211,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Affiche les articles au chargement de la page
     await displayCartItems();
 });
+
+document.getElementById('exit').addEventListener('click', () => {
+    window.location.href = 'index.html';
+})
