@@ -132,3 +132,11 @@ h2{
         margin-bottom: 20px;
     }
 }
+
+.adresse{
+    margin-bottom: 10px;
+}
+
+.select{
+    display: none;
+}

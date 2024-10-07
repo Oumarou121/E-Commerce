@@ -40,20 +40,25 @@ export async function signUp(name, email, password) {
         await setDoc(doc(db, "users", user.uid), {
             id: user.uid,
             email: email,
-            nom: '',
-            prenom: capitalizeFirstLetter(name), // Fonction de capitalisation (à définir)
-            phone1: '',
-            phone2: '',
-            genre: '',
-            adresse: '',
-            adresse_sup: '',
-            region: '',
+            // nom: '',
+            // prenom: capitalizeFirstLetter(name), // Fonction de capitalisation (à définir)
+            addresses: [
+                {
+                    nom: "",
+                    prenom: capitalizeFirstLetter(name),
+                    region: "",
+                    adresse: "",
+                    adresse_sup: "",
+                    phone1: "",
+                    phone2 : "",
+                }
+            ], // Initialisation d'un tableau d'adresses vide
             role: 'client',
             favoris: [], // Favoris initialisé à un tableau vide
             cart: {
-                // Clé (ID produit) : Valeur (détails du favori)
+                // Clé (ID produit) : Valeur (détails du produit)
                 // Ex : 'productId123': { qty: 1, dateAdded: '2023-10-04' }
-            } // Initialisation en tant qu'objet vide
+            } // Initialisation du panier en tant qu'objet vide
         });
 
         return {
@@ -644,3 +649,237 @@ export const getTotalQuantityInCart = async () => {
 }
 )}
 
+export async function getAllAddresses() {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const userRef = doc(db, "users", user.uid);
+                    const userDoc = await getDoc(userRef);
+
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        
+                        // Vérification si des adresses existent
+                        if (userData.addresses && userData.addresses.length > 0) {
+                            resolve(userData.addresses); // Retourne le tableau d'adresses
+                        } else {
+                            console.log("Aucune adresse trouvée");
+                            resolve([]); // Aucun produit trouvé
+                        }
+                    } else {
+                        console.log("Utilisateur non trouvé");
+                        resolve([]); // Document utilisateur non trouvé
+                    }
+                } catch (error) {
+                    reject(error); // Gère les erreurs
+                }
+            } else {
+                resolve([]); // Aucun utilisateur connecté
+            }
+        });
+    });
+}
+
+// Fonction pour modifier une adresse en fonction de son index
+export async function updateAddressByIndex(index, newAddress) {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userRef = doc(db, "users", user.uid);
+
+                try {
+                    const userDoc = await getDoc(userRef);
+
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        const addresses = userData.addresses || [];
+
+                        if (index < addresses.length) {
+                            // Mettre à jour l'adresse à l'index donné
+                            addresses[index] = newAddress;
+
+                            // Mettre à jour le document utilisateur avec les nouvelles adresses
+                            await updateDoc(userRef, { addresses: addresses });
+
+                            resolve({
+                                status: 200,
+                                message: "Adresse modifiée avec succès"
+                            });
+                        } else {
+                            resolve({
+                                status: 400,
+                                message: "Index invalide"
+                            });
+                        }
+                    } else {
+                        resolve({
+                            status: 404,
+                            message: "Utilisateur non trouvé"
+                        });
+                    }
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté"
+                });
+            }
+        });
+    });
+}
+
+// Fonction pour supprimer une adresse en fonction de son index
+export async function deleteAddressByIndex(index) {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userRef = doc(db, "users", user.uid);
+
+                try {
+                    const userDoc = await getDoc(userRef);
+
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        const addresses = userData.addresses || [];
+
+                        if (index < addresses.length) {
+                            // Supprimer l'adresse à l'index donné
+                            addresses.splice(index, 1);
+
+                            // Mettre à jour le document utilisateur avec les nouvelles adresses
+                            await updateDoc(userRef, { addresses: addresses });
+
+                            resolve({
+                                status: 200,
+                                message: "Adresse supprimée avec succès"
+                            });
+                        } else {
+                            resolve({
+                                status: 400,
+                                message: "Index invalide"
+                            });
+                        }
+                    } else {
+                        resolve({
+                            status: 404,
+                            message: "Utilisateur non trouvé"
+                        });
+                    }
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté"
+                });
+            }
+        });
+    });
+}
+
+
+// Fonction pour récupérer une adresse en fonction de son index
+export async function getAddressByIndex(index) {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userRef = doc(db, "users", user.uid);
+
+                try {
+                    const userDoc = await getDoc(userRef);
+
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        const addresses = userData.addresses || [];
+
+                        if (index < addresses.length) {
+                            // Récupérer l'adresse à l'index donné
+                            const selectedAddress = addresses[index];
+                            resolve({
+                                status: 200,
+                                address: selectedAddress
+                            });
+                        } else {
+                            resolve({
+                                status: 400,
+                                message: "Index invalide"
+                            });
+                        }
+                    } else {
+                        resolve({
+                            status: 404,
+                            message: "Utilisateur non trouvé"
+                        });
+                    }
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté"
+                });
+            }
+        });
+    });
+}
+
+
+// Fonction pour ajouter une adresse
+export async function addAddress(newAddress) {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userRef = doc(db, "users", user.uid);
+
+                try {
+                    const userDoc = await getDoc(userRef);
+                    console.log(userDoc.exists());
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        const addresses = userData.addresses || [];
+
+                        // Ajouter la nouvelle adresse au tableau d'adresses
+                        addresses.push(newAddress);
+
+                        // Mettre à jour le document utilisateur avec les nouvelles adresses
+                        await updateDoc(userRef, { addresses: addresses });
+
+                        resolve({
+                            status: 200,
+                            message: "Adresse ajoutée avec succès"
+                        });
+                    } else {
+                        resolve({
+                            status: 404,
+                            message: "Utilisateur non trouvé-------------"
+                        });
+                    }
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté"
+                });
+            }
+        });
+    });
+}
