@@ -1,14 +1,28 @@
-import { getCartItems, removeFromCart, getProductById, increaseQuantity, decreaseQuantity, getTotalQuantityInCart } from './firebase.js';
+import { getCartItems, removeFromCart, getProductById, increaseQuantity, 
+    decreaseQuantity, getTotalQuantityInCart, getNbrorder, getUserDataValue } from './firebase.js';
+
+let total = 0;
+// Fonction pour formater les prix
+const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};
+
+// Met à jour le total du panier
+const updateCartTotal = (cartTotalElement) => {
+    document.querySelectorAll('.cart-item').forEach(item => {
+    const totalPriceElement = item.querySelector('.totalPrice');
+    const totalPrice = parseFloat(totalPriceElement.textContent.replace(/\./g, '').replace(' FCFA', ''));
+    total += totalPrice;
+    console.log(total)
+});
+cartTotalElement.textContent = `${formatPrice(total)} FCFA`; // Met à jour le total du panier
+};
+
 
 document.addEventListener('DOMContentLoaded', async () => {
     const cartItemsList = document.querySelector('.cart-items');
     const emptyCartMessage = document.getElementById('emptyCartMessage');
     const cartTotalElement = document.getElementById('cartTotal');
-
-    // Fonction pour formater les prix
-    const formatPrice = (price) => {
-        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    };
 
     // Fonction pour afficher les articles dans le panier
     const displayCartItems = async () => {
@@ -112,20 +126,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const totalPrice = qtyInput.value * price; // Calcule le nouveau total de cet article
         totalPriceElement.textContent = `${formatPrice(totalPrice)} FCFA`; // Met à jour le prix total affiché
-        updateCartTotal(); // Met à jour le total du panier
+        updateCartTotal(cartItemElement); // Met à jour le total du panier
     };
 
-    // Met à jour le total du panier
-    const updateCartTotal = () => {
-        let total = 0;
-        cartItemsList.querySelectorAll('.cart-item').forEach(item => {
-            const totalPriceElement = item.querySelector('.totalPrice');
-            const totalPrice = parseFloat(totalPriceElement.textContent.replace(/\./g, '').replace(' FCFA', ''));
-            total += totalPrice;
-        });
-        cartTotalElement.textContent = `${formatPrice(total)} FCFA`; // Met à jour le total du panier
-    };
-
+    
     // Affiche les articles au chargement de la page
     await displayCartItems();
 });
@@ -135,7 +139,68 @@ document.getElementById('exit').addEventListener('click', () => {
 })
 
 document.getElementById('Commander').addEventListener('click', () => {
-    window.location.href = 'commander.html';
+    openCustomAlert();
 })
 
 await getTotalQuantityInCart();
+
+// Fonction pour ouvrir l'alerte et désactiver les interactions
+function openCustomAlert() {
+    displayOrder();
+    const customAlert = document.getElementById('customAlert');
+    const pageContent = document.getElementById('main');
+    const body = document.body;
+
+    customAlert.style.display = 'flex'; // Affiche l'alerte
+    pageContent.classList.add('no-interaction'); // Désactive les interactions sur le reste de la page
+    body.classList.add('no-scroll'); // Désactive le défilement
+
+
+}
+
+// Fonction pour fermer l'alerte et réactiver les interactions
+function closeCustomAlert() {
+    const customAlert = document.getElementById('customAlert');
+    const pageContent = document.getElementById('main');
+    const body = document.body;
+
+    customAlert.style.display = 'none'; // Cache l'alerte
+    pageContent.classList.remove('no-interaction'); // Réactive les interactions sur la page
+    body.classList.remove('no-scroll'); // Réactive le défilement
+}
+
+// Fermer l'alerte sans suppression lors du clic sur la croix
+document.getElementById('closeAlert').addEventListener('click', closeCustomAlert);
+
+async function displayOrder(){
+    document.getElementById('loading-spinner').style.display = 'block';
+    await getNbrorder();
+    const orderTotal =  document.querySelector('.orderTotal');
+    const finalTotal =  document.querySelector('.finalTotal');
+    const userName =  document.querySelector('.userName');
+    const userAdresse =  document.querySelector('.userAdresse');
+    updateCartTotal(orderTotal);
+    finalTotal.textContent = `${formatPrice(total + 2000)} FCFA`;
+    const userData = await getUserDataValue(); // Récupère les données utilisateur
+    const addresses = userData.addresses;
+
+    if (userData) {
+        for (const [index, address] of addresses.entries()){
+            if (address.select){
+                userName.textContent = `${address.prenom} ${address.nom}`;
+                userAdresse.textContent = `${address.adresse} ${address.adresse_sup}`;
+            }
+        }
+    } else {
+        console.log("Veillez-vous connecter");
+    }
+
+    try {
+        const userData = await getUserDataValue(); // Récupère les adresses depuis Firestore
+    } catch (error) {
+        document.getElementById('loading-spinner').style.display = 'none';
+    } finally {
+        document.getElementById('loading-spinner').style.display = 'none';
+    }
+}
+

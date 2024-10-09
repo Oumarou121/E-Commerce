@@ -132,6 +132,7 @@ h2{
     font-family: 'Poppins', sans-serif;
     overflow: scroll;
 }
+
 .image{
     width: 125px;
     height: 125px;
@@ -182,4 +183,180 @@ h2{
     opacity: 0;
     transition: opacity 0.3s ease, top 0.3s ease;
     z-index: 9999;
+}
+
+/* ============================================================= */
+
+/* Style pour masquer l'alerte par défaut */
+.custom-alert {
+  display: none; /* Masqué par défaut */
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Couleur de fond transparente */
+  z-index: 999; /* Pour que l'alerte soit au-dessus de tout */
+  justify-content: center;
+  align-items: center;
+  transition: 250ms ease-in-out;
+}
+  
+.alert-content {
+  background-color: hsl(var(--clr-white) / .9);
+  padding: 20px;
+  width: 50%;
+  height: 90%;
+  border-radius: .25rem;
+  text-align: center;
+  position: relative;
+  text-align: start;
+  display: grid;
+  /* overflow: scroll; */
+}
+
+.block{
+    height: 100%;
+    overflow: scroll;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+/* Désactive les interactions sur la page lorsque l'alerte est ouverte */
+.no-interaction {
+  pointer-events: none; /* Désactive tous les clics et interactions */
+  opacity: 0.5; /* Optionnel : diminue l'opacité pour indiquer que la page est désactivée */
+}
+
+/* Classe pour désactiver le défilement */
+.no-scroll {
+  overflow: hidden; /* Désactive le défilement */
+}
+
+@media (max-width: 35em){
+    .alert-content{
+        width: 90%;
+    }
+}
+
+@media (min-width: 59em){
+    .alert-content{
+        width: 25%;
+    }
+}
+
+.custom-hr {
+    border: 0;
+    height: 1px;
+    background-color: hsl(var(--clr-gray)); /* Couleur de la ligne */
+    width: 100%; /* Largeur de la ligne */
+    margin: 0 0; /* Espacement autour de la ligne */
+}
+
+.commande-detail{
+    background-color: hsl(var(--clr-white));
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.top-commande{
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.custom-alert h3{
+    color: hsl(var(--clr-black) / .5);
+}
+
+.mode-title,
+.adresse-title,
+.livraison-title{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
+.mode-modifier,
+.adresse-modifier,
+.livraison-modifier{
+    font-size: 15px;
+    color: hsl(var(--clr-red));
+    cursor: pointer;
+}
+
+.mode-content,
+.adresse-content
+{
+    background-color: hsl(var(--clr-white));
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+}
+
+.mode-content p,
+.adresse-content p{
+    font-size: 15px;
+}
+
+.mode-content i,
+.content i{
+    padding: 5px 10px;
+}
+
+.adresse-content{
+    display: grid;
+    padding-left: 10px;
+}
+
+.content-item{
+    display: grid;
+    grid-template-rows: repeat(1, 1fr);
+}
+
+.content{
+    padding: 5px;
+    display: flex;
+}
+
+.livraison-content{
+    background-color: hsl(var(--clr-white));
+    border-radius: 5px;
+}
+
+.item-content{
+    display: flex;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid hsl(var(--clr-gray));
+}
+
+.item-title{
+    padding: 0 10px;
+}
+
+.item-image{
+    width: 75px;
+    height: 75px;
+}
+
+.item{
+    padding-bottom: 10px;
+}
+
+.confirmer{
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+    text-align: center;
+    background: hsl(var(--clr-red) / .7);
+    color: white;
+    cursor: pointer;
 }

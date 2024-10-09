@@ -354,12 +354,26 @@
               z-index: 1000; /* Met le chargement devant les autres éléments */
             }
         </style>
+
+        <!-- Alerte personnalisée -->
+        <div id="customAlertSelect" class="custom-alert">
+            <div class="alert-content">
+              <span class="close-btn" id="closeAlertSelect">&times;</span>
+              <h2>Notification !</h2>
+              <p>Voulez-vous vraiment le selectionner comme adresse par défaut ?</p>
+              <button class="confirmBtn" id="confirmBtnSelect">Confirmer</button>
+            </div>
+        </div>
+
+        
+
     </header>
 
     <!-- ======================End Header Section================================ -->
 
     <!-- ======================Modifier l'adresse Feature Section================================ -->
 
+<main id="main">    
     <section class="shop-feature bg-gray grid">
       <div>
         <p class="fs-montserrat text-black">Home <span aria-haspopup="true" class="margin"></span>Modifier l'adresse</p>
@@ -422,7 +436,7 @@
           <div class="input-box1 address">
             <label>Adresse</label>
             <input type="text" placeholder="Entrez votre Adresse" required />
-            <input type="text" placeholder="Insérer les informations supplémentaires" required />
+            <input type="text" placeholder="Insérer les informations supplémentaires"/>
             <div class="column">
               <div class="select-box">
                 <select id="region-select" required>
@@ -452,7 +466,9 @@
               </div>
             </div>
           </div>
-          <button>ENREGISTRER</button>
+
+            <button type="submit">Enregistrer</button>
+          
         </form>
       </section>
 
@@ -533,8 +549,7 @@
   <p class="fs-montserrat fs-100 text-align p-top">Privacy Policy Term condition</p>
 </section>
 
+</main>
 
-
-</section>
 </body>
 </html>

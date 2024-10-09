@@ -332,14 +332,124 @@
             <div class="spinner"></div>
         </div>
 
-        <div class="confirm">
-            
+
+        <!-- Alerte personnalisée -->
+        <div id="customAlert" class="custom-alert">
+            <div class="alert-content">
+              <!-- <span class="close-btn" id="closeAlert">&times;</span> -->
+              <div class="block">
+              <div>
+                <h3>RÉSUMÉ DE COMMANDE</h3>
+                <span class="close-btn" id="closeAlert">&times;</span>
+              </div>
+              <div class="commande-detail">
+                <div class="top-commande">
+                    <p>Total articles (<span class="orderNbr"></span>)</p>
+                    <p class="orderTotal"></p>
+                </div>
+                <div class="top-commande">
+                    <p>Frais de livraison</p>
+                    <p>2,000 FCFA</p>
+                </div>
+                <div>
+                    <hr class="custom-hr">
+                </div>
+                <div class="top-commande">
+                    <p>Total</p>
+                    <p class="finalTotal"></p>
+                </div>
+              </div>
+
+            <div class="mode">
+              <div class="mode-title">
+                <h3>MODE DE PAIEMENT</h3>
+                <p class="mode-modifier">MODIFIER</p>
+              </div>
+
+              <div class="mode-content">
+                <i class="uil fs-200 uil-money-bill"></i>
+                <div>
+                    <h4>Payez plus tard à la livraison par Virtual Wallet ou par cash</h4>
+                    <p>Paiement au moment de la livraison une fois que votre commande est livrée</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="adresse">
+                <div class="adresse-title">
+                  <h3>ADRESSE</h3>
+                  <p class="adresse-modifier">MODIFIER</p>
+                </div>
+  
+                <div class="adresse-content">
+                    <h4 class="userName"></h4>
+                    <p class="userAdresse"></p>
+                </div>
+            </div>
+
+            <div class="livraison">
+                <div class="livraison-title">
+                  <h3>LIVRAISON</h3>
+                  <p class="livraison-modifier">MODIFIER</p>
+                </div>
+  
+                <div class="livraison-content">
+                    <div class="content">
+                        <i class="uil fs-200 uil-luggage-cart"></i>
+                        <div>
+                            <h4>Livraison à domicile</h4>
+                            <p>Livraison entre le <strong>11 Oct</strong> et le <strong>14 Oct</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="content-item">
+                        <div class="item">
+                            <div class="item-title">
+                                <h5>Expédition 1/2</h5>
+                            </div>
+                            <div class="item-content">
+                                <div class="item-image">
+                                    <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
+                                </div>
+                                <div class="fs-50 item-text">
+                                    <p>SMARTPHONE VIVO Y03 4/64 / VERT</p>
+                                    <p>Quantité : 1</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="item-title">
+                                <h5>Expédition 2/2</h5>
+                            </div>
+                            <div class="item-content">
+                                <div class="item-image">
+                                    <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
+                                </div>
+                                <div class="fs-50 item-text">
+                                    <p>SMARTPHONE VIVO Y03 4/64 / VERT</p>
+                                    <p>Quantité : 2</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="confirmer">
+                CONFIRMER LA COMMANDE
+            </div>
+
+            </div>
         </div>
+
     </header>
 
     <!-- ======================End Header Section================================ -->
 
     <!-- ======================Cart Feature Section================================ -->
+
+<main id="main">
 
     <section class="shop-feature bg-gray grid">
       <div>
@@ -494,8 +604,7 @@
     <p class="fs-montserrat fs-100 text-align p-top">Privacy Policy Term condition</p>
 </section>
 
+</main>
 
-
-</section>
 </body>
 </html>

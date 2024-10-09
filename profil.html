@@ -330,6 +330,15 @@
         <div id="loading-spinner" style="display: none;">
             <div class="spinner"></div>
         </div>
+        <!-- Alerte personnalisée -->
+        <div id="customAlertDelete" class="custom-alert">
+            <div class="alert-content">
+              <span class="close-btn" id="closeAlertDelete">&times;</span>
+              <h2>Alerte !</h2>
+              <p>Voulez-vous vraiment le Supprimer ?</p>
+              <button class="confirmBtn text-white" id="confirmBtnDelete">Confirmer</button>
+            </div>
+        </div>
         <style>
             .spinner {
               border: 4px solid rgba(0, 0, 0, 0.1);
@@ -360,6 +369,7 @@
 
     <!-- ======================Profil Feature Section================================ -->
 
+<main id="main">
     <section class="shop-feature bg-gray grid">
       <div>
         <p class="fs-montserrat text-black">Home <span aria-haspopup="true" class="margin"></span>Profil</p>
@@ -370,9 +380,15 @@
     <!-- ======================Profil Feature Section================================ -->
 
     <section class="first">
-        <div id="exit" class="exit text-black">
-            <i class="uil uil-arrow-left"></i>
-            <p class="fs-150">Votre Profil</p>
+        <div class="exit text-black">
+            <!-- <div id="exit">
+                <i class="uil uil-arrow-left"></i>
+                <p class="fs-150">Votre Profil</p>
+            </div> -->
+            <div id="add">
+                <p class="fs-150">Ajouter</p>
+                <i class="uil uil-book-medical"></i>
+            </div>
         </div>
         <div>
             <hr class="custom-hr">
@@ -380,9 +396,12 @@
         
     </section>
 
-    <section class="third">
+    <section id="content" class="third">
         <div class="info">
-            <div class="title-info">INFORMATIONS PERSONNELLES</div>
+            <div id="edit" class="title-content">
+                <div class="title-adresse">INFORMATIONS PERSONNELLES</div>
+                <i class="uil fs-200 text-black uil-edit"></i>
+            </div>
             <div>
                 <hr class="custom-hr1">
             </div>
@@ -393,8 +412,8 @@
                 </div>
             </div>
         </div>
-
-        <div id="content" class="content">
+<!-- 
+        <div id="content" class="content"> -->
             <!-- <div class="adresse">
                 <div id="edit" class="title-content">
                     <div class="title-adresse">ADRESSES</div>
@@ -413,7 +432,7 @@
                     </div>
                 </div>
             </div> -->
-        </div>
+        <!-- </div> -->
     </section>
 
 
@@ -492,9 +511,8 @@
   <p class="c-font fs-montserrat fs-100">@ 2022 Store. All rights reserved</p>
   <p class="fs-montserrat fs-100 text-align p-top">Privacy Policy Term condition</p>
 </section>
+</main>
 
 
-
-</section>
 </body>
 </html>

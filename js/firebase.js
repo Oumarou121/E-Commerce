@@ -51,6 +51,7 @@ export async function signUp(name, email, password) {
                     adresse_sup: "",
                     phone1: "",
                     phone2 : "",
+                    select : true
                 }
             ], // Initialisation d'un tableau d'adresses vide
             role: 'client',
@@ -618,7 +619,6 @@ export const decreaseQuantity = async (productId) => {
 // Fonction pour récupérer la quantité totale dans le panier
 export const getTotalQuantityInCart = async () => {
     onAuthStateChanged(auth, async (user) => {
-        console.log(user.uid)
     try {
         const userDoc = doc(db, 'users', user.uid);
         const docSnap = await getDoc(userDoc);
@@ -634,7 +634,38 @@ export const getTotalQuantityInCart = async () => {
             
             if (bagQuantityElement) {
                 bagQuantityElement.setAttribute('data-quantity', totalQuantity); // Mettre à jour l'attribut
-                console.log(bagQuantityElement.getAttribute('data-quantity'))
+            }
+
+            // return totalQuantity; // Retourne la quantité totale
+        } else {
+            console.warn('Aucun panier trouvé pour cet utilisateur');
+            // return 0; // Retourne 0 si aucun panier trouvé
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération de la quantité totale dans le panier', error);
+        // return 0; // Retourne 0 en cas d'erreur
+    }
+}
+)}
+
+// Fonction pour récupérer la quantité totale dans le panier
+export const getNbrorder = async () => {
+    onAuthStateChanged(auth, async (user) => {
+    try {
+        const userDoc = doc(db, 'users', user.uid);
+        const docSnap = await getDoc(userDoc);
+        
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            const cart = data.cart || {}; // Récupérer l'objet cart ou initialiser un objet vide
+            
+            // Calculer la quantité totale
+            const totalQuantity = Object.values(cart).reduce((total, item) => total + (item.qty || 0), 0);
+            // Mettre à jour l'affichage de la quantité dans le DOM
+            const orderNbr =  document.querySelector('.orderNbr');
+            
+            if (orderNbr) {
+                orderNbr.textContent = totalQuantity;
             }
 
             // return totalQuantity; // Retourne la quantité totale
@@ -708,9 +739,10 @@ export async function updateAddressByIndex(index, newAddress) {
                             });
                         } else {
                             resolve({
-                                status: 400,
-                                message: "Index invalide"
+                                status: 200,
+                                message: "Nouveau Index"
                             });
+                            addAddress(newAddress);
                         }
                     } else {
                         resolve({
@@ -734,7 +766,6 @@ export async function updateAddressByIndex(index, newAddress) {
     });
 }
 
-// Fonction pour supprimer une adresse en fonction de son index
 export async function deleteAddressByIndex(index) {
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
@@ -749,8 +780,16 @@ export async function deleteAddressByIndex(index) {
                         const addresses = userData.addresses || [];
 
                         if (index < addresses.length) {
+                            // Vérifier si l'adresse à supprimer a 'select' à true
+                            const isSelected = addresses[index].select === true;
+
                             // Supprimer l'adresse à l'index donné
                             addresses.splice(index, 1);
+
+                            // Si l'adresse supprimée avait 'select' à true, définir 'select' de l'adresse à l'index 0 à true
+                            if (isSelected && addresses.length > 0) {
+                                addresses[0].select = true;
+                            }
 
                             // Mettre à jour le document utilisateur avec les nouvelles adresses
                             await updateDoc(userRef, { addresses: addresses });
@@ -786,6 +825,7 @@ export async function deleteAddressByIndex(index) {
         });
     });
 }
+
 
 
 // Fonction pour récupérer une adresse en fonction de son index
@@ -883,3 +923,17 @@ export async function addAddress(newAddress) {
         });
     });
 }
+
+// const updatedData = {
+//     prenom: "loukmane",
+//     nom: "address.nom",
+//     phone1: "address.phone1",
+//     phone2: "address.phone2",
+//     adresse: "address.adresse",
+//     adresse_sup: "address.adresse_sup",
+//     region: "Niger",
+//     genre: "homme",
+//     select: false // Désélectionner cette adresse
+// };
+
+// await addAddress(updatedData);

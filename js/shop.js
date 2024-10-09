@@ -919,3 +919,12 @@ function showFavoriteAlert(message) {
 }
 
 LoadListProducts();
+
+document.getElementById('sidebar-active').addEventListener('change', function () {
+    const body = document.body;
+    if (this.checked) {
+        body.classList.add('no-scroll'); // Désactive le défilement
+    }else{
+        body.classList.remove('no-scroll'); // Réactive le défilement
+    }
+} )
