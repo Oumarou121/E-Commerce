@@ -167,7 +167,7 @@ h2{
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1000; /* Met le chargement devant les autres éléments */
+  z-index: 999999999999999999999999999999; /* Met le chargement devant les autres éléments */
 }
 
 .confirm{
@@ -215,6 +215,20 @@ h2{
   /* overflow: scroll; */
 }
 
+.alert-content-adresse {
+    background-color: hsl(var(--clr-white) / .9);
+    padding: 20px;
+    width: 50%;
+    height: 90%;
+    border-radius: .25rem;
+    text-align: center;
+    position: relative;
+    text-align: start;
+    display: flex;
+    flex-direction: column;
+    /* overflow: scroll; */
+  }
+
 .block{
     height: 100%;
     overflow: scroll;
@@ -240,12 +254,14 @@ h2{
 }
 
 @media (max-width: 35em){
+    .alert-content-adresse,
     .alert-content{
         width: 90%;
     }
 }
 
 @media (min-width: 59em){
+    .alert-content-adresse,
     .alert-content{
         width: 25%;
     }
@@ -273,6 +289,10 @@ h2{
 
 .custom-alert h3{
     color: hsl(var(--clr-black) / .5);
+}
+
+#customAdresse h3{
+    color: hsl(var(--clr-red));
 }
 
 .mode-title,
@@ -359,4 +379,103 @@ h2{
     background: hsl(var(--clr-red) / .7);
     color: white;
     cursor: pointer;
+    height: 3em;
+}
+
+#customAdresse .adresse{
+    border: 1px solid #000;
+    margin-bottom: 10px;
+    background: white;
+}
+
+#customAdresse .title-content{
+    display: flex;
+    justify-content: space-between;
+}
+
+#customAdresse .title-content i{
+    padding-right: 5px;
+} 
+
+#customAdresse .title-adresse{
+    /* border-bottom: 1px solid #000; */
+    padding: 0 10px;
+}
+
+.custom-hr1 {
+    border: 0;
+    height: 1px;
+    background-color: hsl(var(--clr-black)); /* Couleur de la ligne */
+    width: 100%; /* Largeur de la ligne */
+    margin: 0 0; /* Espacement autour de la ligne */
+}
+
+#customAdresse .adresse-content1{
+    padding: 0 10px;
+}
+
+.methode{
+    padding: 16px;
+}
+
+.methode h3{
+    font-size: 1rem;
+}
+
+.methode p{
+    padding-top: 8px;
+}
+
+#alert-content{
+    overflow: scroll;
+}
+
+.alert-contentDelete {
+    background-color: white;
+    padding: 20px;
+    width: 300px;
+    max-width: 80%;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+  }
+
+  .confirmBtn{
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    background: hsl(var(--clr-red) / .9);
+  }
+
+  /* Style pour masquer l'alerte par défaut */
+.custom-alertDelete {
+    display: none; /* Masqué par défaut */
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Couleur de fond transparente */
+    z-index: 999; /* Pour que l'alerte soit au-dessus de tout */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 999999999;
+  }
+
+  .custom-alertDelete h2{
+    text-align: center;
+  }
+
+.iconss{
+  display: flex;
+  gap: 10px;
+}
+
+.iconss i:hover{
+    background: hsl(var(--clr-black) / 0.1);
+}
+
+.iconss i{
+    font-size: 1.2rem;
 }

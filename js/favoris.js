@@ -122,5 +122,5 @@ function showAlert(message) {
 }
 
 document.getElementById('exit').addEventListener('click', () => {
-    window.location.href = 'index.html';
+    history.back();
 })

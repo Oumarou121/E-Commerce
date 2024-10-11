@@ -3,12 +3,9 @@ import { getUserDataValue, updateAddressByIndex, addAddress } from './firebase.j
 
 const exit_btn = document.getElementById('exit');
 
-exit_btn.addEventListener('click', ()=> {
-
-    window.location.href = 'profil.html';
-
+exit_btn.addEventListener('click', () => {
+    history.back(); // Retourne à la page précédente
 });
-
 // Supposons que le productId soit déjà disponible dans ton code
 const urlParams = new URLSearchParams(window.location.search);
 const pageIndex = urlParams.get('id');

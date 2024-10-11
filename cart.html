@@ -9,6 +9,7 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!--============Google Fonts==============-->
 
     <!--============Icon Cdn==============-->
@@ -332,6 +333,33 @@
             <div class="spinner"></div>
         </div>
 
+        <!-- Alerte personnalisée -->
+        <div id="customAlertDelete" class="custom-alertDelete">
+            <div class="alert-contentDelete">
+              <span class="close-btn" id="closeAlertDelete">&times;</span>
+              <h2>Alerte !</h2>
+              <p>Voulez-vous vraiment le Supprimer ?</p>
+              <button class="confirmBtn text-white" id="confirmBtnDelete">Confirmer</button>
+            </div>
+        </div>
+
+        <div id="customAdresse" class="custom-alert">
+
+            <div class="alert-content-adresse">
+            <div class="block">
+                <div id="alert-content" class="alert-content1">
+                    <div>
+                        <h3>Adresses</h3>
+                        <span class="close-btn" id="closeAdresse">&times;</span>
+                    </div>
+                </div>
+            </div>
+            <div id="add" class="confirmer">
+                Ajouter
+            </div>
+            </div>
+
+        </div>
 
         <!-- Alerte personnalisée -->
         <div id="customAlert" class="custom-alert">
@@ -363,7 +391,7 @@
             <div class="mode">
               <div class="mode-title">
                 <h3>MODE DE PAIEMENT</h3>
-                <p class="mode-modifier">MODIFIER</p>
+                <!-- <p class="mode-modifier">MODIFIER</p> -->
               </div>
 
               <div class="mode-content">
@@ -378,7 +406,7 @@
             <div class="adresse">
                 <div class="adresse-title">
                   <h3>ADRESSE</h3>
-                  <p class="adresse-modifier">MODIFIER</p>
+                  <p id="adresse" class="adresse-modifier">MODIFIER</p>
                 </div>
   
                 <div class="adresse-content">
@@ -395,7 +423,8 @@
   
                 <div class="livraison-content">
                     <div class="content">
-                        <i class="uil fs-200 uil-luggage-cart"></i>
+                        <!-- <i class="uil fs-200 uil-luggage-cart"></i> -->
+                        <i class="fa-solid fs-200 fa-cart-shopping"></i>
                         <div>
                             <h4>Livraison à domicile</h4>
                             <p>Livraison entre le <strong>11 Oct</strong> et le <strong>14 Oct</strong></p>

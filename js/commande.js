@@ -69,5 +69,5 @@ function move(){
 }
 
 function exit(){
-    window.location.href = 'index.html';
+    history.back();
 }
