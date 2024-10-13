@@ -21,8 +21,8 @@
     <link rel="stylesheet" href="css/index.css">
     <!-- <link rel="stylesheet" href="css/shop.css"> -->
     <link rel="stylesheet" href="css/commande.css">
-    <script src="js/index.js" defer></script>
-    <script src="js/commande.js" defer></script>
+    <script src="js/index.js" type="module"></script>
+    <script src="js/commande.js" type="module"></script>
     <title>Ecommerce Website</title>
 </head>
 <body class="home">
@@ -401,76 +401,6 @@
                 <div class="container1 tab-content" id="livres">
                     
                     <ul class="cart-items">
-                
-        
-                        <!-- Représentation d'un article -->
-                        <li class="cart-item" data-unit-price="125000">
-                            <div class="image">
-                                <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-                            </div>
-                            <div class="div-name">
-                                <div class="name text-black">
-                                    SMARTPHONE VIVO Y03 4/64 / VERT
-                                </div>
-                                <div class="Num-comd">Commande #309716131</div>
-                                <div class="qty">Quantité: 2</div>
-                                <div class="state text-white bg-green">COMMANDE LIVRÉ</div>
-                                <div class="time">Le 21-02-2024</div>
-                            </div>
-                            <div class="div-btn">
-                                <div class="Add text-black" onclick="move()">
-                                    <i class="uil uil-shopping-cart-alt"></i>
-                                    DÉTAILS
-                                </div>
-                                <div></div>
-                            </div>
-                        </li>
-                
-                        <!-- Autres articles peuvent être ajoutés ici de la même manière -->
-                        
-                        <li class="cart-item" data-unit-price="125000">
-                            <div class="image">
-                                <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-                            </div>
-                            <div class="div-name">
-                                <div class="name text-black">
-                                    SMARTPHONE VIVO Y03 4/64 / VERT
-                                </div>
-                                <div class="Num-comd">Commande #309716131</div>
-                                <div class="qty">Quantité: 2</div>
-                                <div class="state text-white bg-green">COMMANDE LIVRÉ</div>
-                                <div class="time">Le 21-02-2024</div>
-                            </div>
-                            <div class="div-btn">
-                                <div class="Add text-black" onclick="move()">
-                                    <i class="uil uil-shopping-cart-alt"></i>
-                                    DÉTAILS
-                                </div>
-                                <div></div>
-                            </div>
-                        </li>
-
-                        <li class="cart-item" data-unit-price="125000">
-                            <div class="image">
-                                <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-                            </div>
-                            <div class="div-name">
-                                <div class="name text-black">
-                                    SMARTPHONE VIVO Y03 4/64 / VERT
-                                </div>
-                                <div class="Num-comd">Commande #309716131</div>
-                                <div class="qty">Quantité: 2</div>
-                                <div class="state text-white bg-green">COMMANDE LIVRÉ</div>
-                                <div class="time">Le 21-02-2024</div>
-                            </div>
-                            <div class="div-btn">
-                                <div class="Add text-black" onclick="move()">
-                                    <i class="uil uil-shopping-cart-alt"></i>
-                                    DÉTAILS
-                                </div>
-                                <div></div>
-                            </div>
-                        </li>
         
                     </ul>
             
@@ -479,55 +409,6 @@
                 <div class="container1 tab-content" id="annules" style="display:none;" style="transform:scale(0);">
                     
                     <ul class="cart-items1">
-                
-        
-                        <!-- Représentation d'un article -->
-                        <li class="cart-item" data-unit-price="125000">
-                            <div class="image">
-                                <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-                            </div>
-                            <div class="div-name">
-                                <div class="name text-black">
-                                    SMARTPHONE VIVO Y03 4/64 / VERT
-                                </div>
-                                <div class="Num-comd">Commande #309716131</div>
-                                <div class="qty">Quantité: 2</div>
-                                <div class="state text-white bg-red">COMMANDE ANNULÉE</div>
-                                <div class="time">Le 21-02-2024</div>
-                            </div>
-                            <div class="div-btn">
-                                <div class="Add text-black" onclick="move()">
-                                    <i class="uil uil-shopping-cart-alt"></i>
-                                    DÉTAILS
-                                </div>
-                                <div></div>
-                            </div>
-                        </li>
-                
-                        <!-- Autres articles peuvent être ajoutés ici de la même manière -->
-                        
-                        <!-- Représentation d'un article -->
-                        <li class="cart-item" data-unit-price="125000">
-                            <div class="image">
-                                <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-                            </div>
-                            <div class="div-name">
-                                <div class="name text-black">
-                                    SMARTPHONE VIVO Y03 4/64 / VERT
-                                </div>
-                                <div class="Num-comd">Commande #309716131</div>
-                                <div class="qty">Quantité: 2</div>
-                                <div class="state text-white bg-red">COMMANDE RETOURNÉE</div>
-                                <div class="time">Le 21-02-2024</div>
-                            </div>
-                            <div class="div-btn">
-                                <div class="Add text-black" onclick="move()">
-                                    <i class="uil uil-shopping-cart-alt"></i>
-                                    DÉTAILS
-                                </div>
-                                <div></div>
-                            </div>
-                        </li>
         
                     </ul>
 
@@ -537,17 +418,12 @@
             </section>
 
             <div class="buttons">
-                <button onclick="exit()">
+                <button id="exit">
                     <span class="span1">
                         <i class="uil uil-angle-left"></i>
                     </span>
                     Retourner
                 </button>
-                <!-- <button>Commander
-                    <span class="span2">
-                        <i class="uil uil-angle-right"></i>
-                    </span>
-                </button> -->
             </div>
         </div>
     

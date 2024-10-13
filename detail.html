@@ -21,8 +21,8 @@
     <link rel="stylesheet" href="css/index.css">
     <!-- <link rel="stylesheet" href="css/shop.css"> -->
     <link rel="stylesheet" href="css/detail.css">
-    <script src="js/index.js" defer></script>
-    <script src="js/detail.js" defer></script>
+    <script src="js/index.js" type="module"></script>
+    <script src="js/detail.js" type="module"></script>
     <title>Ecommerce Website</title>
 </head>
 <body class="home">
@@ -378,18 +378,10 @@
             <hr class="custom-hr">
         </div>
         <div class="title fs-50">
-            <div class="Num">
-                Commande n° 309716131
-            </div>
-            <div class="nbr">
-                3 articles
-            </div>
-            <div class="Comd-date">
-                Effectuée le 24-02-2024
-            </div>
-            <div class="total">
-                Total: 375,000 FCFA
-            </div>
+            <div class="Num"></div>
+            <div class="nbr"></div>
+            <div class="Comd-date"></div>
+            <div class="total"></div>
         </div>
         
     </section>
@@ -409,7 +401,7 @@
             
             <!-- Représentation d'un article -->
 
-            <li class="cart-content" data-unit-price="125000">
+            <!-- <li class="cart-content" data-unit-price="125000">
                 <div class="content-left">
                     <header class="cart-icon-top">
                         <div class="state-box">
@@ -442,13 +434,13 @@
                 <footer class="cart-icon-bottom">
                     <i class="uil uil-redo">Retourne le produit</i> 
                 </footer>
-            </li>
+            </li> -->
     
             <!-- Autres articles peuvent être ajoutés ici de la même manière -->
             
             <!-- Représentation d'un article -->
 
-            <li class="cart-content" data-unit-price="125000">
+            <!-- <li class="cart-content" data-unit-price="125000">
                 <div class="content-left">
                     <header class="cart-icon-top">
                         <div class="state-box">
@@ -481,7 +473,7 @@
                 <footer class="cart-icon-bottom">
                     <i class="uil uil-redo">Retourne le produit</i> 
                 </footer>
-            </li>
+            </li> -->
 
         </ul>
     
@@ -500,9 +492,9 @@
                 </div>
                 <div class="detail">
                     <h3>Détails du paiement</h3>
-                    <p>Sous-total: 115.70 TND</p>
-                    <p>Frais de livraison: 8.00 TND</p>
-                    <p>Total: 123.70 TND</p>
+                    <p class="sous-total"></p>
+                    <p>Frais de livraison: 2.000 FCFA</p>
+                    <p class="total1"></p>
                 </div>
             </div>
         </div>
@@ -518,18 +510,24 @@
                 </div>
                 <div class="adresse">
                     <h3>Adresse de livraison</h3>
-                    <span>Oumarou Mamoudou</span>
-                    <span>C2 mosquée algoufrane</span>
-                    <span>Monastir, Monastir</span>
+                    <span class="nom"></span><br>
+                    <span class="adress"></span><br>
+                    <span class="region"></span>
                 </div>
                 <div class="detail-exp">
                     <h3>Détails d'expédition</h3>
-                    <h3>Colis 1</h3>
-                    <span>Livraison à domicile.Expédié par Income
-                        Livraison entre le 22 février et le 23 février</span>
-                    <h3>Colis 2</h3>
-                    <span>Livraison à domicile.Expédié par Income
-                        Livraison entre le 22 février et le 23 février</span>
+                    <!-- <div>
+                        <h3>Colis 1</h3>
+                        <span>Livraison à domicile.Expédié par Income
+                            Livraison entre le 22 février et le 23 février
+                        </span>
+                    </div>
+                    <div>
+                        <h3>Colis 2</h3>
+                        <span>Livraison à domicile.Expédié par Income
+                            Livraison entre le 22 février et le 23 février
+                        </span>
+                    </div> -->
                 </div>
             </div>
         </div>

@@ -212,7 +212,7 @@ h2{
   position: relative;
   text-align: start;
   display: grid;
-  /* overflow: scroll; */
+  align-items: end;
 }
 
 .alert-content-adresse {
@@ -263,7 +263,7 @@ h2{
 @media (min-width: 59em){
     .alert-content-adresse,
     .alert-content{
-        width: 25%;
+        width: 30%;
     }
 }
 
@@ -326,8 +326,8 @@ h2{
     font-size: 15px;
 }
 
-.mode-content i,
-.content i{
+.mode-content ion-icon,
+.content ion-icon {
     padding: 5px 10px;
 }
 

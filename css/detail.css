@@ -158,6 +158,10 @@ h2{
 }
 
 @media (max-width: 35em){
+    .state1,
+    .state2{
+        margin-bottom: 15px;
+    }
     .div-name{
         display: grid;
         /* grid-template-rows: 1fr; */
@@ -224,7 +228,7 @@ h2{
 .btn-one{
     border-radius: 5px;
     padding: 10px;
-    background: hsl(var(--clr-blue) / 0.5);
+    background: hsl(var(--clr-red) / 0.5);
     margin-top: 10px;
     margin-bottom: 10px;
     cursor: pointer;
@@ -238,7 +242,7 @@ h2{
 }
 
 .btn-two:hover{
-    background: hsl(var(--clr-blue) / 0.2);
+    background: hsl(var(--clr-red) / 0.2);
 }
 
 .cart-icon-bottom{

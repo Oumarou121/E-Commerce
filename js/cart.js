@@ -1,6 +1,6 @@
 import { getCartItems, removeFromCart, getProductById, increaseQuantity, 
     decreaseQuantity, getTotalQuantityInCart, getNbrorder, getUserDataValue,
-    updateAddressByIndex, deleteAddressByIndex } from './firebase.js';
+    updateAddressByIndex, deleteAddressByIndex, addOrder } from './firebase.js';
 
 let total = 0;
 // Fonction pour formater les prix
@@ -174,15 +174,33 @@ function closeCustomAlert() {
 // Fermer l'alerte sans suppression lors du clic sur la croix
 document.getElementById('closeAlert').addEventListener('click', closeCustomAlert);
 
+const currentDate = new Date();
+
+// Tableau des mois
+const months = [
+    "Jan", "Fév", "Mar", "Avr", "Mai", "Jui",
+    "Juil", "Aoû", "Sep", "Oct", "Nov", "Déc"
+];
+
+// Obtenir le jour et le mois
+const Dday = String(currentDate.getDate()).padStart(2, '0'); // Jour avec zéro devant
+const Fday = String(currentDate.getDate() + 2).padStart(2, '0'); // Jour avec zéro devant
+const month = months[currentDate.getMonth()]; // Récupérer le nom du mois
+
 async function displayOrder(){
     document.getElementById('loading-spinner').style.display = 'block';
     await getNbrorder();
+    const cartItems = await getCartItems();
     const orderTotal =  document.querySelector('.orderTotal');
     const finalTotal =  document.querySelector('.finalTotal');
     const userName =  document.querySelector('.userName');
     const userAdresse =  document.querySelector('.userAdresse');
+    const debut =  document.getElementById('debut');
+    const fin =  document.getElementById('fin');
     updateCartTotal(orderTotal);
     finalTotal.textContent = `${formatPrice(total + 2000)} FCFA`;
+    debut.textContent = `${Dday} ${month}`;
+    fin.textContent = `${Fday} ${month}`;
     const userData = await getUserDataValue(); // Récupère les données utilisateur
     const addresses = userData.addresses;
 
@@ -193,6 +211,37 @@ async function displayOrder(){
                 userAdresse.textContent = `${address.adresse} ${address.adresse_sup}`;
             }
         }
+
+        const cartItemsList = document.querySelector('.content-item');
+        cartItemsList.innerHTML = "";
+        if (cartItems && cartItems.length > 0){
+            const taille = cartItems.length;
+            for (const [index, item] of cartItems.entries()){
+                const productId = item.id; // Récupérer l'ID du produit
+                const product = await getProductById(productId);
+
+                const cartItemElement = document.createElement('div');
+                cartItemElement.className = 'item';
+
+                cartItemElement.innerHTML = `
+                <div class="item-title">
+                    <h5>Expédition ${index + 1}/${taille}</h5>
+                </div>
+                <div class="item-content">
+                    <div class="item-image">
+                    <img src="${product.images[0]}" alt="${product.name}">
+                    </div>
+                    <div class="fs-50 item-text">
+                        <p>${product.name}</p>
+                        <p>Quantité : ${item.qty}</p>
+                    </div>
+                </div>
+                `;
+                cartItemsList.appendChild(cartItemElement);
+
+            }
+        }
+
     } else {
         console.log("Veillez-vous connecter");
     }
@@ -420,4 +469,77 @@ document.getElementById('closeAlertDelete').addEventListener('click', closeCusto
 
 document.getElementById('add').addEventListener('click', ()=> {
     window.location.href = 'edit.html';
+});
+
+document.getElementById('confirmer').addEventListener('click', async () => {
+    document.getElementById('loading-spinner').style.display = 'block';
+    const userData = await getUserDataValue(); // Récupère les données utilisateur
+    const addresses = userData.addresses;
+    let adresse;
+    const cartItems = await getCartItems();
+    let total = 0; // Initialiser le montant total
+
+    if (userData) {
+        // Récupérer l'adresse sélectionnée
+        for (const address of addresses) {
+            if (address.select) {
+                adresse = address;
+                break; // Sortir de la boucle une fois l'adresse trouvée
+            }
+        }
+
+        // Vérifier les articles du panier
+        if (cartItems && cartItems.length > 0) {
+            for (const item of cartItems) {
+                const productID = item.id; // Récupérer l'ID du produit
+                const productQty = item.qty; // Récupérer la quantité du produit
+                const product = await getProductById(productID);
+                const productPrix = product.price;
+
+                // Calculer le prix total pour cet article
+                total += productPrix * productQty; // Ajouter le prix total de cet article au total global
+            }
+        }
+    }
+
+    // Créer l'objet orderData avec les informations de la commande
+    total += 2000;
+    // Récupère les données des articles du panier en attendant que toutes les promesses soient résolues
+    const items = await Promise.all(cartItems.map(async item => {
+        const product = await getProductById(item.id);
+        return {
+            productId: item.id, // ID du produit
+            quantity: item.qty, // Quantité de ce produit
+            price: product.price, // Prix unitaire du produit
+            status: "pending", // Statut de la commande
+            updatedAt: Date.now()
+        };
+    }));
+    
+    const orderData = {
+        items: items, // Tableau d'objets représentant les articles commandés
+        totalAmount: total, // Montant total de la commande
+        shippingAddress: adresse || {}, // Adresse de livraison
+        paymentMethod: "cash", // Méthode de paiement
+        status: "pending" // Statut de la commande
+    };
+    
+    
+
+
+    console.log(orderData);
+
+    // Appeler la fonction addOrder pour ajouter la commande
+    try {
+        const response = await addOrder(orderData);
+        console.log(response);
+        // Gérer le succès (par exemple, afficher un message à l'utilisateur)
+    } catch (error) {
+        console.error(error);
+        // Gérer l'erreur (par exemple, afficher un message d'erreur)
+    }finally{
+        closeCustomAlert();
+        document.getElementById('loading-spinner').style.display = 'none';
+    }
+    
 });

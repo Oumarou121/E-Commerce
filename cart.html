@@ -25,6 +25,7 @@
     <script src="js/index.js" type="module"></script>
     <!-- <script src="js/shop.js" defer></script> -->
     <script src="js/cart.js" type="module"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <title>Ecommerce Website</title>
 </head>
 <body class="home">
@@ -395,7 +396,8 @@
               </div>
 
               <div class="mode-content">
-                <i class="uil fs-200 uil-money-bill"></i>
+                <!-- <i class="uil fs-200 uil-money-bill"></i> -->
+                <ion-icon class="fs-200" name="id-card-outline"></ion-icon>
                 <div>
                     <h4>Payez plus tard à la livraison par Virtual Wallet ou par cash</h4>
                     <p>Paiement au moment de la livraison une fois que votre commande est livrée</p>
@@ -423,16 +425,15 @@
   
                 <div class="livraison-content">
                     <div class="content">
-                        <!-- <i class="uil fs-200 uil-luggage-cart"></i> -->
-                        <i class="fa-solid fs-200 fa-cart-shopping"></i>
+                        <ion-icon class="fs-200" name="cart-outline"></ion-icon>                                                    
                         <div>
                             <h4>Livraison à domicile</h4>
-                            <p>Livraison entre le <strong>11 Oct</strong> et le <strong>14 Oct</strong></p>
+                            <p>Livraison entre le <strong id="debut"></strong> et le <strong id="fin"></strong></p>
                         </div>
                     </div>
 
                     <div class="content-item">
-                        <div class="item">
+                        <!-- <div class="item">
                             <div class="item-title">
                                 <h5>Expédition 1/2</h5>
                             </div>
@@ -460,12 +461,12 @@
                                     <p>Quantité : 2</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
             </div>
-            <div class="confirmer">
+            <div id="confirmer" class="confirmer">
                 CONFIRMER LA COMMANDE
             </div>
 

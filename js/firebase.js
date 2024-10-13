@@ -1,6 +1,8 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
-import { getFirestore, doc, setDoc, getDoc, updateDoc, getDocs, collection, arrayUnion, arrayRemove} from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js';
+import { getFirestore, doc, setDoc, getDoc, updateDoc, getDocs, collection,
+    arrayUnion, arrayRemove, Timestamp, increment, deleteDoc, query, where,
+    addDoc } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js';
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -167,7 +169,7 @@ export function getUserChange(displayElementId) {
         if (user) {
             // L'utilisateur est connecté, récupère son nom depuis Firestore
             const userName = await getUserName(user.uid);
-            const formattedName = capitalizeFirstLetter(userName || user.email); // Capitalise la première lettre
+            const formattedName = userName || user.email; // Capitalise la première lettre
             displayElement.innerHTML = `
                 <a class="bbb text-black uil fs-150" href="/profil.html">
                     <i class="uil fs-150 uil-user"></i>${formattedName}
@@ -215,15 +217,32 @@ export async function logout() {
 
 // Fonction pour récupérer le nom de l'utilisateur depuis Firestore
 export async function getUserName(uid) {
-    const userDoc = await getDoc(doc(db, "users", uid));
-    if (userDoc.exists()) {
-        // console.log(userDoc.data());
-        return `${userDoc.data().prenom} ${userDoc.data().nom}`; // Retourne le nom de l'utilisateur
+    const userData = await getUserDataValue();
+    const addresses = userData.addresses || []; // S'assurer que addresses est un tableau
+    let adresse;
+    
+    if (userData) {        
+        // Trouver l'adresse sélectionnée
+        for (const address of addresses) {
+            if (address.select) {
+                adresse = address;
+                break; // Sortir de la boucle une fois l'adresse trouvée
+            }
+        }
+
+        // Vérifier si une adresse a été trouvée
+        if (adresse) {
+            return `${capitalizeFirstLetter(adresse.prenom)} ${capitalizeFirstLetter(adresse.nom)}`; // Retourne le nom de l'utilisateur
+        } else {
+            console.log("Aucune adresse sélectionnée trouvée pour cet utilisateur");
+            return null;
+        }
     } else {
         console.log("Aucun document trouvé pour cet utilisateur");
         return null;
     }
 }
+
 
 // Fonction pour récupérer les données de l'utilisateur
 export async function getUserDataValue() {
@@ -924,16 +943,256 @@ export async function addAddress(newAddress) {
     });
 }
 
-// const updatedData = {
-//     prenom: "loukmane",
-//     nom: "address.nom",
-//     phone1: "address.phone1",
-//     phone2: "address.phone2",
-//     adresse: "address.adresse",
-//     adresse_sup: "address.adresse_sup",
-//     region: "Niger",
-//     genre: "homme",
-//     select: false // Désélectionner cette adresse
-// };
+// Fonction pour générer un nouvel orderId
+export async function generateOrderId() {
+    const orderCounterRef = doc(db, "config", "orderCounter");
 
-// await addAddress(updatedData);
+    try {
+        // Lire le compteur actuel
+        const orderCounterDoc = await getDoc(orderCounterRef);
+
+        if (!orderCounterDoc.exists()) {
+            throw new Error("Le document de compteur de commandes n'existe pas.");
+        }
+
+        // Incrémenter le compteur dans Firestore
+        const newOrderNumber = orderCounterDoc.data().count + 1;
+        await updateDoc(orderCounterRef, {
+            count: increment(1)
+        });
+
+        // Générer l'identifiant de la commande
+        const orderId = `#${newOrderNumber}`;
+
+        return orderId;
+    } catch (error) {
+        console.error("Erreur lors de la génération de l'orderId :", error);
+        throw new Error("Impossible de générer l'identifiant de la commande.");
+    }
+}
+
+// Fonction pour ajouter une commande
+export async function addOrder(orderData) {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    // Générer le nouvel orderId
+                    const orderId = await generateOrderId();
+                    
+                    // Afficher les données de la commande pour le débogage
+                    console.log(orderData);
+
+                    // Ajouter la commande à la collection "orders" avec l'orderId généré
+                    const docRef = await addDoc(collection(db, "orders"), {
+                        ...orderData,
+                        orderId: orderId, // Utiliser l'orderId personnalisé
+                        userId: user.uid,
+                        createdAt: Timestamp.now(),
+                        updatedAt: Timestamp.now()
+                    });
+
+                    resolve({
+                        status: 200,
+                        message: "Commande ajoutée avec succès",
+                        orderId: orderId
+                    });
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté"
+                });
+            }
+        });
+    });
+}
+
+
+// Fonction pour récupérer toutes les commandes d'un utilisateur
+export const getUserOrders = () => {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const q = query(collection(db, "orders"), where("userId", "==", user.uid));
+                    const querySnapshot = await getDocs(q);
+                    
+                    const orders = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    // Trier les commandes par orderId dans l'ordre croissant
+                    orders.sort((a, b) => {
+                        const idA = parseInt(a.orderId.replace('#', ''), 10); // Extraire et convertir en nombre
+                        const idB = parseInt(b.orderId.replace('#', ''), 10); // Extraire et convertir en nombre
+                        return idB - idA; // Tri croissant
+                    });
+                    resolve(orders); // Résoudre la promesse avec toutes les commandes triées
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve([]); // Aucun utilisateur connecté
+            }
+        });
+    });
+};
+
+// Fonction pour récupérer toutes les commandes d'un utilisateur
+export const getUserOrdersById = (orderID) => {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const q = query(collection(db, "orders"), where("orderId", "==", orderID));
+                    const querySnapshot = await getDocs(q);
+                    
+                    const orders = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    
+                    resolve(orders); // Résoudre la promesse avec toutes les commandes triées
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve([]); // Aucun utilisateur connecté
+            }
+        });
+    });
+};
+
+// Fonction pour récupérer les commandes en cours ou livrées
+export const getPendingOrDeliveredOrders = () => {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const q = query(
+                        collection(db, "orders"),
+                        where("userId", "==", user.uid),
+                        where("status", "in", ["pending", "delivered"])
+                    );
+
+                    const querySnapshot = await getDocs(q);
+                    const orders = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    // Trier les commandes par orderId dans l'ordre croissant
+                    orders.sort((a, b) => {
+                        const idA = parseInt(a.orderId.replace('#', ''), 10);
+                        const idB = parseInt(b.orderId.replace('#', ''), 10);
+                        return idB - idA;
+                    });
+                    resolve(orders); // Résoudre la promesse avec les commandes en cours ou livrées triées
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve([]); // Aucun utilisateur connecté
+            }
+        });
+    });
+};
+
+// Fonction pour récupérer les commandes annulées ou retournées
+export const getCancelledOrReturnedOrders = () => {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const q = query(
+                        collection(db, "orders"),
+                        where("userId", "==", user.uid),
+                        where("status", "in", ["cancelled", "returned"])
+                    );
+
+                    const querySnapshot = await getDocs(q);
+                    const orders = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    // Trier les commandes par orderId dans l'ordre croissant
+                    orders.sort((a, b) => {
+                        const idA = parseInt(a.orderId.replace('#', ''), 10);
+                        const idB = parseInt(b.orderId.replace('#', ''), 10);
+                        return idB - idA;
+                    });
+                    resolve(orders); // Résoudre la promesse avec les commandes annulées ou retournées triées
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve([]); // Aucun utilisateur connecté
+            }
+        });
+    });
+};
+
+
+
+export async function updateOrderStatus(orderId, newStatus) {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const orderRef = doc(db, "orders", orderId);
+                    await updateDoc(orderRef, {
+                        status: newStatus,
+                        updatedAt: Timestamp.now()
+                    });
+
+                    resolve({
+                        status: 200,
+                        message: "Statut de la commande mis à jour avec succès"
+                    });
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté"
+                });
+            }
+        });
+    });
+}
+
+export async function deleteOrder(orderId) {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    await deleteDoc(doc(db, "orders", orderId));
+
+                    resolve({
+                        status: 200,
+                        message: "Commande supprimée avec succès"
+                    });
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté"
+                });
+            }
+        });
+    });
+}

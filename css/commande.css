@@ -119,6 +119,7 @@ h2{
 .div-name{
     display: grid;
     /* grid-template-rows: 1fr; */
+    visibility: visible;
 }
 
 .Add{cursor: pointer;}
@@ -152,7 +153,7 @@ h2{
     font-size: 1.2rem;
 }
 
-@media (MIN-width: 59em){
+@media (min-width: 59em){
 
     .state{
         justify-self: center;
@@ -184,6 +185,7 @@ h2{
 
     .cart-item{
         grid-template-columns: 1fr 5fr;
+        cursor: pointer;
     }
 
 }
@@ -196,7 +198,6 @@ h2{
     background-color: black; /* Couleur de la ligne */
     width: 100%; /* Largeur de la ligne */
     margin: 0 0; /* Espacement autour de la ligne */
-    /* margin-inline: 0.75em 1rem; */
 }
 
 /* =========================== */
