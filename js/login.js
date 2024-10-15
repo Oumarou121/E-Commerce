@@ -191,7 +191,7 @@
 //     const email = document.getElementById('register-user-email').value;
 //     const password = document.querySelector('#pf-user-password1').value;
 
-//     document.getElementById('loading-spinner').style.display = 'block';
+//     //document.getElementById('loading-spinner').style.display = 'block';
 //     const result = await signUp(name,email,password);
 
 //     if (result.status === 200) {
@@ -205,7 +205,7 @@
 //         // Afficher le message d'erreur à l'utilisateur
 //         error2.textContent = result.message;
 //     }
-//     document.getElementById('loading-spinner').style.display = 'none';
+//     //document.getElementById('loading-spinner').style.display = 'none';
 // });
 
 
@@ -289,7 +289,7 @@
 //         return; // Arrêter la soumission du formulaire
 //     }
 
-//     document.getElementById('loading-spinner').style.display = 'block';
+//     //document.getElementById('loading-spinner').style.display = 'block';
 //     const result = await resetPassword(emailInput.value);
 
 //     if (result.status === 200) {
@@ -303,7 +303,7 @@
 //         // Afficher le message d'erreur à l'utilisateur
 //         document.getElementById('fg-email-error').innerText = result.message;
 //     }
-//     document.getElementById('loading-spinner').style.display = 'none';
+//     //document.getElementById('loading-spinner').style.display = 'none';
 // });
 
 
@@ -354,7 +354,7 @@
 //         return; // Arrêter la soumission du formulaire
 //     }
 
-//     document.getElementById('loading-spinner').style.display = 'block';
+//     //document.getElementById('loading-spinner').style.display = 'block';
 //     // Si l'email est valide, soumettre le formulaire
 //     const result = await signIn(emailInput.value, passwordInput.value);
 
@@ -367,7 +367,7 @@
 //         // Affiche un message d'erreur à l'utilisateur
 //         document.getElementById('password-error').innerText = result.message;
 //     }
-//     document.getElementById('loading-spinner').style.display = 'none';
+//     //document.getElementById('loading-spinner').style.display = 'none';
 // });
 
 
@@ -502,7 +502,7 @@ document.getElementById('password').addEventListener('submit', async (e) => {
         const email = document.getElementById('register-user-email').value;
         const password = password1.value;
 
-        document.getElementById('loading-spinner').style.display = 'block';
+        //document.getElementById('loading-spinner').style.display = 'block';
         const result = await signUp(name, email, password);
 
         if (result.status === 200) {
@@ -510,7 +510,7 @@ document.getElementById('password').addEventListener('submit', async (e) => {
         } else if (result.status === 400) {
             error2.textContent = result.message;
         }
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
     }
 });
 
@@ -556,7 +556,7 @@ document.querySelector('[data-action="fg_continue"]').addEventListener('click', 
         emailError.textContent = 'Veuillez entrer une adresse email valide.';
         emailInput.classList.add('error');
     } else {
-        document.getElementById('loading-spinner').style.display = 'block';
+        //document.getElementById('loading-spinner').style.display = 'block';
         const result = await resetPassword(emailInput.value);
 
         if (result.status === 200) {
@@ -564,7 +564,7 @@ document.querySelector('[data-action="fg_continue"]').addEventListener('click', 
         } else if (result.status === 400) {
             emailError.textContent = result.message;
         }
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
     }
 });
 
@@ -592,7 +592,7 @@ document.querySelector('[data-action="continue"]').addEventListener('click', asy
         passwordError.textContent = 'Required';
         passwordInput.classList.add('error');
     } else {
-        document.getElementById('loading-spinner').style.display = 'block';
+        //document.getElementById('loading-spinner').style.display = 'block';
         const result = await signIn(emailInput.value, passwordInput.value);
 
         if (result.status === 200) {
@@ -600,7 +600,7 @@ document.querySelector('[data-action="continue"]').addEventListener('click', asy
         } else if (result.status === 400) {
             passwordError.innerText = result.message;
         }
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
     }
 });
 

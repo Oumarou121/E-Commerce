@@ -762,7 +762,7 @@ clearAllFilters1(desktopCheckboxes, desktopSelectedFilters);
 import { getProductsList, addToFavorites, removeFromFavorites, isFavorite, addToCart, removeFromCart, isInCart } from './firebase.js';
 
 async function LoadListProducts() {
-    document.getElementById('loading-spinner').style.display = 'block';
+    //document.getElementById('loading-spinner').style.display = 'block';
 
     try {
         const ProductsList = await getProductsList();
@@ -866,7 +866,7 @@ async function LoadListProducts() {
         console.log('Erreur lors de la récupération des produits', error);
         productsContainer.innerHTML = '<p>Erreur lors du chargement des produits.</p>';
     } finally {
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
     }
 }
 

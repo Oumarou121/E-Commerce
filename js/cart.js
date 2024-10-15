@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Fonction pour afficher les articles dans le panier
     const displayCartItems = async () => {
-        document.getElementById('loading-spinner').style.display = 'block';
+        //document.getElementById('loading-spinner').style.display = 'block';
         const cartItems = await getCartItems();
 
         let total = 0; // Pour calculer le total du panier
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         cartTotalElement.textContent = `${formatPrice(total)} FCFA`; // Affiche le total
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
     };
 
     // Gérer les événements de clic sur les boutons plus et moins
@@ -188,7 +188,7 @@ const Fday = String(currentDate.getDate() + 2).padStart(2, '0'); // Jour avec z�
 const month = months[currentDate.getMonth()]; // Récupérer le nom du mois
 
 async function displayOrder(){
-    document.getElementById('loading-spinner').style.display = 'block';
+    //document.getElementById('loading-spinner').style.display = 'block';
     await getNbrorder();
     const cartItems = await getCartItems();
     const orderTotal =  document.querySelector('.orderTotal');
@@ -249,9 +249,9 @@ async function displayOrder(){
     try {
         const userData = await getUserDataValue(); // Récupère les adresses depuis Firestore
     } catch (error) {
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
     } finally {
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
     }
 }
 
@@ -295,7 +295,7 @@ document.getElementById('closeAdresse').addEventListener('click', closeCustomAle
 
 // Fonction pour récupérer les adresses et les afficher
 async function displayAddresses() {
-    document.getElementById('loading-spinner').style.display = 'block';
+    //document.getElementById('loading-spinner').style.display = 'block';
 
     const adresseContentDiv = document.getElementById('alert-content'); // Conteneur où les adresses seront ajoutées
 
@@ -373,12 +373,12 @@ async function displayAddresses() {
     } catch (error) {
         console.error("Erreur lors de la récupération des adresses :", error);
     } finally {
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
     }
 }
 
 async function changeCurrent(pageIndex) {
-    document.getElementById('loading-spinner').style.display = 'block';
+    //document.getElementById('loading-spinner').style.display = 'block';
 
     try {
         const userData = await getUserDataValue(); // Récupère les données utilisateur
@@ -424,7 +424,7 @@ async function changeCurrent(pageIndex) {
     } finally {
         // Cacher le spinner après la fin de toutes les opérations ou en cas d'erreur
         displayAddresses(); // Actualise la liste des adresses après suppression
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
     }
 }
 
@@ -440,7 +440,7 @@ function openCustomAlertDelete(index) {
 
     // Attacher l'événement au bouton de confirmation avec l'index actuel
     document.getElementById('confirmBtnDelete').onclick = async () => {
-        document.getElementById('loading-spinner').style.display = 'flex';
+        //document.getElementById('loading-spinner').style.display = 'flex';
 
         try {
             await deleteAddressByIndex(index); // Supprimer l'adresse à l'index spécifié
@@ -448,7 +448,7 @@ function openCustomAlertDelete(index) {
             console.error("Erreur lors de la suppression de l'adresse :", error);
         } finally {
             closeCustomAlertDelete(); // Ferme l'alerte après suppression
-            document.getElementById('loading-spinner').style.display = 'none';
+            //document.getElementById('loading-spinner').style.display = 'none';
             displayAddresses(); // Actualise la liste des adresses après suppression
         }
     };
@@ -473,7 +473,7 @@ document.getElementById('add').addEventListener('click', ()=> {
 });
 
 document.getElementById('confirmer').addEventListener('click', async () => {
-    document.getElementById('loading-spinner').style.display = 'block';
+    //document.getElementById('loading-spinner').style.display = 'block';
     const userData = await getUserDataValue(); // Récupère les données utilisateur
     const addresses = userData.addresses;
     let adresse;
@@ -542,7 +542,7 @@ document.getElementById('confirmer').addEventListener('click', async () => {
         // Gérer l'erreur (par exemple, afficher un message d'erreur)
     }finally{
         
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
         if (adresse.adresse == "" || adresse.phone1 == "" || adresse.region == ""){
             showAlert1("Veuillez compléter votre adresse principale.");
         }else{

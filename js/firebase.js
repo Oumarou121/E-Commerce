@@ -1,10 +1,14 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js';
+
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
     sendPasswordResetEmail, onAuthStateChanged, signOut, deleteUser, 
     reauthenticateWithCredential, EmailAuthProvider } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
+
 import { getFirestore, doc, setDoc, getDoc, updateDoc, getDocs, collection,
     arrayUnion, arrayRemove, Timestamp, increment, deleteDoc, query, where,
     addDoc } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js';
+
+import { toggleLoadingSpinner } from './module.js';
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -27,7 +31,7 @@ const db = getFirestore(app);
 
 export async function signUp(name, email, password) {
     // Affiche le spinner avant de commencer la requête
-    document.getElementById('loading-spinner').style.display = 'block';
+    toggleLoadingSpinner(true);
 
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -74,13 +78,13 @@ export async function signUp(name, email, password) {
         };
     } finally {
         // Masque le spinner après que la requête soit terminée (succès ou échec)
-        document.getElementById('loading-spinner').style.display = 'none';
+        toggleLoadingSpinner(false);
     }
 }
 
 export async function signIn(email, password) {
     // Affiche le spinner
-    document.getElementById('loading-spinner').style.display = 'block';
+    toggleLoadingSpinner(true);
 
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -104,13 +108,13 @@ export async function signIn(email, password) {
         };
     } finally {
         // Masque le spinner après la requête
-        document.getElementById('loading-spinner').style.display = 'none';
+        toggleLoadingSpinner(false);
     }
 }
 
 export async function resetPassword(email) {
     // Affiche le spinner
-    document.getElementById('loading-spinner').style.display = 'block';
+    toggleLoadingSpinner(true);
 
     try {
         // Envoie un email de réinitialisation de mot de passe
@@ -141,15 +145,18 @@ export async function resetPassword(email) {
         };
     } finally {
         // Masque le spinner après la requête
-        document.getElementById('loading-spinner').style.display = 'none';
+        toggleLoadingSpinner(false);
     }
 }
 
-
 export async function deleteAccount(email, password) {
+    // Affiche le spinner
+    toggleLoadingSpinner(true);
+
     const user = auth.currentUser;
 
     if (!user) {
+        toggleLoadingSpinner(false);
         return {
             status: 401,
             message: "Utilisateur non connecté",
@@ -192,10 +199,11 @@ export async function deleteAccount(email, password) {
             status: 403,
             message: errorMessage,
         };
+    } finally {
+        // Masque le spinner après la requête
+        toggleLoadingSpinner(false);
     }
 }
-
-
 
 // Fonction pour afficher l'utilisateur courant
 export function getUser() {
@@ -242,7 +250,7 @@ export function getUserChange(displayElementId) {
 // Fonction pour déconnecter l'utilisateur
 export async function logout() {
     // Affiche le spinner
-    document.getElementById('loading-spinner').style.display = 'block';    
+    toggleLoadingSpinner(true);    
     await delay(250);
 
     try {
@@ -261,12 +269,13 @@ export async function logout() {
         };
     } finally {
         // Masque le spinner après la requête
-        document.getElementById('loading-spinner').style.display = 'none';
+        toggleLoadingSpinner(false);
     }
 }
 
 // Fonction pour récupérer le nom de l'utilisateur depuis Firestore
 export async function getUserName(uid) {
+    toggleLoadingSpinner(true);
     const userData = await getUserDataValue();
     const addresses = userData.addresses || []; // S'assurer que addresses est un tableau
     let adresse;
@@ -282,13 +291,16 @@ export async function getUserName(uid) {
 
         // Vérifier si une adresse a été trouvée
         if (adresse) {
+            toggleLoadingSpinner(false);
             return `${capitalizeFirstLetter(adresse.prenom)} ${capitalizeFirstLetter(adresse.nom)}`; // Retourne le nom de l'utilisateur
         } else {
+            toggleLoadingSpinner(false);
             console.log("Aucune adresse sélectionnée trouvée pour cet utilisateur");
             return null;
         }
     } else {
         console.log("Aucun document trouvé pour cet utilisateur");
+        toggleLoadingSpinner(false);
         return null;
     }
 }
@@ -296,6 +308,7 @@ export async function getUserName(uid) {
 
 // Fonction pour récupérer les données de l'utilisateur
 export async function getUserDataValue() {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -314,13 +327,16 @@ export async function getUserDataValue() {
                 resolve(null); // Aucun utilisateur connecté
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
+
 
 // Fonction pour sauvegarder les données modifiées de l'utilisateur
 export async function updateUserData(userId, updatedData) {
     // Affiche le spinner
-    document.getElementById('loading-spinner').style.display = 'block';
+    toggleLoadingSpinner(true); // Affiche le spinner
     try {
         // Référence du document utilisateur dans Firestore
         const userRef = doc(db, "users", userId);
@@ -334,7 +350,7 @@ export async function updateUserData(userId, updatedData) {
         throw error; // Relancer l'erreur pour la gérer dans le fichier `edit.js`
     } finally {
         // Masque le spinner après la requête
-        document.getElementById('loading-spinner').style.display = 'none';
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 }
 
@@ -348,6 +364,7 @@ function delay(ms) {
 }
 
 export async function getProductsList() {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -370,10 +387,13 @@ export async function getProductsList() {
                 resolve([]); // Aucun utilisateur connecté
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
 
 export async function getProductById(id) {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -394,11 +414,14 @@ export async function getProductById(id) {
                 resolve(null); // Aucun utilisateur connecté
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
 
 // Ajouter un produit aux favoris de l'utilisateur
 export async function addToFavorites(productId) {
+    toggleLoadingSpinner(true); // Affiche le spinner
     const user = auth.currentUser;
 
     if (!user) {
@@ -415,11 +438,14 @@ export async function addToFavorites(productId) {
         console.log('Produit ajouté aux favoris');
     } catch (error) {
         console.error('Erreur lors de l\'ajout aux favoris :', error);
+    }finally{
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 }
 
 // Retirer un produit des favoris de l'utilisateur
 export async function removeFromFavorites(productId) {
+    toggleLoadingSpinner(true); // Affiche le spinner
     const user = auth.currentUser;
 
     if (!user) {
@@ -436,14 +462,18 @@ export async function removeFromFavorites(productId) {
         console.log('Produit retiré des favoris');
     } catch (error) {
         console.error('Erreur lors de la suppression des favoris :', error);
+    }finally{
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 }
 
 // Vérifier si un produit est déjà dans les favoris
 export async function isFavorite(productId) {
+    toggleLoadingSpinner(true); // Affiche le spinner
     const user = auth.currentUser;
 
     if (!user) {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
         console.error('Utilisateur non connecté');
         return false;
     }
@@ -453,14 +483,16 @@ export async function isFavorite(productId) {
 
     if (userDoc.exists()) {
         const userData = userDoc.data();
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
         return userData.favoris && userData.favoris.includes(productId);
     }
-
+    toggleLoadingSpinner(false); // Masque le spinner après la requête
     return false;
 }
 
 // Fonction pour ajouter un produit au panier avec une quantité par défaut (ou mettre à jour la quantité)
 export const addToCart = async (productId, quantity = 1) => {
+    toggleLoadingSpinner(true); // Affiche le spinner
     const userId = auth.currentUser ? auth.currentUser.uid : null; // Vérifie si l'utilisateur est connecté
     if (!userId) {
         console.error('Aucun utilisateur connecté pour ajouter au panier');
@@ -492,10 +524,13 @@ export const addToCart = async (productId, quantity = 1) => {
         }
     } catch (error) {
         console.error('Erreur lors de l\'ajout du produit au panier', error);
+    }finally{
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 };
 // Fonction pour retirer un produit du panier
 export const removeFromCart = async (productId) => {
+    toggleLoadingSpinner(true); // Affiche le spinner
     const userId = auth.currentUser ? auth.currentUser.uid : null; // Vérifie si l'utilisateur est connecté
     if (!userId) {
         console.error('Aucun utilisateur connecté pour retirer du panier');
@@ -524,11 +559,14 @@ export const removeFromCart = async (productId) => {
         }
     } catch (error) {
         console.error('Erreur lors du retrait du produit du panier', error);
+    }finally{
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 };
 
 // Fonction pour vérifier si un produit est déjà dans le panier
 export const isInCart = async (productId) => {
+    toggleLoadingSpinner(true); // Affiche le spinner
     const userId = auth.currentUser ? auth.currentUser.uid : null; // Vérifie si l'utilisateur est connecté
     if (!userId) {
         console.error('Aucun utilisateur connecté pour vérifier le panier');
@@ -549,11 +587,14 @@ export const isInCart = async (productId) => {
     } catch (error) {
         console.error('Erreur lors de la vérification du panier', error);
         return false;
+    }finally{
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 }
 
 // Fonction pour récupérer les données de l'utilisateur
 export async function getFavorites() {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -572,11 +613,14 @@ export async function getFavorites() {
                 resolve(null); // Aucun utilisateur connecté
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
 
 // Fonction pour supprimer un produit des favoris de l'utilisateur connecté
 export const removeFavorite = async (productId) => {
+    toggleLoadingSpinner(true); // Affiche le spinner
     const userId = auth.currentUser ? auth.currentUser.uid : null;
     
     if (!userId) {
@@ -592,11 +636,14 @@ export const removeFavorite = async (productId) => {
         console.log(`Produit ${productId} supprimé des favoris de l'utilisateur ${userId}`);
     } catch (error) {
         console.error('Erreur lors de la suppression du favori', error);
+    }finally{
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 };
 
 // Fonction pour récupérer tous les articles du panier
 export const getCartItems = () => {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -626,11 +673,13 @@ export const getCartItems = () => {
                 resolve([]); // Aucun utilisateur connecté
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
-};
-
+}
 // Fonction pour augmenter la quantité d'un produit dans le panier
 export const increaseQuantity = async (productId) => {
+    toggleLoadingSpinner(true); // Affiche le spinner
     const userId = auth.currentUser ? auth.currentUser.uid : null; // Vérifie si l'utilisateur est connecté
     if (!userId) {
         console.error('Aucun utilisateur connecté pour mettre à jour le panier');
@@ -653,12 +702,15 @@ export const increaseQuantity = async (productId) => {
         }
     } catch (error) {
         console.error('Erreur lors de l\'augmentation de la quantité du produit', error);
+    }finally{
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 };
 
 
 // Fonction pour diminuer la quantité d'un produit dans le panier
 export const decreaseQuantity = async (productId) => {
+    toggleLoadingSpinner(true); // Affiche le spinner
     const userId = auth.currentUser ? auth.currentUser.uid : null; // Vérifie si l'utilisateur est connecté
     if (!userId) {
         console.error('Aucun utilisateur connecté pour mettre à jour le panier');
@@ -682,11 +734,14 @@ export const decreaseQuantity = async (productId) => {
         }
     } catch (error) {
         console.error('Erreur lors de la diminution de la quantité du produit', error);
+    }finally{
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 };
 
 // Fonction pour récupérer la quantité totale dans le panier
 export const getTotalQuantityInCart = async () => {
+    toggleLoadingSpinner(true); // Affiche le spinner
     onAuthStateChanged(auth, async (user) => {
     try {
         const userDoc = doc(db, 'users', user.uid);
@@ -713,12 +768,15 @@ export const getTotalQuantityInCart = async () => {
     } catch (error) {
         console.error('Erreur lors de la récupération de la quantité totale dans le panier', error);
         // return 0; // Retourne 0 en cas d'erreur
+    }finally{
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 }
 )}
 
 // Fonction pour récupérer la quantité totale dans le panier
 export const getNbrorder = async () => {
+    toggleLoadingSpinner(true); // Affiche le spinner
     onAuthStateChanged(auth, async (user) => {
     try {
         const userDoc = doc(db, 'users', user.uid);
@@ -745,11 +803,14 @@ export const getNbrorder = async () => {
     } catch (error) {
         console.error('Erreur lors de la récupération de la quantité totale dans le panier', error);
         // return 0; // Retourne 0 en cas d'erreur
+    }finally{
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 }
 )}
 
 export async function getAllAddresses() {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -778,11 +839,14 @@ export async function getAllAddresses() {
                 resolve([]); // Aucun utilisateur connecté
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
 
 // Fonction pour modifier une adresse en fonction de son index
 export async function updateAddressByIndex(index, newAddress) {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -832,10 +896,13 @@ export async function updateAddressByIndex(index, newAddress) {
                 });
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
 
 export async function deleteAddressByIndex(index) {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -892,6 +959,8 @@ export async function deleteAddressByIndex(index) {
                 });
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
 
@@ -899,6 +968,7 @@ export async function deleteAddressByIndex(index) {
 
 // Fonction pour récupérer une adresse en fonction de son index
 export async function getAddressByIndex(index) {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -943,12 +1013,15 @@ export async function getAddressByIndex(index) {
                 });
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
 
 
 // Fonction pour ajouter une adresse
 export async function addAddress(newAddress) {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -990,11 +1063,14 @@ export async function addAddress(newAddress) {
                 });
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
 
 // Fonction pour générer un nouvel orderId
 export async function generateOrderId() {
+    toggleLoadingSpinner(true); // Affiche le spinner
     const orderCounterRef = doc(db, "config", "orderCounter");
 
     try {
@@ -1018,11 +1094,14 @@ export async function generateOrderId() {
     } catch (error) {
         console.error("Erreur lors de la génération de l'orderId :", error);
         throw new Error("Impossible de générer l'identifiant de la commande.");
+    }finally{
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 }
 
 // Fonction pour ajouter une commande
 export async function addOrder(orderData) {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -1060,12 +1139,15 @@ export async function addOrder(orderData) {
                 });
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
 
 
 // Fonction pour récupérer toutes les commandes d'un utilisateur
 export const getUserOrders = () => {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -1091,11 +1173,14 @@ export const getUserOrders = () => {
                 resolve([]); // Aucun utilisateur connecté
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
-};
+}
 
 // Fonction pour récupérer toutes les commandes d'un utilisateur
 export const getUserOrdersById = (orderID) => {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -1116,11 +1201,14 @@ export const getUserOrdersById = (orderID) => {
                 resolve([]); // Aucun utilisateur connecté
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
-};
+}
 
 // Fonction pour récupérer les commandes en cours ou livrées
 export const getPendingOrDeliveredOrders = () => {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -1150,11 +1238,14 @@ export const getPendingOrDeliveredOrders = () => {
                 resolve([]); // Aucun utilisateur connecté
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
-};
+}
 
 // Fonction pour récupérer les commandes annulées ou retournées
 export const getCancelledOrReturnedOrders = () => {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -1184,12 +1275,14 @@ export const getCancelledOrReturnedOrders = () => {
                 resolve([]); // Aucun utilisateur connecté
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
-};
-
+}
 
 
 export async function updateOrderStatus(orderId, newStatus) {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -1217,10 +1310,13 @@ export async function updateOrderStatus(orderId, newStatus) {
                 });
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
 
 export async function updateProductStatusInOrder(orderId, newStatus, productIndex, verificationNote = "") {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -1300,11 +1396,13 @@ export async function updateProductStatusInOrder(orderId, newStatus, productInde
                 });
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
 
-
 export async function deleteOrder(orderId) {
+    toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -1328,6 +1426,7 @@ export async function deleteOrder(orderId) {
                 });
             }
         });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
-

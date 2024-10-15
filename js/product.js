@@ -124,7 +124,7 @@ function formatPrice(price) {
 
 async function loadProductDetails() {
     // Affiche le spinner
-    document.getElementById('loading-spinner').style.display = 'block';    
+    //document.getElementById('loading-spinner').style.display = 'block';    
     await delay(250);
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -245,7 +245,7 @@ if (typeof product.review === 'object' && !Array.isArray(product.review)) {
         console.error('Erreur lors du chargement du produit :', error);
     }finally {
         // Masque le spinner après la requête
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
     }
 }
 

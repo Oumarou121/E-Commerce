@@ -72,12 +72,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const cartItemsList = document.querySelector('.cart-items');
     const cartItemsList1 = document.querySelector('.cart-items1');
     const emptyCartMessage = document.getElementById('emptyCartMessage');
-    document.getElementById('loading-spinner').style.display = 'block';
+    //document.getElementById('loading-spinner').style.display = 'block';
     const PendingOrDeliveredOrders = await getPendingOrDeliveredOrders();
     const CancelledOrReturnedOrders = await getCancelledOrReturnedOrders();
     
     const displayCartItems = async () => {
-        document.getElementById('loading-spinner').style.display = 'block';
+        //document.getElementById('loading-spinner').style.display = 'block';
         
         if (PendingOrDeliveredOrders && PendingOrDeliveredOrders.length > 0){
             emptyCartMessage.style.display = 'none'; // Masque le message de panier vide
@@ -89,6 +89,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 for(const productItem of items){
                     const productId = productItem.productId; // Récupérer l'ID du produit
                     const product = await getProductById(productId);
+                    console.log(product)
                     const cartItemElement = document.createElement('li');
                     cartItemElement.className = 'cart-item';
                     let state;
@@ -173,7 +174,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 
             }
-            document.getElementById('loading-spinner').style.display = 'none';
+            //document.getElementById('loading-spinner').style.display = 'none';
         }
 
         if (CancelledOrReturnedOrders && CancelledOrReturnedOrders.length > 0){
@@ -251,10 +252,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 
             }
-            document.getElementById('loading-spinner').style.display = 'none';
+            //document.getElementById('loading-spinner').style.display = 'none';
         }
 
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
 
     }
 

@@ -222,7 +222,7 @@ import { getUserOrdersById } from './firebase.js';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-    document.getElementById('loading-spinner').style.display = 'block';
+    //document.getElementById('loading-spinner').style.display = 'block';
 
     // Récupérer les données de commande pour l'utilisateur
     let orderData = await getUserOrdersById(orderId);
@@ -305,5 +305,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         Fseven();
     }
 
-    document.getElementById('loading-spinner').style.display = 'none'; // Cacher le spinner de chargement
+    //document.getElementById('loading-spinner').style.display = 'none'; // Cacher le spinner de chargement
 });

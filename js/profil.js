@@ -2,7 +2,7 @@ import { getUserDataValue, deleteAddressByIndex, updateAddressByIndex } from './
 
 // Fonction pour récupérer les adresses et les afficher
 async function displayAddresses() {
-    document.getElementById('loading-spinner').style.display = 'block';
+    //document.getElementById('loading-spinner').style.display = 'block';
 
     const adresseContentDiv = document.getElementById('content'); // Conteneur où les adresses seront ajoutées
 
@@ -85,7 +85,7 @@ async function displayAddresses() {
         console.error("Erreur lors de la récupération des adresses :", error);
         adresseContentDiv.innerHTML += `<p>Erreur lors de la récupération des adresses</p>`;
     } finally {
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
     }
 }
 
@@ -101,7 +101,7 @@ function openCustomAlertDelete(index) {
 
     // Attacher l'événement au bouton de confirmation avec l'index actuel
     document.getElementById('confirmBtnDelete').onclick = async () => {
-        document.getElementById('loading-spinner').style.display = 'block';
+        //document.getElementById('loading-spinner').style.display = 'block';
 
         try {
             await deleteAddressByIndex(index); // Supprimer l'adresse à l'index spécifié
@@ -109,7 +109,7 @@ function openCustomAlertDelete(index) {
             console.error("Erreur lors de la suppression de l'adresse :", error);
         } finally {
             closeCustomAlertDelete(); // Ferme l'alerte après suppression
-            document.getElementById('loading-spinner').style.display = 'none';
+            //document.getElementById('loading-spinner').style.display = 'none';
             displayAddresses(); // Actualise la liste des adresses après suppression
         }
     };
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function changeCurrent(pageIndex) {
-    document.getElementById('loading-spinner').style.display = 'block';
+    //document.getElementById('loading-spinner').style.display = 'block';
 
     try {
         const userData = await getUserDataValue(); // Récupère les données utilisateur
@@ -181,7 +181,7 @@ async function changeCurrent(pageIndex) {
     } finally {
         // Cacher le spinner après la fin de toutes les opérations ou en cas d'erreur
         displayAddresses(); // Actualise la liste des adresses après suppression
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
     }
 }
 

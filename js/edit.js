@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (pageIndex != null) {
 
      // Masque le spinner après la requête
-     document.getElementById('loading-spinner').style.display = 'block';
+     //document.getElementById('loading-spinner').style.display = 'block';
     try {
         const userData = await getUserDataValue(); // Récupère les données utilisateur
 
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error('Erreur lors de la récupération des données utilisateur:', error);
     }finally {
         // Masque le spinner après la requête
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
     }
     }
 });
@@ -86,7 +86,7 @@ document.querySelector('.form').addEventListener('submit', async (event) => {
         select: (pageIndex == null) ? false : userData.addresses[pageIndex].select
     };
     try {
-        document.getElementById('loading-spinner').style.display = 'block';
+        //document.getElementById('loading-spinner').style.display = 'block';
 
         // Appeler la fonction pour mettre à jour les données utilisateur
         if (pageIndex != null) {
@@ -100,7 +100,7 @@ document.querySelector('.form').addEventListener('submit', async (event) => {
 
         // Afficher un message de succès ou rediriger l'utilisateur
         // alert('Les données utilisateur ont été mises à jour avec succès.');
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
 
     } catch (error) {
         console.error("Erreur lors de la mise à jour des données :", error);

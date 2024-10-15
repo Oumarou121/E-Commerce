@@ -1,7 +1,7 @@
 import { getFavorites, getProductById, removeFavorite, isInCart, removeFromCart, addToCart } from './firebase.js'; 
 
 async function loadFavorites() {
-    document.getElementById('loading-spinner').style.display = 'block';
+    //document.getElementById('loading-spinner').style.display = 'block';
     const favoritesListElement = document.getElementById('cart-items');
     const emptyCartMessage = document.getElementById('emptyCartMessage');
 
@@ -51,7 +51,7 @@ async function loadFavorites() {
                 // Ajouter l'élément au DOM
                 favoritesListElement.appendChild(productElement);
 
-                document.getElementById('loading-spinner').style.display = 'none';
+                //document.getElementById('loading-spinner').style.display = 'none';
 
                 // Ajouter un événement pour supprimer le produit des favoris
                 productElement.querySelector('.Delete').addEventListener('click', async () => {
@@ -91,7 +91,7 @@ async function loadFavorites() {
             }
         }
     }
-    document.getElementById('loading-spinner').style.display = 'none';
+    //document.getElementById('loading-spinner').style.display = 'none';
 }
 
 // Appel de la fonction pour charger les favoris

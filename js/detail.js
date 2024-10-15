@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const cartItemsList = document.querySelector('.cart-items');
     const detailsList = document.querySelector('.detail-exp');
 
-    document.getElementById('loading-spinner').style.display = 'block';
+    //document.getElementById('loading-spinner').style.display = 'block';
     let orderData = await getUserOrdersById(orderId);
     orderData = orderData[0];
     const shippingAddress = orderData.shippingAddress;
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let totalQty = 0;
     
     const displayCartItems = async () => {
-        document.getElementById('loading-spinner').style.display = 'block';
+        //document.getElementById('loading-spinner').style.display = 'block';
         const ads = (shippingAddress.adresse_sup == "") ? shippingAddress.adresse : `${shippingAddress.adresse} , ${shippingAddress.adresse_sup}`;
         orderNum.textContent = `Commande n°${orderId}`;
         console.log(orderData.createdAt);
@@ -316,7 +316,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         orderNbr.textContent = nbr;
 
-        document.getElementById('loading-spinner').style.display = 'none';
+        //document.getElementById('loading-spinner').style.display = 'none';
     }
 
     await displayCartItems();
@@ -388,7 +388,7 @@ function openCustomAlert(orderId, newStatus, productIndex) {
 
     // Attacher l'événement au bouton de confirmation avec les paramètres actuels
     confirmBtn.onclick = async () => {
-        document.getElementById('loading-spinner').style.display = 'block';
+        //document.getElementById('loading-spinner').style.display = 'block';
 
         try {
             // Appeler la fonction pour mettre à jour le statut du produit dans la commande
@@ -398,7 +398,7 @@ function openCustomAlert(orderId, newStatus, productIndex) {
             console.error("Erreur lors de la mise à jour du statut du produit :", error);
         } finally {
             closeCustomAlert(); // Ferme l'alerte après l'opération
-            document.getElementById('loading-spinner').style.display = 'none';
+            //document.getElementById('loading-spinner').style.display = 'none';
             window.history.back();
         }
     };
@@ -454,12 +454,12 @@ function openCustomAlertRetourne(product, item, orderId, newStatus, productIndex
 
     // Attacher l'événement au bouton de confirmation avec les paramètres actuels
     confirmBtn.onclick = async () => {
-        document.getElementById('loading-spinner').style.display = 'block';
+        //document.getElementById('loading-spinner').style.display = 'block';
         const motifContent = document.getElementById('motif');
         const texteMotif = motifContent.value.trim(); // Obtenir le texte et supprimer les espaces en début/fin
 
         if(texteMotif === ""){
-            document.getElementById('loading-spinner').style.display = 'none';
+            //document.getElementById('loading-spinner').style.display = 'none';
         }else{
             try {
                 await updateProductStatusInOrder(orderId, newStatus, productIndex, texteMotif);
@@ -467,7 +467,7 @@ function openCustomAlertRetourne(product, item, orderId, newStatus, productIndex
                 
             } finally {
                 closeCustomAlertRetourne(); // Ferme l'alerte après l'opération
-                document.getElementById('loading-spinner').style.display = 'none';
+                //document.getElementById('loading-spinner').style.display = 'none';
                 showAlert1("Votre demande est encours d'examination");
                 delay(250);
                 window.history.back();
