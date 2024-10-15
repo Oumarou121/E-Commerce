@@ -207,3 +207,13 @@ h2{
 .iconss i:hover{
     background: hsl(var(--clr-black) / 0.1);
 }
+
+.del{
+    display: flex;
+    align-items: flex-end;
+    cursor: pointer;
+}
+
+.del:hover{
+    text-decoration: underline red;
+}

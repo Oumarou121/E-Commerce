@@ -119,7 +119,7 @@ ul li .progress{
     place-items: center;
     color: #fff;
     position: relative;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 .progress::after{
     content: " ";
@@ -154,8 +154,12 @@ ul li .active p{
     display: none;
 }
 ul li .active .uil{
-    font-size: 20px;
+    /* font-size: 20px; */
     display: flex;
+}
+
+i{
+    font-size: 20px;
 }
 
 /* Responsive Css  */
@@ -196,4 +200,28 @@ ul li .active .uil{
     .head .head_2{
         font-size: 16px;
     }
+}
+
+/* .three i,
+.four i,
+.five i,
+.six i{
+    background: white;
+    border-radius: 15px;
+    width: 50%;
+    height: 50%;
+    font-size: 0;
+} */
+
+.custom-style {
+    background: white;
+    border-radius: 15px;
+    width: 50%;
+    height: 50%;
+    font-size: 0;
+}
+
+li {
+    transition: opacity 0.5s ease; /* Transition sur 0.5s pour l'opacité */
+    display: none; /* Masque l'élément au départ */
 }

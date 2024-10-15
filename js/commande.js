@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     let date;
 
 
-                    if (productItem.status == "pending" || productItem.status == "delivered"){
+                    if (productItem.status == "pending" || productItem.status == "delivered" || productItem.status == "checking"){
                         if (productItem.status == "pending") {
                             const now = Date.now(); // Obtenir le timestamp actuel
                             const time = productItem.updatedAt; // Récupérer le timestamp de `updatedAt`
@@ -113,6 +113,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                         
                         } else if (productItem.status == "delivered") {
                             state = "COMMANDE LIVRÉ";
+                            date = formatDate(productItem.updatedAt);
+                        } else if (productItem.status == "checking"){
+                            state = "COMMANDE EN EXAMINATION";
                             date = formatDate(productItem.updatedAt);
                         }
                     
@@ -141,6 +144,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                         if (productItem.status == "pending") {
                             cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-blue))"; // Changer la couleur de fond
                         } 
+
+                        if (productItem.status == "checking") {
+                            cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-red) / .5)"; // Changer la couleur de fond
+                        }
                     
                         if (productItem.quantity == 1) {
                             cartItemElement.querySelector(".qty").style.visibility = "hidden";

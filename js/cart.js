@@ -313,7 +313,8 @@ async function displayAddresses() {
                 adresseDiv.classList.add('adresse'); // Ajoute la classe 'methode'
 
                 const ads = (address.adresse_sup == "") ? address.adresse : `${address.adresse} , ${address.adresse_sup}`;
-                const phone =  (address.phone2 == "") ? `+227 ${address.phone1}` : `+227 ${address.phone1} / +227 ${address.phone2}`;
+                const phone = (address.phone1 == "" && address.phone2 == "") ? `........` :  (address.phone2 == "") ? `+227 ${address.phone1}` : `+227 ${address.phone1} / +227 ${address.phone2}`;
+                const region = (address.region == "") ? `........` : `${address.region} , Niger` ;
 
                 adresseDiv.innerHTML = `
                 <div id="edit" class="title-content">
@@ -332,7 +333,7 @@ async function displayAddresses() {
                         <h3 class="select">Adresse par défaut :</h3>
                         <p>${address.prenom} ${address.nom}</p>
                         <p>${ads}</p>
-                        <p>${address.region} , Niger</p>
+                        <p>${region}</p>
                         <p>${phone}</p>
                     </div>
                 </div>
@@ -531,15 +532,72 @@ document.getElementById('confirmer').addEventListener('click', async () => {
 
     // Appeler la fonction addOrder pour ajouter la commande
     try {
-        const response = await addOrder(orderData);
-        console.log(response);
-        // Gérer le succès (par exemple, afficher un message à l'utilisateur)
+        if (adresse.adresse == "" || adresse.phone1 == "" || adresse.region == "") {
+            //NADA   
+        }else{
+            const response = await addOrder(orderData);
+        }        
     } catch (error) {
         console.error(error);
         // Gérer l'erreur (par exemple, afficher un message d'erreur)
     }finally{
-        closeCustomAlert();
+        
         document.getElementById('loading-spinner').style.display = 'none';
+        if (adresse.adresse == "" || adresse.phone1 == "" || adresse.region == ""){
+            showAlert1("Veuillez compléter votre adresse principale.");
+        }else{
+            closeCustomAlert();
+            showAlert("Votre commande a été effectuée avec succès");   
+        }
     }
     
 });
+
+
+// Fonction pour afficher l'alerte au centre de l'écran
+function showAlert(message) {
+    const alertBox = document.createElement('div');
+    alertBox.classList.add('alert', 'show');
+    alertBox.innerHTML = `
+    <span class="text-black">${message}<a href="/commande.html"> Voir vos commandes.</a></span>
+    <span class="close-btn">&times;</span>
+    `;
+    
+    document.body.appendChild(alertBox);
+
+    alertBox.querySelector('.close-btn').addEventListener('click', () => {
+        alertBox.classList.add('hide');
+    });
+
+    setTimeout(() => {
+        alertBox.classList.add('hide');
+    }, 5000);
+
+    setTimeout(() => {
+        alertBox.remove();
+    }, 5500);
+}
+
+// Fonction pour afficher l'alerte au centre de l'écran
+function showAlert1(message) {
+    const alertBox = document.createElement('div');
+    alertBox.classList.add('alert', 'show');
+    alertBox.innerHTML = `
+    <span class="text-black">${message}<a href="#"> </a></span>
+    <span class="close-btn"></span>
+    `;
+    
+    document.body.appendChild(alertBox);
+
+    alertBox.querySelector('.close-btn').addEventListener('click', () => {
+        alertBox.classList.add('hide');
+    });
+
+    setTimeout(() => {
+        alertBox.classList.add('hide');
+    }, 5000);
+
+    setTimeout(() => {
+        alertBox.remove();
+    }, 5500);
+}

@@ -329,3 +329,226 @@ h2{
         margin-bottom: 20px;
     }
 }
+
+/* ================================================= */
+/* Style pour l'alerte */
+.alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: hsl(var(--clr-white) );
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease, top 0.3s ease;
+    z-index: 9999;
+}
+
+.alert.show {
+    opacity: 1;
+    top: 50%;
+}
+
+.alert.hide {
+    opacity: 0;
+    top: 40%;
+}
+
+.alert .close-btn {
+    margin-left: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: black;
+}
+
+.alert a{
+    text-decoration: none;
+}
+
+.block{
+    overflow: scroll;
+    height: 95%;
+}
+
+/* Classe pour désactiver le défilement */
+.no-scroll {
+    overflow: hidden; /* Désactive le défilement */
+}
+
+/* ============================================================= */
+
+/* Style pour masquer l'alerte par défaut */
+.custom-alert {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 999;
+  }
+    
+  .alert-content {
+    background-color: white;
+    padding: 20px;
+    width: 300px;
+    max-width: 80%;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+  }
+
+  .custom-alert h2{
+    text-align: center;
+  }
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 25px;
+    cursor: pointer;
+  }
+  
+  /* Désactive les interactions sur la page lorsque l'alerte est ouverte */
+  .no-interaction {
+    pointer-events: none; /* Désactive tous les clics et interactions */
+    opacity: 0.5; /* Optionnel : diminue l'opacité pour indiquer que la page est désactivée */
+  }
+  
+  /* Classe pour désactiver le défilement */
+  .no-scroll {
+    overflow: hidden; /* Désactive le défilement */
+  }
+
+  .confirmBtn{
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    background: hsl(var(--clr-red) / .9);
+  }
+
+  /* ================================================= */
+/* Style pour l'alerte */
+.alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: hsl(var(--clr-white) );
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease, top 0.3s ease;
+    z-index: 9999;
+}
+
+.alert.show {
+    opacity: 1;
+    top: 50%;
+}
+
+.alert.hide {
+    opacity: 0;
+    top: 40%;
+}
+
+.alert .close-btn {
+    margin-left: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: black;
+}
+
+.alert a{
+    text-decoration: none;
+}
+
+/* =============================================== */
+
+.alert-contentRetourne {
+    background-color: hsl(var(--clr-white) / .9);
+    padding: 20px;
+    width: 50%;
+    height: 45%;
+    border-radius: .25rem;
+    text-align: center;
+    position: relative;
+    text-align: start;
+    display: grid;
+    align-items: end;
+}
+
+.block{
+    height: 100%;
+    overflow: scroll;
+}
+
+.confirmer{
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+    text-align: center;
+    background: hsl(var(--clr-red) / .7);
+    color: white;
+    cursor: pointer;
+    height: 3em;
+}
+
+@media (max-width: 35em){
+    .alert-contentRetourne{
+        width: 90%;
+    }
+}
+
+@media (min-width: 59em){
+    .alert-contentRetourne{
+        width: 30%;
+    }
+}
+
+.content-item{
+    display: grid;
+    grid-template-rows: repeat(1, 1fr);
+    background: white;
+}
+
+.item-content{
+    display: flex;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid hsl(var(--clr-gray));
+}
+
+.item-image{
+    width: 75px;
+    height: 75px;
+}
+
+.motif{
+    padding-top: 10px;
+}
+
+.motif-content{
+    background: white;
+}
+
+/* Style pour la zone de texte */
+.motif-content textarea {
+    width: 95%;
+    height: 100%;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    resize: none; /* Empêche le redimensionnement */
+}

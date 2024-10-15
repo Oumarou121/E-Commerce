@@ -1,5 +1,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
+    sendPasswordResetEmail, onAuthStateChanged, signOut, deleteUser, 
+    reauthenticateWithCredential, EmailAuthProvider } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
 import { getFirestore, doc, setDoc, getDoc, updateDoc, getDocs, collection,
     arrayUnion, arrayRemove, Timestamp, increment, deleteDoc, query, where,
     addDoc } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js';
@@ -42,8 +44,8 @@ export async function signUp(name, email, password) {
         await setDoc(doc(db, "users", user.uid), {
             id: user.uid,
             email: email,
-            // nom: '',
-            // prenom: capitalizeFirstLetter(name), // Fonction de capitalisation (à définir)
+            nom: "",
+            prenom: capitalizeFirstLetter(name), // Capitalisation du prénom
             addresses: [
                 {
                     nom: "",
@@ -52,16 +54,13 @@ export async function signUp(name, email, password) {
                     adresse: "",
                     adresse_sup: "",
                     phone1: "",
-                    phone2 : "",
-                    select : true
+                    phone2: "",
+                    select: true
                 }
-            ], // Initialisation d'un tableau d'adresses vide
+            ], // Initialisation d'un tableau d'adresses
             role: 'client',
-            favoris: [], // Favoris initialisé à un tableau vide
-            cart: {
-                // Clé (ID produit) : Valeur (détails du produit)
-                // Ex : 'productId123': { qty: 1, dateAdded: '2023-10-04' }
-            } // Initialisation du panier en tant qu'objet vide
+            favoris: [], // Initialisation des favoris
+            cart: {} // Initialisation du panier en tant qu'objet vide
         });
 
         return {
@@ -78,7 +77,6 @@ export async function signUp(name, email, password) {
         document.getElementById('loading-spinner').style.display = 'none';
     }
 }
-
 
 export async function signIn(email, password) {
     // Affiche le spinner
@@ -146,6 +144,58 @@ export async function resetPassword(email) {
         document.getElementById('loading-spinner').style.display = 'none';
     }
 }
+
+
+export async function deleteAccount(email, password) {
+    const user = auth.currentUser;
+
+    if (!user) {
+        return {
+            status: 401,
+            message: "Utilisateur non connecté",
+        };
+    }
+
+    try {
+        // Étape 1 : Réauthentifier l'utilisateur pour des raisons de sécurité
+        const credential = EmailAuthProvider.credential(email, password);
+        await reauthenticateWithCredential(user, credential);
+
+        try {
+            // Étape 2 : Supprimer les données utilisateur dans Firestore
+            const userDocRef = doc(db, "users", user.uid);
+            await deleteDoc(userDocRef);
+
+            // Étape 3 : Supprimer le compte d'authentification de l'utilisateur
+            await deleteUser(user);
+
+            return {
+                status: 200,
+                message: "Compte supprimé avec succès",
+            };
+        } catch (error) {
+            return {
+                status: 500,
+                message: "Erreur lors de la suppression du compte dans Firestore : " + error.message,
+            };
+        }
+    } catch (error) {
+        // Vérification spécifique des erreurs Firebase
+        let errorMessage = "Réauthentification échouée : " + error.message;
+        if (error.code === 'auth/user-mismatch') {
+            errorMessage = "Les informations d'identification ne correspondent pas à l'utilisateur connecté.";
+        } else if (error.code === 'auth/wrong-password') {
+            errorMessage = "Le mot de passe fourni est incorrect.";
+        }
+
+        return {
+            status: 403,
+            message: errorMessage,
+        };
+    }
+}
+
+
 
 // Fonction pour afficher l'utilisateur courant
 export function getUser() {
@@ -1078,7 +1128,7 @@ export const getPendingOrDeliveredOrders = () => {
                     const q = query(
                         collection(db, "orders"),
                         where("userId", "==", user.uid),
-                        where("status", "in", ["pending", "delivered"])
+                        where("status", "in", ["pending", "delivered", "checking"])
                     );
 
                     const querySnapshot = await getDocs(q);
@@ -1169,6 +1219,90 @@ export async function updateOrderStatus(orderId, newStatus) {
         });
     });
 }
+
+export async function updateProductStatusInOrder(orderId, newStatus, productIndex, verificationNote = "") {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    // Rechercher le document correspondant à l'orderId
+                    const ordersQuery = query(collection(db, "orders"), where("orderId", "==", orderId));
+                    const querySnapshot = await getDocs(ordersQuery);
+
+                    if (querySnapshot.empty) {
+                        resolve({
+                            status: 404,
+                            message: "Commande non trouvée",
+                        });
+                        return;
+                    }
+
+                    // Il est supposé qu'il y a un seul document avec cet orderId
+                    const orderDoc = querySnapshot.docs[0];
+                    const orderRef = orderDoc.ref;
+
+                    // Récupérer les items actuels
+                    const orderData = orderDoc.data();
+                    const items = orderData.items;
+
+                    // Vérifier si l'index du produit est valide
+                    if (productIndex < 0 || productIndex >= items.length) {
+                        resolve({
+                            status: 400,
+                            message: "Index du produit invalide",
+                        });
+                        return;
+                    }
+
+                    // Mettre à jour le statut et la date de mise à jour du produit
+                    items[productIndex].status = newStatus;
+                    items[productIndex].updatedAt = Date.now();
+
+                    // Si le statut est "checking", ajouter un paramètre supplémentaire
+                    if (newStatus === "checking") {
+                        items[productIndex].verificationNote = verificationNote || "Aucune note fournie";
+                    }
+
+                    // Préparer les mises à jour pour Firestore
+                    const updates = {
+                        items: items,
+                        updatedAt: Timestamp.now(),
+                    };
+
+                    // Si la commande ne contient qu'un seul produit, mettre à jour aussi le statut de la commande
+                    if (items.length === 1) {
+                        updates.status = newStatus;
+                    } else {
+                        // Vérifier si tous les produits ont le même statut que le nouveau statut
+                        const allSameStatus = items.every(item => item.status === newStatus);
+                        if (allSameStatus) {
+                            updates.status = newStatus;
+                        }
+                    }
+
+                    // Mettre à jour la commande dans Firestore
+                    await updateDoc(orderRef, updates);
+
+                    resolve({
+                        status: 200,
+                        message: "Statut du produit et de la commande mis à jour avec succès",
+                    });
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message,
+                    });
+                }
+            } else {
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté",
+                });
+            }
+        });
+    });
+}
+
 
 export async function deleteOrder(orderId) {
     return new Promise((resolve, reject) => {

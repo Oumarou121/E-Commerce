@@ -20,7 +20,8 @@ async function displayAddresses() {
                 adresseDiv.classList.add('adresse'); // Ajoute la classe 'methode'
 
                 const ads = (address.adresse_sup == "") ? address.adresse : `${address.adresse} , ${address.adresse_sup}`;
-                const phone =  (address.phone2 == "") ? `+227 ${address.phone1}` : `+227 ${address.phone1} / +227 ${address.phone2}`;
+                const phone = (address.phone1 == "" && address.phone2 == "") ? `........` :  (address.phone2 == "") ? `+227 ${address.phone1}` : `+227 ${address.phone1} / +227 ${address.phone2}`;
+                const region = (address.region == "") ? `........` : `${address.region} , Niger` ;
 
                 adresseDiv.innerHTML = `
                 <div id="edit" class="title-content">
@@ -39,7 +40,7 @@ async function displayAddresses() {
                         <h3 class="select">Adresse par défaut :</h3>
                         <p>${address.prenom} ${address.nom}</p>
                         <p>${ads}</p>
-                        <p>${address.region} , Niger</p>
+                        <p>${region}</p>
                         <p>${phone}</p>
                     </div>
                 </div>
@@ -186,4 +187,8 @@ async function changeCurrent(pageIndex) {
 
 document.getElementById('add').addEventListener('click', ()=> {
     window.location.href = 'edit.html'
+})
+
+document.getElementById('deleteAccount').addEventListener('click', ()=> {
+    window.location.href = 'account.html'
 })

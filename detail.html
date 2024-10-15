@@ -354,11 +354,55 @@
               z-index: 1000; /* Met le chargement devant les autres éléments */
             }
         </style>
+
+        <!-- Alerte personnalisée -->
+        <div id="customAlert" class="custom-alert">
+            <div class="alert-content">
+              <span class="close-btn" id="closeAlert">&times;</span>
+              <h2>Alerte !</h2>
+              <p>Voulez-vous vraiment annuler la commande de ce produit ?</p>
+              <button class="confirmBtn text-white" id="confirmBtn">Confirmer</button>
+            </div>
+        </div>
+
+        <!-- Alerte personnalisée -->
+        <div id="customAlertRetourne" class="custom-alert">
+            <div class="alert-contentRetourne">
+              <!-- <span class="close-btn" id="closeAlert">&times;</span> -->
+                <div class="block">
+                    <div>
+                        <h3>RETOUR DE PRODUIT</h3>
+                        <span class="close-btn" id="closeAlertRetourne">&times;</span>
+                    </div>
+
+                    <div class="content-item">
+                        
+                    </div>
+
+                    <div class="motif">
+                        <div>
+                          <h4>MOTIF DE RETOUR</h4>
+                        </div>
+          
+                        <div class="motif-content">
+                            <textarea id="motif" class="bg-gray text-black fs-poppins" rows="10" placeholder="Votre message ici" required></textarea>
+                        </div>
+                    </div>
+                
+                </div>
+                <div id="confirmBtnRetourne" class="confirmer">
+                    CONFIRMER LE RETOUR
+                </div>
+            </div>
+        </div>
+
     </header>
 
     <!-- ======================End Header Section================================ -->
 
     <!-- ======================Detail Feature Section================================ -->
+
+<main id="main">    
 
     <section class="shop-feature bg-gray grid">
       <div>
@@ -370,7 +414,7 @@
     <!-- ======================Detail Feature Section================================ -->
 
     <section class="first">
-        <div class="exit text-black" onclick="move1()">
+        <div id="exit" class="exit text-black">
             <i class="uil uil-arrow-left"></i>
             <p class="fs-150">Détails de la commande</p>
         </div>
@@ -398,83 +442,6 @@
 
         <ul class="cart-items">
                 
-            
-            <!-- Représentation d'un article -->
-
-            <!-- <li class="cart-content" data-unit-price="125000">
-                <div class="content-left">
-                    <header class="cart-icon-top">
-                        <div class="state-box">
-                            <div class="state1 text-white bg-green">COMMANDE LIVRÉE</div>
-                            <div class="state2 text-white bg-red">NON-RETOURNABLE</div>
-                        </div>
-                        <div class="time">Le 21-02-2024</div>
-                    </header>
-                    <div class="cart-item">
-                        <div class="image">
-                            <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-                        </div>
-                        <div class="div-name">
-                            <div class="name text-black">
-                                SMARTPHONE VIVO Y03 4/64 / VERT
-                            </div>
-                            <div class="qty">Quantité: 1</div>
-                            <div class="price">125,000 FCFA</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="content-right">
-                    <div class="btn-one text-white">
-                        COMMANDE À NOUVEAU
-                    </div>
-                    <div class="btn-two" onclick="move()">
-                        HISTORIQUE DU COLIS
-                    </div>
-                </div>
-                <footer class="cart-icon-bottom">
-                    <i class="uil uil-redo">Retourne le produit</i> 
-                </footer>
-            </li> -->
-    
-            <!-- Autres articles peuvent être ajoutés ici de la même manière -->
-            
-            <!-- Représentation d'un article -->
-
-            <!-- <li class="cart-content" data-unit-price="125000">
-                <div class="content-left">
-                    <header class="cart-icon-top">
-                        <div class="state-box">
-                            <div class="state1 text-white bg-green">COMMANDE LIVRÉE</div>
-                            <div class="state2 text-white bg-red">NON-RETOURNABLE</div>
-                        </div>
-                        <div class="time">Le 21-02-2024</div>
-                    </header>
-                    <div class="cart-item">
-                        <div class="image">
-                            <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-                        </div>
-                        <div class="div-name">
-                            <div class="name text-black">
-                                SMARTPHONE VIVO Y03 4/64 / VERT
-                            </div>
-                            <div class="qty">Quantité: 2</div>
-                            <div class="price">125,000 FCFA</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="content-right">
-                    <div class="btn-one text-white">
-                        COMMANDE À NOUVEAU
-                    </div>
-                    <div class="btn-two" onclick="move()">
-                        HISTORIQUE DU COLIS
-                    </div>
-                </div>
-                <footer class="cart-icon-bottom">
-                    <i class="uil uil-redo">Retourne le produit</i> 
-                </footer>
-            </li> -->
-
         </ul>
     
     </section>
@@ -613,5 +580,6 @@
 
 
 </section>
+</main>
 </body>
 </html>
