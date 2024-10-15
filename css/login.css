@@ -36,31 +36,6 @@ body {
 }
 
 
-
-/* .login {
-	display: flex;
-	align-items: center;
-	margin: auto;
-	width: 100%;
-	justify-content: center;
-	height: 100vh;
-}
-
-.login h1 {
-	font-size: 2em;
-	margin: 0 0 1.5rem;
-	text-align: center;
-}
-
-
-
-.login__account {
-	display: flex;
-	justify-content: center;
-	height: 1.5em;
-	margin-bottom: 1.5em;
-} */
-
 /* ====================================================== */
 
 .login__or {
@@ -387,7 +362,7 @@ body {
 }
 
 
-#login{
+/* #login{
     left: 20px;
 }
 
@@ -401,23 +376,24 @@ body {
 
 #forgot-password{
     left: 450px;
+} */
+
+#login, #register, #password, #forgot-password {
+    position: absolute; /* Assurez-vous que le positionnement soit correct */
+    /* left: 20px; Position par défaut */
+    transition: left 1s ease-in-out; /* Pour les transitions douces */
+}
+
+.hidden {
+    left: -400px; /* Ou une autre valeur selon vos besoins */
 }
 
 /* ======================================================= */
 
 #login-modal{
-    /* position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 100;
-    display: none;
-    justify-content: center;
-    align-items: center; */
 	display: flex;
 	align-items: center;
+    justify-content: center;
 	margin: auto;
 	width: 100%;
 	justify-content: center;
@@ -426,17 +402,11 @@ body {
 
 .modal{
     width: 450px;
-    height: 65vh;
+    height: 75vh;
     position: relative;
     border-radius: 0.725rem;
     background: var(--fg);
     overflow: hidden;
-	/* display: flex;
-	align-items: center;
-	margin: auto;
-	width: 100%;
-	justify-content: center;
-	height: 100vh; */
 }
 
 .top-form{
@@ -453,7 +423,7 @@ body {
 }
 
 .div-body{
-    padding: 20px 40px;
+    padding: 20px 20px;
     position: relative;
 }
 
@@ -461,9 +431,12 @@ body {
     padding: 0 30px;
     width: 400px;
     position: absolute;
-    transition: .5s;
+    transition: left 1s ease-in-out; /* Pour les transitions douces */
 }
 
+.login__segmented {
+    margin: 20px;
+}
 
 @media (max-width: 35em){
     
@@ -472,13 +445,16 @@ body {
         /* width: 300px; */
         width: 90%;
         position: absolute;
-        transition: .5s;
     }
 
     .modal{
         /* width: 350px; */
         width: 100%;
         height: 65vh;
+    }
+
+    .login__segmented {
+        margin: 20px;
     }
 }
 
@@ -487,21 +463,17 @@ body {
         height: 80vh;
     }
 
-    .input-box{
-        padding: 0 0px;
-    }
-
     .div-body {
         padding: 20px 20px;
+    }
+
+    .login__segmented {
+        margin: 20px 0;
     }
 }
 
 
 /* ====================================== */
-
-/* .login__forgot{
-    color: hsl(var(--hue), 90%, 30%);
-} */
 
 h1{
     color: white;

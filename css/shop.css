@@ -255,7 +255,8 @@ button{cursor: pointer;}
 
 h2 {
     text-align: start;
-    color: hsl(var(--clr-blue) / .8);;
+    /* color: hsl(var(--clr-blue) / .8);; */
+    color: hsl(var(--clr-red));
     
 }
 
@@ -462,7 +463,7 @@ input[type="range"] {
 }
 
 .categories h3{
-  color: hsl(var(--clr-blue) / .8);
+  color: hsl(var(--clr-red) / .8);
 }
 
 .links-container i{
