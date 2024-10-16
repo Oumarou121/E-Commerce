@@ -24,7 +24,8 @@
     <link rel="stylesheet" href="css/contactus.css">
     <link rel="stylesheet" href="css/blog.css">
     <script src="js/index.js" type="module"></script>
-    <script src="js/shop.js" defer></script>
+    <!-- <script src="js/shop.js" type="module"></script> -->
+    <script src="js/contactus.js" type="module"></script>
     <title>Ecommerce Website</title>
 </head>
 <body class="home">
@@ -69,210 +70,7 @@
               </div> 
   
               <i class="uil uil-search"></i>
-              <i id="cart-box" aria-controls="cart-icon" class="uil uil-shopping-bag"></i>
-              <div id="login-modal">
-                  <!-- Login close  -->
-                  <div class="modal">
-                      <div class="top-form">
-                          <div class="close-modal">
-                            &#10006;
-                          </div>
-                      </div>
-  
-                      <div class="div-body">
-                      <!-- Login switch nav -->
-                      <div class="login__segmented">
-                          <button class="login__segmented-btn" type="button" role="tab" aria-selected="true" onclick="login()">Sign In</button>
-                          <button class="login__segmented-btn login__segmented-btn1" type="button" role="tab" aria-selected1="false" onclick="register()">Sign Up</button>
-                          <div class="login__segmented-focus"></div>
-                      </div>
-  
-                      <!-- Login form -->
-                      <form id="login" class="input-box">
-                          <!-- Email -->
-                          <div class="login_div">
-                              <input class="login-input" id="user-email" type="email" name="email" autocomplete="off" placeholder=" ">
-                              <label class="login-label" for="user-email">Email</label>
-                              <div class="login-error">
-                                  <svg class="login-error-icon" width="12px" height="12px" aria-hidden="true">
-                                      <use href="#warning" />
-                                  </svg>
-                                  <span id="email-error" aria-live="assertive"></span>
-                              </div> 
-                          </div>
-  
-                          <!-- Password -->
-                          <div class="login_div">
-                              <a class="login__forgot text-white" href="#" onclick="forgot_password()">Forgot password?</a>
-                              <input class="login-input" id="user-password" type="password" name="password"
-                                  autocomplete="off" placeholder=" ">
-                              <label class="login-label" for="user-password">Password</label>
-                              <div class="login-error">
-                                  <svg class="login-error-icon" width="12px" height="12px" aria-hidden="true">
-                                      <use href="#warning" />
-                                  </svg>
-                                  <span id="password-error" aria-live="assertive"></span>
-                              </div>
-                              <button class="login__eye" type="button" title="Show password" data-action="password">
-                                  <svg class="login__eye-icon" width="24px" height="24px" data-icon="eye-off" aria-hidden="true">
-                                      <use href="#eye-off" />
-                                  </svg>
-                                  <svg class="login__eye-icon" width="24px" height="24px" data-icon="eye-on" aria-hidden="true">
-                                      <use href="#eye-on" />
-                                  </svg>
-                              </button>
-                          </div>
-  
-                          <!-- Button -->
-                          <button class="login-btn" type="submit" data-action="continue">Sign In</button>
-                      
-                           <!-- Login option separator -->
-                          <div class="login__or">Or Continue With</div>
-                          <div class="login__social">
-                              <button class="login__social-btn login__social-btn--google" type="button" title="Google">
-                                  <svg class="login__social-icon" width="16px" height="16px" aria-hidden="true">
-                                      <use href="#google" />
-                                  </svg>
-                              </button>
-                              <button class="login__social-btn login__social-btn--apple" type="button" title="Apple">
-                                  <svg class="login__social-icon" width="16px" height="16px" aria-hidden="true">
-                                      <use href="#apple" />
-                                  </svg>
-                              </button>
-                              <button class="login__social-btn login__social-btn--fb" type="button" title="Facebook">
-                                  <svg class="login__social-icon" width="16px" height="16px" aria-hidden="true">
-                                      <use href="#fb" />
-                                  </svg>
-                              </button>
-                          </div>
-  
-                      </form>
-  
-                      <!-- Forgot Password form -->
-                      <form id="forgot-password" class="input-box">
-  
-                          <!-- Email -->
-                          <div class="login_div">
-                              <input class="login-input" id="fg-user-email" type="email" name="email" autocomplete="off" placeholder=" ">
-                              <label class="login-label" for="fg-user-email">Email</label>
-                              <div class="login-error">
-                                  <svg class="login-error-icon" width="12px" height="12px" aria-hidden="true">
-                                      <use href="#warning" />
-                                  </svg>
-                                  <span id="fg-email-error" aria-live="assertive"></span>
-                              </div> 
-                          </div>
-  
-                          <!-- Button -->
-                          <button class="login-btn" type="button" data-action="fg_continue">Send</button>
-                          <button class="login-btn login__btn--secondary" type="button" onclick="login()">Back</button>
-                      </form>
-  
-                      <!-- Register form -->
-                      <form id="register" class="input-box">
-                          <!-- Name -->
-                          <div class="login_div">
-                              <input class="login-input" id="user-name" type="text" name="name" autocomplete="off" placeholder=" ">
-                              <label class="login-label" for="user-name">Name</label>
-                              <div class="login-error">
-                                  <svg class="login-error-icon" width="12px" height="12px" aria-hidden="true">
-                                      <use href="#warning" />
-                                  </svg>
-                                  <span id="name-error" aria-live="assertive"></span>
-                              </div> 
-                          </div>
-  
-                          <!-- Email -->
-                          <div class="login_div">
-                              <input class="login-input" id="register-user-email" type="email" name="email" autocomplete="off" placeholder=" ">
-                              <label class="login-label" for="register-user-email">Email</label>
-                              <div class="login-error">
-                                  <svg class="login-error-icon" width="12px" height="12px" aria-hidden="true">
-                                      <use href="#warning" />
-                                  </svg>
-                                  <span id="register-email-error" aria-live="assertive"></span>
-                              </div> 
-                          </div>
-  
-                          <!-- Button -->
-                          <button class="login-btn" type="button" data-action="register_continue">Continue</button>
-                      
-                           <!-- Login option separator -->
-                          <div class="login__or">Or Continue With</div>
-                          <div class="login__social">
-                              <button class="login__social-btn login__social-btn--google" type="button" title="Google">
-                                  <svg class="login__social-icon" width="16px" height="16px" aria-hidden="true">
-                                      <use href="#google" />
-                                  </svg>
-                              </button>
-                              <button class="login__social-btn login__social-btn--apple" type="button" title="Apple">
-                                  <svg class="login__social-icon" width="16px" height="16px" aria-hidden="true">
-                                      <use href="#apple" />
-                                  </svg>
-                              </button>
-                              <button class="login__social-btn login__social-btn--fb" type="button" title="Facebook">
-                                  <svg class="login__social-icon" width="16px" height="16px" aria-hidden="true">
-                                      <use href="#fb" />
-                                  </svg>
-                              </button>
-                          </div>
-  
-                      </form>
-  
-                       <!-- Password form -->
-                       <form id="password" class="input-box">
-                          
-                          <!-- Password -->
-                          <div class="login_div">
-                              <input class="login-input" id="pf-user-password1" type="password" name="password"
-                                  autocomplete="off" placeholder=" ">
-                              <label class="login-label" for="user-password">Password</label>
-                              <div class="login-error">
-                                  <svg class="login-error-icon" width="12px" height="12px" aria-hidden="true">
-                                      <use href="#warning" />
-                                  </svg>
-                                  <span id="pf-password-error1" aria-live="assertive"></span>
-                              </div>
-                              <button class="login__eye" type="button" title="Show password" data-action="password">
-                                  <svg class="login__eye-icon" width="24px" height="24px" data-icon="eye-off1" aria-hidden="true">
-                                      <use href="#eye-off" />
-                                  </svg>
-                                  <svg class="login__eye-icon" width="24px" height="24px" data-icon="eye-on1" aria-hidden="true">
-                                      <use href="#eye-on" />
-                                  </svg>
-                              </button>
-                          </div>
-  
-                          <!-- Confirm Password -->
-                          <div class="login_div">
-                              <input class="login-input" id="pf-user-password2" type="password" name="password"
-                                  autocomplete="off" placeholder=" ">
-                              <label class="login-label" for="user-password">Confirm Password</label>
-                              <div class="login-error">
-                                  <svg class="login-error-icon" width="12px" height="12px" aria-hidden="true">
-                                      <use href="#warning" />
-                                  </svg>
-                                  <span id="pf-password-error2" aria-live="assertive"></span>
-                              </div>
-                              <button class="login__eye" type="button" title="Show password" data-action="password">
-                                  <svg class="login__eye-icon" width="24px" height="24px" data-icon="eye-off2" aria-hidden="true">
-                                      <use href="#eye-off" />
-                                  </svg>
-                                  <svg class="login__eye-icon" width="24px" height="24px" data-icon="eye-on2" aria-hidden="true">
-                                      <use href="#eye-on" />
-                                  </svg>
-                              </button>
-                          </div>
-  
-                          <!-- Button -->
-                          <button class="login-btn" type="submit" data-action="continue">Sing Up</button>
-                          <button class="login-btn login__btn--secondary" type="button" data-action="back" onclick="register()">Back</button>
-                      </form>
-  
-                     
-                      </div>
-                  </div>
-              </div>    
+              <i id="cart-box" aria-controls="cart-icon" class="uil uil-shopping-bag"></i>    
   
               <!-- ================================================ -->
   
@@ -318,20 +116,30 @@
             around meand meridian the upper impenetrable .
           </p>
         </div>
-            <form action="#" class="contact-form grid">
-              <div class="grid">
-                <input type="email" class="bg-gray text-black fs-poppins" placeholder="Your Email">
-              </div>
-              <div class="grid">
-                <input type="text" class="bg-gray text-black fs-poppins" placeholder="Phone Number">
-              </div>
-              <div>
-                <textarea class="bg-gray text-black fs-poppins" rows="10" placeholder="Your Message Here"></textarea>
-              </div>
-              <div class="contact-btn">
-                <button class="large-btn bg-red text-white fs-poppins">Submit</button>
-              </div>
-            </form>
+        <form id="message" action="#" class="contact-form grid" novalidate>
+            <div class="login_div">
+                <input id="email" type="email" class="bg-gray text-black fs-poppins" placeholder="Your Email">
+                <div class="login-error">
+                    <svg class="login-error-icon" width="12px" height="12px" aria-hidden="true">
+                        <use href="#warning" />
+                    </svg>
+                    <span id="email-error" aria-live="assertive"></span>
+                </div> 
+            </div>
+            <div class="login_div">
+                <textarea id="content" class="bg-gray text-black fs-poppins" rows="10" placeholder="Your Message Here"></textarea>
+                <div class="login-error">
+                    <svg class="login-error-icon" width="12px" height="12px" aria-hidden="true">
+                        <use href="#warning" />
+                    </svg>
+                    <span id="content-error" aria-live="assertive"></span>
+                </div>
+            </div>
+            <div class="contact-btn">
+                <button type="submit" class="large-btn bg-red text-white fs-poppins">Submit</button>
+            </div>
+        </form>
+        
           </div>
 
 

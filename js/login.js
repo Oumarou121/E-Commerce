@@ -59,8 +59,8 @@ function forgot_password() {
 function password() {
     x.classList.add('hidden');
     y.classList.add('hidden');
-    z.classList.add('hidden');
-    k.classList.remove('hidden');
+    k.classList.add('hidden');
+    z.classList.remove('hidden');
 }
 
 function register() {
@@ -227,6 +227,10 @@ document.querySelector('[data-action="fg_continue"]').addEventListener('click', 
     }
 });
 
+// Ajout d'un compteur pour limiter les tentatives
+let loginAttempts = 0;
+const maxLoginAttempts = 3;
+
 document.querySelector('[data-action="continue"]').addEventListener('click', async (e) => {
     e.preventDefault();
 
@@ -241,25 +245,41 @@ document.querySelector('[data-action="continue"]').addEventListener('click', asy
     passwordError.textContent = '';
     passwordInput.classList.remove('error');
 
+    // Vérification des tentatives de connexion
+    if (loginAttempts >= maxLoginAttempts) {
+        passwordError.textContent = 'Trop de tentatives échouées. Veuillez réessayer plus tard.';
+        return;
+    }
+
     if (!emailInput.value.trim()) {
-        emailError.textContent = 'Required';
+        emailError.textContent = 'Champ requis.';
         emailInput.classList.add('error');
     } else if (!emailPattern.test(emailInput.value)) {
         emailError.textContent = 'Veuillez entrer une adresse email valide.';
         emailInput.classList.add('error');
     } else if (!passwordInput.value.trim()) {
-        passwordError.textContent = 'Required';
+        passwordError.textContent = 'Champ requis.';
         passwordInput.classList.add('error');
     } else {
-        //document.getElementById('loading-spinner').style.display = 'block';
         const result = await signIn(emailInput.value, passwordInput.value);
 
         if (result.status === 200) {
-            window.location.href = 'index.html';
+            if (result.role === 'admin') {
+                // Réinitialiser les tentatives après une connexion réussie
+                loginAttempts = 0;
+                window.location.href = 'admin/index.html';
+            } else if (result.role === 'client') {
+                // Rediriger les clients vers la page d'accueil du site e-commerce
+                loginAttempts = 0;
+                window.location.href = 'index.html';
+            }
+        } else if (result.status === 403) {
+            passwordError.textContent = result.message;
         } else if (result.status === 400) {
+            // Incrémenter les tentatives de connexion en cas d'erreur
+            loginAttempts++;
             passwordError.innerText = result.message;
         }
-        //document.getElementById('loading-spinner').style.display = 'none';
     }
 });
 

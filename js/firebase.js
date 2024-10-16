@@ -29,6 +29,29 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+export async function isUserAdmin() {
+    const user = auth.currentUser;
+    if (!user) {
+        // Si l'utilisateur n'est pas connecté, retourner false
+        return false;
+    }
+
+    try {
+        // Récupérer le document utilisateur dans Firestore
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+            const role = userDoc.data().role;
+            // Vérifier si le rôle est "admin"
+            return role === 'admin';
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error('Erreur lors de la vérification du rôle :', error);
+        return false;
+    }
+}
+
 export async function signUp(name, email, password) {
     // Affiche le spinner avant de commencer la requête
     toggleLoadingSpinner(true);
@@ -48,8 +71,6 @@ export async function signUp(name, email, password) {
         await setDoc(doc(db, "users", user.uid), {
             id: user.uid,
             email: email,
-            nom: "",
-            prenom: capitalizeFirstLetter(name), // Capitalisation du prénom
             addresses: [
                 {
                     nom: "",
@@ -89,22 +110,60 @@ export async function signIn(email, password) {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-
+        
         if (!user) {
             return {
                 status: 400,
-                message: 'Connexion échouée : utilisateur non trouvé'
+                message: 'Connexion échouée : utilisateur non trouvé.'
+            };
+        }
+        
+        // Vérifier le rôle de l'utilisateur dans Firestore
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+
+        if (userDoc.exists()) {
+            const role = userDoc.data().role;
+
+            if (role === 'admin') {
+                return {
+                    status: 200,
+                    message: 'Connexion réussie.',
+                    role: 'admin'
+                };
+            } else if (role === 'client') {
+                return {
+                    status: 200,
+                    message: 'Connexion réussie.',
+                    role: 'client'
+                };
+            } else {
+                return {
+                    status: 403,
+                    message: 'Accès refusé : rôle utilisateur inconnu.'
+                };
+            }
+        } else {
+            return {
+                status: 403,
+                message: 'Utilisateur introuvable dans la base de données.'
             };
         }
 
-        return {
-            status: 200,
-            message: 'Connexion réussie'
-        };
     } catch (error) {
+        // Gestion d'erreurs plus précise
+        let errorMessage = 'Erreur lors de la connexion.';
+
+        if (error.code === 'auth/user-not-found') {
+            errorMessage = 'Adresse e-mail non enregistrée.';
+        } else if (error.code === 'auth/wrong-password') {
+            errorMessage = 'Mot de passe incorrect.';
+        } else if (error.code === 'auth/too-many-requests') {
+            errorMessage = 'Trop de tentatives. Veuillez réessayer plus tard.';
+        }
+
         return {
             status: 400,
-            message: error.message
+            message: errorMessage
         };
     } finally {
         // Masque le spinner après la requête
@@ -744,6 +803,10 @@ export const getTotalQuantityInCart = async () => {
     toggleLoadingSpinner(true); // Affiche le spinner
     onAuthStateChanged(auth, async (user) => {
     try {
+        const bagQuantityElement = document.getElementById('cart-box');
+        if (bagQuantityElement) {
+            bagQuantityElement.setAttribute('data-quantity', 0); // Mettre à jour l'attribut
+        }
         const userDoc = doc(db, 'users', user.uid);
         const docSnap = await getDoc(userDoc);
         
@@ -754,7 +817,6 @@ export const getTotalQuantityInCart = async () => {
             // Calculer la quantité totale
             const totalQuantity = Object.values(cart).reduce((total, item) => total + (item.qty || 0), 0);
             // Mettre à jour l'affichage de la quantité dans le DOM
-            const bagQuantityElement = document.getElementById('cart-box');
             
             if (bagQuantityElement) {
                 bagQuantityElement.setAttribute('data-quantity', totalQuantity); // Mettre à jour l'attribut
@@ -764,10 +826,16 @@ export const getTotalQuantityInCart = async () => {
         } else {
             console.warn('Aucun panier trouvé pour cet utilisateur');
             // return 0; // Retourne 0 si aucun panier trouvé
+            if (bagQuantityElement) {
+                bagQuantityElement.setAttribute('data-quantity', 0); // Mettre à jour l'attribut
+            }
         }
     } catch (error) {
         console.error('Erreur lors de la récupération de la quantité totale dans le panier', error);
         // return 0; // Retourne 0 en cas d'erreur
+        if (bagQuantityElement) {
+            bagQuantityElement.setAttribute('data-quantity', 0); // Mettre à jour l'attribut
+        }
     }finally{
         toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
@@ -1429,4 +1497,23 @@ export async function deleteOrder(orderId) {
     }).finally(() => {
         toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
+}
+
+// Fonction pour ajouter un message
+export async function addMessage(email, content) {
+    toggleLoadingSpinner(true); // Affiche le spinner
+    try {
+        const docRef = await addDoc(collection(db, 'messages'), {
+            email: email,
+            content: content,
+            timestamp: Date.now() // Ajout d'un timestamp pour trier les messages si nécessaire
+        });
+        console.log('Message ajouté avec l\'ID : ', docRef.id);
+        return docRef.id; // Retourne l'ID du document ajouté
+    } catch (error) {
+        console.error('Erreur lors de l\'ajout du message : ', error);
+        throw error; // Relance l'erreur pour que l'appelant puisse la gérer
+    }finally{
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
+    }
 }

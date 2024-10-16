@@ -8,7 +8,7 @@ function activeLink() {
   this.classList.add("hovered");
 }
 
-list.forEach((item) => item.addEventListener("mouseover", activeLink));
+list.forEach((item) => item.addEventListener("click", activeLink));
 
 // Menu Toggle
 let toggle = document.querySelector(".toggle");
@@ -19,3 +19,17 @@ toggle.onclick = function () {
   navigation.classList.toggle("active");
   main.classList.toggle("active");
 };
+
+
+// adminPage.js
+
+import { isUserAdmin } from './../../js/firebase.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const isAdmin = await isUserAdmin();
+
+    if (!isAdmin) {
+        // Rediriger vers la page d'accueil ou de connexion si l'utilisateur n'est pas admin
+        window.location.href = '/login.html';
+    }
+});
