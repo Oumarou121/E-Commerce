@@ -30,8 +30,10 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 export async function isUserAdmin() {
+    toggleLoadingSpinner(true); // Masque le spinner après la requête
     const user = auth.currentUser;
     if (!user) {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
         // Si l'utilisateur n'est pas connecté, retourner false
         return false;
     }
@@ -49,6 +51,8 @@ export async function isUserAdmin() {
     } catch (error) {
         console.error('Erreur lors de la vérification du rôle :', error);
         return false;
+    }finally{
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 }
 
@@ -61,6 +65,7 @@ export async function signUp(name, email, password) {
         const user = userCredential.user;
 
         if (!user) {
+            toggleLoadingSpinner(false); // Masque le spinner après la requête
             return {
                 status: 400,
                 message: 'Utilisateur non créé'
@@ -112,6 +117,7 @@ export async function signIn(email, password) {
         const user = userCredential.user;
         
         if (!user) {
+            toggleLoadingSpinner(false); // Masque le spinner après la requête
             return {
                 status: 400,
                 message: 'Connexion échouée : utilisateur non trouvé.'
@@ -424,59 +430,51 @@ function delay(ms) {
 
 export async function getProductsList() {
     toggleLoadingSpinner(true); // Affiche le spinner
-    return new Promise((resolve, reject) => {
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                try {
-                    const productsSnapshot = await getDocs(collection(db, "products"));
-                    if (!productsSnapshot.empty) {
-                        const productsList = productsSnapshot.docs.map(doc => ({
-                            id: doc.id,
-                            ...doc.data()
-                        }));
-                        resolve(productsList); // Retourne la liste des produits
-                    } else {
-                        console.log("Aucun produit trouvé");
-                        resolve([]); // Aucune donnée trouvée
-                    }
-                } catch (error) {
-                    reject(error); // Gère les erreurs
-                }
-            } else {
-                resolve([]); // Aucun utilisateur connecté
-            }
-        });
-    }).finally(() => {
+    try {
+        // Récupération des produits même si l'utilisateur n'est pas connecté
+        const productsSnapshot = await getDocs(collection(db, "products"));
+        
+        if (!productsSnapshot.empty) {
+            const productsList = productsSnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            return productsList; // Retourne la liste des produits
+        } else {
+            console.log("Aucun produit trouvé");
+            return []; // Aucune donnée trouvée
+        }
+    } catch (error) {
+        console.error("Erreur lors de la récupération des produits :", error);
+        throw error; // Gère les erreurs
+    } finally {
         toggleLoadingSpinner(false); // Masque le spinner après la requête
-    });
+    }
 }
+
+
 
 export async function getProductById(id) {
     toggleLoadingSpinner(true); // Affiche le spinner
-    return new Promise((resolve, reject) => {
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                try {
-                    const productRef = doc(db, "products", id); // Remplace 'products' par le nom de ta collection
-                    const productSnapshot = await getDoc(productRef);
+    try {
+        // Récupération du produit sans vérifier l'état d'authentification
+        const productRef = doc(db, "products", id);
+        const productSnapshot = await getDoc(productRef);
 
-                    if (productSnapshot.exists()) {
-                        resolve({ id: productSnapshot.id, ...productSnapshot.data() }); // Retourne l'ID et les données du produit
-                    } else {
-                        console.log("Produit non trouvé");
-                        resolve(null); // Produit non trouvé
-                    }
-                } catch (error) {
-                    reject(error); // Gère les erreurs
-                }
-            } else {
-                resolve(null); // Aucun utilisateur connecté
-            }
-        });
-    }).finally(() => {
+        if (productSnapshot.exists()) {
+            return { id: productSnapshot.id, ...productSnapshot.data() }; // Retourne l'ID et les données du produit
+        } else {
+            console.log("Produit non trouvé");
+            return null; // Produit non trouvé
+        }
+    } catch (error) {
+        console.error("Erreur lors de la récupération du produit :", error);
+        throw error; // Gère les erreurs
+    } finally {
         toggleLoadingSpinner(false); // Masque le spinner après la requête
-    });
+    }
 }
+
 
 // Ajouter un produit aux favoris de l'utilisateur
 export async function addToFavorites(productId) {
@@ -485,6 +483,7 @@ export async function addToFavorites(productId) {
 
     if (!user) {
         console.error('Utilisateur non connecté');
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
         return;
     }
 
@@ -509,6 +508,7 @@ export async function removeFromFavorites(productId) {
 
     if (!user) {
         console.error('Utilisateur non connecté');
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
         return;
     }
 
