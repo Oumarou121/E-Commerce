@@ -1469,35 +1469,35 @@ export async function updateProductStatusInOrder(orderId, newStatus, productInde
     });
 }
 
-// export async function deleteOrder(orderId) {
-//     toggleLoadingSpinner(true); // Affiche le spinner
-//     return new Promise((resolve, reject) => {
-//         onAuthStateChanged(auth, async (user) => {
-//             if (user) {
-//                 try {
-//                     await deleteDoc(doc(db, "orders", orderId));
+export async function deleteOrder(orderId) {
+    toggleLoadingSpinner(true); // Affiche le spinner
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    await deleteDoc(doc(db, "orders", orderId));
 
-//                     resolve({
-//                         status: 200,
-//                         message: "Commande supprimée avec succès"
-//                     });
-//                 } catch (error) {
-//                     reject({
-//                         status: 500,
-//                         message: error.message
-//                     });
-//                 }
-//             } else {
-//                 resolve({
-//                     status: 401,
-//                     message: "Utilisateur non connecté"
-//                 });
-//             }
-//         });
-//     }).finally(() => {
-//         toggleLoadingSpinner(false); // Masque le spinner après la requête
-//     });
-// }
+                    resolve({
+                        status: 200,
+                        message: "Commande supprimée avec succès"
+                    });
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté"
+                });
+            }
+        });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
+    });
+}
 
 // Fonction pour ajouter un message
 export async function addMessage(email, content) {
