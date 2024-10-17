@@ -10,7 +10,7 @@ import { getFirestore, doc, setDoc, getDoc, updateDoc, getDocs, collection,
 
 import { toggleLoadingSpinner } from './module.js';
 
-// TODO: Replace the following with your app's Firebase project configuration
+
 // See: https://firebase.google.com/docs/web/learn-more#config-object
 const firebaseConfig = {
     apiKey: "AIzaSyCyBg_6Ju9sAFLfM2W33RWsIxUm2_8SFWE",
