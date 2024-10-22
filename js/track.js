@@ -218,15 +218,15 @@ function formatDateFirebase(firebaseTimestamp) {
     return `Le ${day}-${month}-${year}`;
 }
 
-import { getUserOrdersById } from './firebase.js';
+import { getUserOrderById } from './firebase.js';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
     //document.getElementById('loading-spinner').style.display = 'block';
 
     // Récupérer les données de commande pour l'utilisateur
-    let orderData = await getUserOrdersById(orderId);
-    orderData = orderData[0];
+    let orderData = await getUserOrderById(orderId);
+    // orderData = orderData[0];
     const item = orderData.items[index];
     const status = item.status;
     const time = item.updatedAt;

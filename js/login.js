@@ -263,6 +263,7 @@ document.querySelector('[data-action="continue"]').addEventListener('click', asy
     } else {
         const result = await signIn(emailInput.value, passwordInput.value);
 
+        console.log(result.role);
         if (result.status === 200) {
             if (result.role === 'admin') {
                 // Réinitialiser les tentatives après une connexion réussie

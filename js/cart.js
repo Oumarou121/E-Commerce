@@ -9,14 +9,20 @@ const formatPrice = (price) => {
 };
 
 // Met à jour le total du panier
-const updateCartTotal = (cartTotalElement) => {
+const updateCartTotal = (cartTotalElement1 = null) => {
+    total = 0;
+    const cartTotalElement = document.getElementById('cartTotal');
     document.querySelectorAll('.cart-item').forEach(item => {
     const totalPriceElement = item.querySelector('.totalPrice');
     const totalPrice = parseFloat(totalPriceElement.textContent.replace(/\./g, '').replace(' FCFA', ''));
     total += totalPrice;
-    console.log(total)
 });
-cartTotalElement.textContent = `${formatPrice(total)} FCFA`; // Met à jour le total du panier
+    if (cartTotalElement1 != null) {
+        cartTotalElement1.textContent = `${formatPrice(total)} FCFA`; // Met à jour le total du panier
+    }else{
+        cartTotalElement.textContent = `${formatPrice(total)} FCFA`; // Met à jour le total du panier
+    }
+
 };
 
 
@@ -88,7 +94,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             // Met à jour la quantité affichée et le total de l'article
             qtyInput.value = currentQty + 1;
-            updateTotalPrice(event.target.closest('.cart-item'), productId); // Met à jour le prix total de cet article
+            updateTotalPrice(event.target.closest('.cart-item')); // Met à jour le prix total de cet article
 
             await increaseQuantity(productId); // Appelle la fonction pour augmenter la quantité            
             await getTotalQuantityInCart();
@@ -100,7 +106,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 // Met à jour la quantité affichée et le total de l'article
                 qtyInput.value = currentQty - 1;
-                updateTotalPrice(event.target.closest('.cart-item'), productId); // Met à jour le prix total de cet article
+                updateTotalPrice(event.target.closest('.cart-item')); // Met à jour le prix total de cet article
 
                 await decreaseQuantity(productId); // Appelle la fonction pour diminuer la quantité
                 await getTotalQuantityInCart();
@@ -120,14 +126,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // Met à jour le prix total de l'article
-    const updateTotalPrice = (cartItemElement, productId) => {
+    const updateTotalPrice = (cartItemElement) => {
         const qtyInput = cartItemElement.querySelector('.qtyInput');
         const price = parseFloat(cartItemElement.getAttribute('data-unit-price'));
         const totalPriceElement = cartItemElement.querySelector('.totalPrice');
 
         const totalPrice = qtyInput.value * price; // Calcule le nouveau total de cet article
         totalPriceElement.textContent = `${formatPrice(totalPrice)} FCFA`; // Met à jour le prix total affiché
-        updateCartTotal(cartItemElement); // Met à jour le total du panier
+        updateCartTotal(); // Met à jour le total du panier
     };
 
     

@@ -2,7 +2,7 @@ document.getElementById('exit').addEventListener('click', ()=>{
     window.history.back();
 })
 
-import { getUserOrdersById, getProductById, isInCart, removeFromCart, addToCart, updateProductStatusInOrder } from './firebase.js';
+import { getUserOrderById, getProductById, isInCart, removeFromCart, addToCart, updateProductStatusInOrder } from './firebase.js';
 
 // Récupération du fragment à partir de l'URL
 let orderId = window.location.hash.substring(1); // Retire le symbole '#'
@@ -115,8 +115,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const detailsList = document.querySelector('.detail-exp');
 
     //document.getElementById('loading-spinner').style.display = 'block';
-    let orderData = await getUserOrdersById(orderId);
-    orderData = orderData[0];
+    let orderData = await getUserOrderById(orderId);
+    console.log(orderData)
+    // orderData = orderData[0];
     const shippingAddress = orderData.shippingAddress;
     const items = orderData.items;
     let totalQty = 0;

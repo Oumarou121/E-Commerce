@@ -149,12 +149,6 @@ h2{
     .cart-item{
         text-align: center;
     }
-
-    /* .first,
-    .second,
-    .third{
-        width: 50%;
-    } */
 }
 
 @media (max-width: 35em){

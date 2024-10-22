@@ -10,6 +10,8 @@ import { getFirestore, doc, setDoc, getDoc, updateDoc, getDocs, collection,
 
 import { toggleLoadingSpinner } from './module.js';
 
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js';
+
 
 // See: https://firebase.google.com/docs/web/learn-more#config-object
 const firebaseConfig = {
@@ -29,32 +31,44 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-export async function isUserAdmin() {
-    toggleLoadingSpinner(true); // Masque le spinner après la requête
-    const user = auth.currentUser;
-    if (!user) {
-        toggleLoadingSpinner(false); // Masque le spinner après la requête
-        // Si l'utilisateur n'est pas connecté, retourner false
-        return false;
-    }
-
-    try {
-        // Récupérer le document utilisateur dans Firestore
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists()) {
-            const role = userDoc.data().role;
-            // Vérifier si le rôle est "admin"
-            return role === 'admin';
-        } else {
-            return false;
-        }
-    } catch (error) {
-        console.error('Erreur lors de la vérification du rôle :', error);
-        return false;
-    }finally{
-        toggleLoadingSpinner(false); // Masque le spinner après la requête
-    }
+// Fonction pour télécharger une image dans Firebase Storage et retourner l'URL
+export async function uploadImageToStorage(file, path) {
+    const storage = getStorage();
+    const storageRef = ref(storage, path);
+    await uploadBytes(storageRef, file);
+    return getDownloadURL(storageRef);
 }
+
+export async function isUserAdmin() {
+    toggleLoadingSpinner(true);
+    return new Promise((resolve) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // L'utilisateur est connecté
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) {
+                        const role = userDoc.data().role;
+                        // Vérifier si le rôle est "admin"
+                        resolve(role === "admin");
+                    } else {
+                        resolve(false);
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de la vérification du rôle :', error);
+                    resolve(false);
+                } finally {
+                    toggleLoadingSpinner(false);
+                }
+            } else {
+                // Aucun utilisateur connecté
+                toggleLoadingSpinner(false);
+                resolve(false);
+            }
+        });
+    });
+}
+
 
 export async function signUp(name, email, password) {
     // Affiche le spinner avant de commencer la requête
@@ -338,8 +352,63 @@ export async function logout() {
     }
 }
 
+// Function to retrieve user data by user ID (uid)
+export async function getUserDataByUid(uid) {
+    toggleLoadingSpinner(true); // Show the loading spinner
+
+    try {
+        // Fetch the user document from the "users" collection using the provided uid
+        const userDoc = await getDoc(doc(db, "users", uid));
+        
+        if (userDoc.exists()) {
+            return userDoc.data(); // Return the user data
+        } else {
+            console.log("No document found for this user");
+            return null; // No data found
+        }
+    } catch (error) {
+        console.error("Error retrieving user data:", error);
+        throw error; // Handle errors
+    } finally {
+        toggleLoadingSpinner(false); // Hide the loading spinner after the request
+    }
+}
+
 // Fonction pour récupérer le nom de l'utilisateur depuis Firestore
-export async function getUserName(uid) {
+export async function getUserNameByUid(uid) {
+    toggleLoadingSpinner(true);
+    const userData = await getUserDataByUid(uid);
+    const addresses = userData.addresses || []; // S'assurer que addresses est un tableau
+    let adresse;
+    
+    if (userData) {        
+        // Trouver l'adresse sélectionnée
+        for (const address of addresses) {
+            if (address.select) {
+                adresse = address;
+                break; // Sortir de la boucle une fois l'adresse trouvée
+            }
+        }
+
+        // Vérifier si une adresse a été trouvée
+        if (adresse) {
+            toggleLoadingSpinner(false);
+            return `${capitalizeFirstLetter(adresse.prenom)} ${capitalizeFirstLetter(adresse.nom)}`; // Retourne le nom de l'utilisateur
+        } else {
+            toggleLoadingSpinner(false);
+            console.log("Aucune adresse sélectionnée trouvée pour cet utilisateur");
+            return null;
+        }
+    } else {
+        console.log("Aucun document trouvé pour cet utilisateur");
+        toggleLoadingSpinner(false);
+        return null;
+    }
+}
+
+
+// Fonction pour récupérer le nom de l'utilisateur depuis Firestore
+export async function getUserName() {
     toggleLoadingSpinner(true);
     const userData = await getUserDataValue();
     const addresses = userData.addresses || []; // S'assurer que addresses est un tableau
@@ -473,6 +542,157 @@ export async function getProductById(id) {
     } finally {
         toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
+}
+
+// Fonction pour générer un nouvel orderId
+export async function generateProductId() {
+    toggleLoadingSpinner(true); // Affiche le spinner
+    const orderCounterRef = doc(db, "config", "productCounter");
+
+    try {
+        // Lire le compteur actuel
+        const orderCounterDoc = await getDoc(orderCounterRef);
+
+        if (!orderCounterDoc.exists()) {
+            throw new Error("Le document de compteur de commandes n'existe pas.");
+        }
+
+        // Incrémenter le compteur dans Firestore
+        const newOrderNumber = orderCounterDoc.data().count + 1;
+        await updateDoc(orderCounterRef, {
+            count: increment(1)
+        });
+
+        // Générer l'identifiant de la commande
+        const orderId = newOrderNumber;
+
+        return orderId;
+    } catch (error) {
+        console.error("Erreur lors de la génération de l'productId :", error);
+        throw new Error("Impossible de générer l'identifiant du product.");
+    }finally{
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
+    }
+}
+
+// Fonction pour ajouter un produit
+export async function addProduct(productData) {
+    toggleLoadingSpinner(true); // Affiche le spinner
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    // Générer le nouvel productId
+                    const productId = await generateProductId();
+                    
+                    // Afficher les données du produit pour le débogage
+                    console.log(productData);
+
+                    // Ajouter le produit à la collection "products" en utilisant le productId comme identifiant
+                    const docRef = await setDoc(doc(db, "products", productId), {
+                        ...productData,
+                        productId: productId, // Utiliser le productId personnalisé
+                        createdAt: Timestamp.now(),
+                        updatedAt: Timestamp.now()
+                    });
+
+                    resolve({
+                        status: 200,
+                        message: "Produit ajouté avec succès",
+                        productId: productId
+                    });
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté"
+                });
+            }
+        });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
+    });
+}
+
+
+// Fonction pour mettre à jour un produit
+export async function updateProduct(productId, updatedData) {
+    toggleLoadingSpinner(true); // Affiche le spinner
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    // Référence au document du produit à mettre à jour
+                    const productRef = doc(db, "products", productId);
+
+                    // Mise à jour des données du produit
+                    await updateDoc(productRef, {
+                        ...updatedData,
+                        updatedAt: Timestamp.now()
+                    });
+
+                    resolve({
+                        status: 200,
+                        message: "Produit mis à jour avec succès",
+                        productId: productId
+                    });
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté"
+                });
+            }
+        });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
+    });
+}
+
+// Fonction pour supprimer un produit
+export async function deleteProduct(productId) {
+    toggleLoadingSpinner(true); // Affiche le spinner
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    // Référence au document du produit à supprimer
+                    const productRef = doc(db, "products", productId);
+
+                    // Suppression du document
+                    await deleteDoc(productRef);
+
+                    resolve({
+                        status: 200,
+                        message: "Produit supprimé avec succès",
+                        productId: productId
+                    });
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté"
+                });
+            }
+        });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
+    });
 }
 
 
@@ -738,7 +958,7 @@ export const getCartItems = () => {
 }
 // Fonction pour augmenter la quantité d'un produit dans le panier
 export const increaseQuantity = async (productId) => {
-    toggleLoadingSpinner(true); // Affiche le spinner
+    // toggleLoadingSpinner(true); // Affiche le spinner
     const userId = auth.currentUser ? auth.currentUser.uid : null; // Vérifie si l'utilisateur est connecté
     if (!userId) {
         console.error('Aucun utilisateur connecté pour mettre à jour le panier');
@@ -762,14 +982,14 @@ export const increaseQuantity = async (productId) => {
     } catch (error) {
         console.error('Erreur lors de l\'augmentation de la quantité du produit', error);
     }finally{
-        toggleLoadingSpinner(false); // Masque le spinner après la requête
+        // toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 };
 
 
 // Fonction pour diminuer la quantité d'un produit dans le panier
 export const decreaseQuantity = async (productId) => {
-    toggleLoadingSpinner(true); // Affiche le spinner
+    // toggleLoadingSpinner(true); // Affiche le spinner
     const userId = auth.currentUser ? auth.currentUser.uid : null; // Vérifie si l'utilisateur est connecté
     if (!userId) {
         console.error('Aucun utilisateur connecté pour mettre à jour le panier');
@@ -794,19 +1014,19 @@ export const decreaseQuantity = async (productId) => {
     } catch (error) {
         console.error('Erreur lors de la diminution de la quantité du produit', error);
     }finally{
-        toggleLoadingSpinner(false); // Masque le spinner après la requête
+        // toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 };
 
 // Fonction pour récupérer la quantité totale dans le panier
 export const getTotalQuantityInCart = async () => {
-    toggleLoadingSpinner(true); // Affiche le spinner
+    // toggleLoadingSpinner(true); // Affiche le spinner
     onAuthStateChanged(auth, async (user) => {
     try {
         const bagQuantityElement = document.getElementById('cart-box');
-        if (bagQuantityElement) {
-            bagQuantityElement.setAttribute('data-quantity', 0); // Mettre à jour l'attribut
-        }
+        // if (bagQuantityElement) {
+        //     bagQuantityElement.setAttribute('data-quantity', 0); // Mettre à jour l'attribut
+        // }
         const userDoc = doc(db, 'users', user.uid);
         const docSnap = await getDoc(userDoc);
         
@@ -837,7 +1057,7 @@ export const getTotalQuantityInCart = async () => {
             bagQuantityElement.setAttribute('data-quantity', 0); // Mettre à jour l'attribut
         }
     }finally{
-        toggleLoadingSpinner(false); // Masque le spinner après la requête
+        // toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 }
 )}
@@ -1167,6 +1387,35 @@ export async function generateOrderId() {
     }
 }
 
+export async function getOrdersList() {
+    toggleLoadingSpinner(true); // Show the loading spinner
+    try {
+        // Fetch orders from the "orders" collection even if the user is not logged in
+        const ordersSnapshot = await getDocs(collection(db, "orders"));
+        
+        if (!ordersSnapshot.empty) {
+            const ordersList = ordersSnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            ordersList.sort((a, b) => {
+                const idA = parseInt(a.orderId.replace('#', ''), 10); // Extract and convert to number
+                const idB = parseInt(b.orderId.replace('#', ''), 10); // Extract and convert to number
+                return idB - idA; // Sort in descending order
+            });
+            return ordersList; // Return the sorted list of orders
+        } else {
+            console.log("No orders found");
+            return []; // Return an empty array if no data is found
+        }
+    } catch (error) {
+        console.error("Error retrieving orders:", error);
+        throw error; // Handle errors
+    } finally {
+        toggleLoadingSpinner(false); // Hide the loading spinner after the request
+    }
+}
+
 // Fonction pour ajouter une commande
 export async function addOrder(orderData) {
     toggleLoadingSpinner(true); // Affiche le spinner
@@ -1214,7 +1463,7 @@ export async function addOrder(orderData) {
 
 
 // Fonction pour récupérer toutes les commandes d'un utilisateur
-export const getUserOrders = () => {
+export  const getUserOrders = () => {
     toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
@@ -1247,19 +1496,75 @@ export const getUserOrders = () => {
 }
 
 // Fonction pour récupérer toutes les commandes d'un utilisateur
-export const getUserOrdersById = (orderID) => {
+export const getUserOrderById = (orderID) => {
+    toggleLoadingSpinner(true); // Affiche le spinner
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                if (!orderID) {
+                    console.error("orderID is required.");
+                    reject({
+                        status: 400,
+                        message: "orderID is required"
+                    });
+                    toggleLoadingSpinner(false); // Masque le spinner en cas d'erreur
+                    return; // Sort de la fonction
+                }
+
+                try {
+                    const q = query(
+                        collection(db, "orders"),
+                        where("userId", "==", user.uid),
+                        where("orderId", "==", orderID)
+                    );
+
+                    const querySnapshot = await getDocs(q);
+                    
+                    // Vérifie si une commande a été trouvée
+                    if (querySnapshot.empty) {
+                        console.warn("Aucune commande trouvée pour l'orderID :", orderID);
+                        resolve(null); // Résoudre avec null si aucune commande n'est trouvée
+                    } else {
+                        const order = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+                        resolve(order); // Résoudre la promesse avec la commande trouvée
+                    }
+                } catch (error) {
+                    console.error("Error fetching order:", error);
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve(null); // Aucun utilisateur connecté
+            }
+        });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
+    });
+}
+
+
+export const getAdminOrdersById = (orderID) => {
     toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
-                    const q = query(collection(db, "orders"), where("orderId", "==", orderID));
+                    // Crée une requête pour récupérer les commandes correspondant à l'utilisateur et à l'ID de commande
+                    const q = query(
+                        collection(db, "orders"),
+                        where("orderId", "==", orderID)
+                    );
+
                     const querySnapshot = await getDocs(q);
-                    
+
                     const orders = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    
-                    resolve(orders); // Résoudre la promesse avec toutes les commandes triées
+
+                    resolve(orders);
                 } catch (error) {
+                    console.error("User ID:", user.uid);
+                    console.error("Error details:", error);
                     reject({
                         status: 500,
                         message: error.message
@@ -1273,6 +1578,7 @@ export const getUserOrdersById = (orderID) => {
         toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
+
 
 // Fonction pour récupérer les commandes en cours ou livrées
 export const getPendingOrDeliveredOrders = () => {
