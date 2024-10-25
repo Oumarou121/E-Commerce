@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     let date;
 
 
-                    if (productItem.status == "pending" || productItem.status == "delivered" || productItem.status == "checking"){
+                    // if (productItem.status == "pending" || productItem.status == "delivered" || productItem.status == "checking"){
                         if (productItem.status == "pending") {
                             const now = Date.now(); // Obtenir le timestamp actuel
                             const time = productItem.updatedAt; // Récupérer le timestamp de `updatedAt`
@@ -113,10 +113,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                             date = formatDeliveryDateRange(productItem.updatedAt);
                         
                         } else if (productItem.status == "delivered") {
-                            state = "COMMANDE LIVRÉ";
+                            state = "COMMANDE LIVRÉE";
                             date = formatDate(productItem.updatedAt);
                         } else if (productItem.status == "checking"){
                             state = "COMMANDE EN EXAMINATION";
+                            date = formatDate(productItem.updatedAt);
+                        }else if (productItem.status == "report-delivered"){
+                            state = "COMMANDE REPORTÉE";
+                            date = formatDeliveryDateRange(productItem.updatedAt);
+                        }else if (productItem.status == "dismiss-returned"){
+                            state = "RETOUR DE LA COMMANDE REJETÉE";
                             date = formatDate(productItem.updatedAt);
                         }
                     
@@ -144,12 +150,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                     
                         if (productItem.status == "pending") {
                             cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-blue))"; // Changer la couleur de fond
-                        } 
+                        }
+                        
+                        if (productItem.status == "report-delivered") {
+                            cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-blue) / .7)"; // Changer la couleur de fond
+                        }
 
                         if (productItem.status == "checking") {
                             cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-red) / .5)"; // Changer la couleur de fond
                         }
                     
+                        if (productItem.status == "dismiss-returned") {
+                            cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-red) / .9)"; // Changer la couleur de fond
+                        }
+
                         if (productItem.quantity == 1) {
                             cartItemElement.querySelector(".qty").style.visibility = "hidden";
                         } else {
@@ -170,7 +184,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         }
                     
                         cartItemsList.appendChild(cartItemElement);
-                    }
+                    // }
                 }
                 
             }

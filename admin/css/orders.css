@@ -116,16 +116,13 @@ Search input
 } */
 
 
-/* Importation de Google Fonts pour une meilleure typographie */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
 /* Global styles */
 body {
-    font-family: 'Roboto', sans-serif;
+    /* font-family: 'Roboto', sans-serif; */
     background-color: #f4f7fa;
     margin: 0;
     padding: 0;
-    color: #444;
+    /* color: #444; */
 }
 
 /* Admin dashboard container */
@@ -617,16 +614,6 @@ td button {
     margin: 0 0; /* Espacement autour de la ligne */
 }
 
-
-
-
-
-
-
-
-
-
-
 .cart-item{
     display: grid;
     height: max-content;
@@ -694,10 +681,6 @@ td button {
 }
 
 @media (max-width: 35em){
-    .state1,
-    .state2{
-        margin-bottom: 15px;
-    }
     .div-name{
         display: grid;
         /* grid-template-rows: 1fr; */
@@ -735,7 +718,8 @@ td button {
 
 .state-box{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    margin-right: 25vh;
     /* grid-template-columns: 1fr; */
 }
 
@@ -751,7 +735,7 @@ td button {
 
 .cart-icon-top{
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    /* grid-template-rows: 1fr 1fr; */
     padding-top: 10px;
     padding-left: 10px;    
 }
@@ -788,6 +772,11 @@ td button {
 }
 
 @media (max-width: 35em){
+
+    .state-box{
+        margin-right: 5vh;
+    }
+
     .cart-content{
         grid-template-columns: 1fr;    
     }
@@ -809,4 +798,99 @@ td button {
 
 .cart-content li{
     list-style: none;
+}
+
+
+/* ====================================== */
+
+.title-paiement,
+.title-livraison{
+    /* border-bottom: 1px solid #000; */
+    padding: 0 10px;
+}
+
+.paiement,
+.livraison{
+    border: 1px solid #000;
+}
+
+.paiement{
+    margin-right: 20px;
+}
+
+.paiment-content,
+.livraison-content{
+    padding: 0 10px;
+}
+
+.third{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.mode,
+.detail,
+.methode,
+.adresse,
+.detail-exp{
+    padding: 16px;
+}
+
+.mode h3,
+.detail h3,
+.methode h3,
+.adresse h3,
+.detail-exp h3{
+    font-size: 1rem;
+}
+
+.mode p,
+.detail p,
+.methode p,
+.adresse p,
+.detail-exp p{
+    padding-top: 8px;
+}
+
+@media (max-width: 35em){
+    .third{
+        grid-template-columns: 1fr;
+    }
+
+    .paiement{
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+}
+
+.custom-hr1 {
+    border: 0;
+    height: 1px;
+    background-color: hsl(var(--clr-black)); /* Couleur de la ligne */
+    width: 100%; /* Largeur de la ligne */
+    margin: 0 0; /* Espacement autour de la ligne */
+}
+
+.third h3{
+    text-align: start;
+}
+
+/* ================================================= */
+
+.select-box select {
+    height: 100%;
+    width: 100%;
+    outline: none;
+    border: none;
+    color: #707070;
+    font-size: 1rem;
+}
+
+.select-box-commande select {
+    height: 5vh;
+    width: 100%;
+    outline: none;
+    border: none;
+    color: #707070;
+    font-size: 1rem;
 }

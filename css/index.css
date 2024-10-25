@@ -350,6 +350,31 @@ body{
     font-weight: 700;
 }
 
+.header-login .uil-envelope-check{
+    font-size: 2rem;
+    margin-top: -0.5rem;
+    position: relative;
+}
+
+.header-login .uil-envelope-check {
+    position: relative; /* Ajouté pour que l'élément soit en position relative */
+}
+
+.header-login .uil-envelope-check::after{
+    content: attr(data-quantity);
+    width: 1rem;
+    position: absolute;
+    background-color: hsl(var(--clr-red));
+    height: 1.2rem;
+    margin-top: -3rem;
+    margin-left: 1rem;
+    border-radius: 0.3rem;
+    display: grid;
+    color: hsl(var(--clr-white));
+    font-size: 1rem;
+    font-weight: 700;
+}
+
 .mobile-open-btn{
     display: none;
 }

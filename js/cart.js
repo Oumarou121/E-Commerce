@@ -113,15 +113,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             } else {
                 await removeFromCart(productId); // Supprime l'article si la quantité atteint 0
-                displayCartItems(); // Rafraîchit l'affichage du panier
+                event.target.closest('.cart-item').remove();
+                const itemCount = cartItemsList.querySelectorAll('li').length;
+                console.log(`Le nombre d'articles dans le panier est : ${itemCount}`);
+                if (itemCount == 0) {
+                    emptyCartMessage.style.display = 'flex';
+                }
+                // displayCartItems(); // Rafraîchit l'affichage du panier
             }
         }
 
         if (event.target.closest('.delete')) {
             const productId = event.target.closest('.delete').dataset.id;
             await removeFromCart(productId); // Retire l'article du panier
-            displayCartItems(); // Rafraîchit l'affichage du panier
+            event.target.closest('.cart-item').remove();
+            // displayCartItems(); // Rafraîchit l'affichage du panier
             await getTotalQuantityInCart();
+            const itemCount = cartItemsList.querySelectorAll('li').length;
+            console.log(`Le nombre d'articles dans le panier est : ${itemCount}`);
+            if (itemCount == 0) {
+                emptyCartMessage.style.display = 'flex';
+            }
         }
     });
 

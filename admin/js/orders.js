@@ -1,4 +1,4 @@
-import { getAdminOrdersById, getProductById} from './../../js/firebase.js';
+import { getAdminOrdersById, getProductById, updateProductStatusInOrderAdmin, updateOrderStatus, getOrdersList, getUserNameByUid } from './../../js/firebase.js';
 
 
 // Fonction de "debounce" pour retarder la recherche
@@ -73,8 +73,6 @@ function addOrderData(Uid, userName, status, date, amount) {
 
 
 }
-
-import { getOrdersList, getUserNameByUid } from './../../js/firebase.js';
 
 function formatDate(timestamp) {
     const date = timestamp.toDate(); // Convertir le timestamp en objet Date
@@ -248,13 +246,29 @@ const displayCartItems = async (orderId) => {
     const region = document.querySelector('.region');
     const cartItemsList = document.querySelector('.cart-items');
     const detailsList = document.querySelector('.detail-exp');
+    const option1_1 = document.querySelector(".option1_1");
+    const option1_2 = document.querySelector(".option1_2");
+    const option2 = document.querySelector(".option2");
+    const option3_1 = document.querySelector(".option3_1");
+    const option3_2 = document.querySelector(".option3_2");
+    const option4 = document.querySelector(".option4");
 
-    //document.getElementById('loading-spinner').style.display = 'block';
     let orderData = await getAdminOrdersById(orderId);
     orderData = orderData[0];
     const shippingAddress = orderData.shippingAddress;
+    const status = orderData.status;
     const items = orderData.items;
     let totalQty = 0;
+
+    if (status == "pending") {
+        option1_1.style.display = 'none';
+        option3_1.style.display = 'none';
+        option2.style.display = 'none';
+    } else if (status == "checking") {
+        option1_2.style.display = 'none';
+        option3_2.style.display = 'none';
+        option4.style.display = 'none';
+    }
 
 
     //document.getElementById('loading-spinner').style.display = 'block';
@@ -262,38 +276,41 @@ const displayCartItems = async (orderId) => {
     orderNum.textContent = `Commande n°${orderId}`;
     orderDate.textContent = formatFirebaseTimestamp(orderData.createdAt);
     orderTotal.textContent = `Total: ${formatPrice(orderData.totalAmount)} FCFA`;
-    // orderTotal1.textContent = `Total: ${formatPrice(orderData.totalAmount)} FCFA`;
-    // orderSousTotal.textContent = `Sous-total: ${formatPrice(orderData.totalAmount - 2000)} FCFA`;
-    // name.textContent = `${shippingAddress.prenom} ${shippingAddress.nom}`;
-    // adresse.textContent = ads;
-    // region.textContent = `${shippingAddress.region}, Niger`;
+    orderTotal1.textContent = `Total: ${formatPrice(orderData.totalAmount)} FCFA`;
+    orderSousTotal.textContent = `Sous-total: ${formatPrice(orderData.totalAmount - 2000)} FCFA`;
+    name.textContent = `${shippingAddress.prenom} ${shippingAddress.nom}`;
+    adresse.textContent = ads;
+    region.textContent = `${shippingAddress.region}, Niger`;
 
     while (cartItemsList.firstChild) {
         cartItemsList.removeChild(cartItemsList.firstChild);
     }
 
+    while (detailsList.firstChild) {
+        detailsList.removeChild(detailsList.firstChild);
+    }
+
     for(const [index, item] of items.entries()){
-        console.log(item);
         totalQty += item.quantity;
 
         const productId = item.productId; // Récupérer l'ID du produit
         const product = await getProductById(productId);
         const cartItemElement = document.createElement('li');
-        // const detailsElement = document.createElement('div');
+        const detailsElement = document.createElement('div');
         cartItemElement.className = 'cart-content';
 
-        // const content = (item.status == "checking") ? "La commande sera récupérée entre" : "Livraison à domicile. Expédié Niger.net Livraison entre" ;
+        const content = (item.status == "checking") ? "La commande sera récupérée entre" : "Livraison à domicile. Expédié Niger.net Livraison entre" ;
 
-        // detailsElement.innerHTML = `
+        detailsElement.innerHTML = `
         
-        // <h3>Colis ${index + 1}</h3>
-        // <span> ${content}
-        // <strong>${formatDeliveryDateRange1(item.updatedAt)}</strong>
-        // </span>
+        <h3>Colis ${index + 1}</h3>
+        <span> ${content}
+        <strong>${formatDeliveryDateRange1(item.updatedAt)}</strong>
+        </span>
 
-        // `;
+        `;
 
-        // detailsList.appendChild(detailsElement);
+        detailsList.appendChild(detailsElement);
 
         cartItemElement.innerHTML = `
 
@@ -301,9 +318,19 @@ const displayCartItems = async (orderId) => {
         <header class="cart-icon-top">
             <div class="state-box">
                 <div class="state1 text-white bg-green">COMMANDE LIVRÉE</div>
-                <div class="state2 text-white bg-red">NON-RETOURNABLE</div>
+                <div class="select-box">
+                    <select class="select">
+                        <option value="" selected>Currente state</option>
+                        <option class="option3_1" value="report-returned">Report</option>
+                        <option class="option1_1" value="dismiss-returned">Dismiss</option>
+                        <option class="option1_2" value="dismiss-delivered">Dismiss</option>
+                        <option class="option2" value="returned">Returned</option>
+                        <option class="option3_2" value="report-delivered">Report</option>
+                        <option class="option4" value="delivered">Delivered</option>
+                    </select>
+                </div>
             </div>
-            <div class="time">Le 21-02-2024</div>
+            <div class="time"></div>
         </header>
         <div class="cart-item">
             <div class="image">
@@ -321,8 +348,14 @@ const displayCartItems = async (orderId) => {
 
         `;
         const state1 = cartItemElement.querySelector(".state1");
-        const state2 = cartItemElement.querySelector(".state2");
         const time = cartItemElement.querySelector(".time");
+        const select_box = cartItemElement.querySelector(".select-box");
+        const option1_1 = cartItemElement.querySelector(".option1_1");
+        const option1_2 = cartItemElement.querySelector(".option1_2");
+        const option2 = cartItemElement.querySelector(".option2");
+        const option3_1 = cartItemElement.querySelector(".option3_1");
+        const option3_2 = cartItemElement.querySelector(".option3_2");
+        const option4 = cartItemElement.querySelector(".option4");
 
 
         if (item.status == "pending") {
@@ -343,40 +376,41 @@ const displayCartItems = async (orderId) => {
 
 
         if (item.status == "pending"){
-            state2.style.visibility = "hidden";
             state1.style.backgroundColor = "hsl(var(--clr-blue))";
+            option1_1.style.display = 'none';
+            option2.style.display = 'none';
+            option3_1.style.display = 'none';
 
             if (now <= Edate) {
                 state1.textContent = "En ATTENTE D'EXPÉDITION";
+                select_box.style.display = 'none';
             } else if (now >= Edate){
                 state1.textContent = "COMMANDE EN COURS";
             } 
 
         }else if (item.status == "delivered"){
 
-            if (now <= Edate1) {
-                state2.textContent = "RETOURNABLE";
-                state2.style.backgroundColor = "hsl(var(--clr-blue) / .8)";
-            
-            } else if (now >= Edate1){
-                state2.textContent = "NON-RETOURNABLE";
-                
-            }
+            select_box.style.display = 'none';
 
         }else if (item.status == "cancelled"){
-            state2.style.visibility = "hidden";
+            // state2.style.visibility = "hidden";
             state1.textContent = "ANNULÉE";
             state1.style.backgroundColor = "hsl(var(--clr-black) / .8)";
+            select_box.style.display = 'none';
            
         }else if (item.status == "returned"){
-            state2.textContent = "RETOURNÉE";
-            state2.style.backgroundColor = "hsl(var(--clr-red) / .8)";
+            state1.textContent = "RETOURNÉE";
+            state1.style.backgroundColor = "hsl(var(--clr-red) / .8)";
+            select_box.style.display = 'none';
             
         }else if (item.status == "checking"){
-            state1.style.display = "none";
-            state2.textContent = "COMMANDE EN EXAMINATION DE RETOUR";
-            state2.style.backgroundColor = "hsl(var(--clr-red) / .5)";
-            
+            // state1.style.display = "none";
+            state1.textContent = "COMMANDE EN EXAMINATION DE RETOUR";
+            state1.style.backgroundColor = "hsl(var(--clr-red) / .5)";
+            option1_2.style.display = 'none';
+            option3_2.style.display = 'none';
+            option4.style.display = 'none';
+
         }
 
         cartItemsList.appendChild(cartItemElement);
@@ -387,9 +421,38 @@ const displayCartItems = async (orderId) => {
 
     orderNbr.textContent = nbr;
 
-    //document.getElementById('loading-spinner').style.display = 'none';
+    document.getElementById('confirmer').addEventListener('click', async () => {
+        const commandeState = document.getElementById('commande-select')?.value; // Vérification de l'existence de l'élément
+        if (!commandeState) {
+            console.log("État de la commande non sélectionné");
+        }
+    
+        try {
+            for (const [index, item] of items.entries()) {
+                const stateElement = document.querySelectorAll('.select')[index];
+                if (!stateElement) {
+                    console.log(`Élément de sélection manquant pour l'index ${index}`);
+                    continue; // Passer au prochain élément si l'élément de sélection est introuvable
+                }
+    
+                const state = stateElement.value;
+                if (state !== "") {
+                    console.log(state);
+                    await updateProductStatusInOrderAdmin(orderId, state, index);
+                    console.log(orderId, state, index);
+                }
+            }
+    
+            if (commandeState && commandeState !== "") {
+                console.log(commandeState);
+                await updateOrderStatus(orderId, commandeState);
+                console.log(orderId, commandeState);
+            }
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour :", error);
+        }
+    });
 }
 
-// await displayCartItems();
 
-    
+

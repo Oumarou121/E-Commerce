@@ -4,7 +4,7 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
     sendPasswordResetEmail, onAuthStateChanged, signOut, deleteUser, 
     reauthenticateWithCredential, EmailAuthProvider } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
 
-import { getFirestore, doc, setDoc, getDoc, updateDoc, getDocs, collection,
+import { getFirestore, doc, setDoc, getDoc, updateDoc, deleteField ,getDocs, collection,
     arrayUnion, arrayRemove, Timestamp, increment, deleteDoc, query, where,
     addDoc } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js';
 
@@ -807,7 +807,6 @@ export const addToCart = async (productId, quantity = 1) => {
         toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 };
-// Fonction pour retirer un produit du panier
 export const removeFromCart = async (productId) => {
     toggleLoadingSpinner(true); // Affiche le spinner
     const userId = auth.currentUser ? auth.currentUser.uid : null; // Vérifie si l'utilisateur est connecté
@@ -825,20 +824,22 @@ export const removeFromCart = async (productId) => {
             const cart = data.cart || {}; // Récupérer l'objet cart, ou initialiser un objet vide
 
             if (cart[productId]) {
-                delete cart[productId]; // Supprimer le produit du panier
-
-                // Mise à jour du panier dans Firestore
-                await setDoc(userDoc, { cart }, { merge: true });
+                // Supprimer le produit du panier en utilisant deleteField()
+                await updateDoc(userDoc, {
+                    [`cart.${productId}`]: deleteField()
+                });
 
                 console.log(`Produit ${productId} retiré du panier de l'utilisateur ${userId}`);
                 await getTotalQuantityInCart();
             } else {
                 console.log(`Produit ${productId} non trouvé dans le panier de l'utilisateur ${userId}`);
             }
+        } else {
+            console.log("Le document utilisateur n'existe pas.");
         }
     } catch (error) {
         console.error('Erreur lors du retrait du produit du panier', error);
-    }finally{
+    } finally {
         toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
 };
@@ -1590,7 +1591,7 @@ export const getPendingOrDeliveredOrders = () => {
                     const q = query(
                         collection(db, "orders"),
                         where("userId", "==", user.uid),
-                        where("status", "in", ["pending", "delivered", "checking"])
+                        where("status", "in", ["pending", "delivered", "checking", "report-delivered", "dismiss-returned"])
                     );
 
                     const querySnapshot = await getDocs(q);
@@ -1627,7 +1628,7 @@ export const getCancelledOrReturnedOrders = () => {
                     const q = query(
                         collection(db, "orders"),
                         where("userId", "==", user.uid),
-                        where("status", "in", ["cancelled", "returned"])
+                        where("status", "in", ["cancelled", "returned", "report-returned", "dismiss-delivered"])
                     );
 
                     const querySnapshot = await getDocs(q);
@@ -1654,42 +1655,61 @@ export const getCancelledOrReturnedOrders = () => {
     });
 }
 
-
 export async function updateOrderStatus(orderId, newStatus) {
     toggleLoadingSpinner(true); // Affiche le spinner
-    return new Promise((resolve, reject) => {
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                try {
-                    const orderRef = doc(db, "orders", orderId);
-                    await updateDoc(orderRef, {
-                        status: newStatus,
-                        updatedAt: Timestamp.now()
-                    });
+    try {
+        const user = auth.currentUser; // Vérifier si l'utilisateur est connecté
+        if (!user) {
+            console.log("Utilisateur non connecté");
+            return {
+                status: 401,
+                message: "Utilisateur non connecté"
+            };
+        }
 
-                    resolve({
-                        status: 200,
-                        message: "Statut de la commande mis à jour avec succès"
-                    });
-                } catch (error) {
-                    reject({
-                        status: 500,
-                        message: error.message
-                    });
-                }
-            } else {
-                resolve({
-                    status: 401,
-                    message: "Utilisateur non connecté"
-                });
-            }
+        // Rechercher le document correspondant à l'orderId
+        const ordersQuery = query(collection(db, "orders"), where("orderId", "==", orderId));
+        const querySnapshot = await getDocs(ordersQuery);
+
+        if (querySnapshot.empty) {
+            console.log("Commande non trouvée");
+            return {
+                status: 404,
+                message: "Commande non trouvée"
+            };
+        }
+
+        // Il est supposé qu'il y a un seul document avec cet orderId
+        const orderDoc = querySnapshot.docs[0];
+        const orderRef = orderDoc.ref;
+
+        console.log("Document trouvé :", orderRef.id);
+
+        // Mettre à jour le document avec le nouveau statut
+        await updateDoc(orderRef, {
+            status: newStatus,
+            updatedAt: Timestamp.now()
         });
-    }).finally(() => {
+
+        console.log("Mise à jour effectuée avec succès");
+
+        return {
+            status: 200,
+            message: "Statut de la commande mis à jour avec succès"
+        };
+    } catch (error) {
+        console.error("Erreur lors de la mise à jour :", error.message);
+        return {
+            status: 500,
+            message: error.message
+        };
+    } finally {
         toggleLoadingSpinner(false); // Masque le spinner après la requête
-    });
+    }
 }
 
-export async function updateProductStatusInOrder(orderId, newStatus, productIndex, verificationNote = "") {
+
+export async function updateProductStatusInOrderAdmin(orderId, newStatus, productIndex, verificationNote = "") {
     toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
@@ -1700,6 +1720,7 @@ export async function updateProductStatusInOrder(orderId, newStatus, productInde
                     const querySnapshot = await getDocs(ordersQuery);
 
                     if (querySnapshot.empty) {
+                        console.log("Commande non trouvée");
                         resolve({
                             status: 404,
                             message: "Commande non trouvée",
@@ -1711,12 +1732,15 @@ export async function updateProductStatusInOrder(orderId, newStatus, productInde
                     const orderDoc = querySnapshot.docs[0];
                     const orderRef = orderDoc.ref;
 
+                    console.log("Document trouvé :", orderRef.id);
+
                     // Récupérer les items actuels
                     const orderData = orderDoc.data();
                     const items = orderData.items;
 
                     // Vérifier si l'index du produit est valide
                     if (productIndex < 0 || productIndex >= items.length) {
+                        console.log("Index du produit invalide");
                         resolve({
                             status: 400,
                             message: "Index du produit invalide",
@@ -1732,6 +1756,8 @@ export async function updateProductStatusInOrder(orderId, newStatus, productInde
                     if (newStatus === "checking") {
                         items[productIndex].verificationNote = verificationNote || "Aucune note fournie";
                     }
+
+                    console.log("Données mises à jour :", items);
 
                     // Préparer les mises à jour pour Firestore
                     const updates = {
@@ -1753,17 +1779,117 @@ export async function updateProductStatusInOrder(orderId, newStatus, productInde
                     // Mettre à jour la commande dans Firestore
                     await updateDoc(orderRef, updates);
 
+                    console.log("Mise à jour effectuée avec succès");
+
                     resolve({
                         status: 200,
                         message: "Statut du produit et de la commande mis à jour avec succès",
                     });
                 } catch (error) {
+                    console.error("Erreur lors de la mise à jour :", error.message);
                     reject({
                         status: 500,
                         message: error.message,
                     });
                 }
             } else {
+                console.log("Utilisateur non connecté");
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté",
+                });
+            }
+        });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
+    });
+}
+
+export async function updateProductStatusInOrder(orderId, newStatus, productIndex, verificationNote = "") {
+    toggleLoadingSpinner(true); // Affiche le spinner
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    // Rechercher le document correspondant à l'orderId
+                    const ordersQuery = query(collection(db, "orders"), where("userId", "==", user.uid), where("orderId", "==", orderId));
+                    const querySnapshot = await getDocs(ordersQuery);
+
+                    if (querySnapshot.empty) {
+                        console.log("Commande non trouvée");
+                        resolve({
+                            status: 404,
+                            message: "Commande non trouvée",
+                        });
+                        return;
+                    }
+
+                    // Il est supposé qu'il y a un seul document avec cet orderId
+                    const orderDoc = querySnapshot.docs[0];
+                    const orderRef = orderDoc.ref;
+
+                    console.log("Document trouvé :", orderRef.id);
+
+                    // Récupérer les items actuels
+                    const orderData = orderDoc.data();
+                    const items = orderData.items;
+
+                    // Vérifier si l'index du produit est valide
+                    if (productIndex < 0 || productIndex >= items.length) {
+                        console.log("Index du produit invalide");
+                        resolve({
+                            status: 400,
+                            message: "Index du produit invalide",
+                        });
+                        return;
+                    }
+
+                    // Mettre à jour le statut et la date de mise à jour du produit
+                    items[productIndex].status = newStatus;
+                    items[productIndex].updatedAt = Date.now();
+
+                    // Si le statut est "checking", ajouter un paramètre supplémentaire
+                    if (newStatus === "checking") {
+                        items[productIndex].verificationNote = verificationNote || "Aucune note fournie";
+                    }
+
+                    console.log("Données mises à jour :", items);
+
+                    // Préparer les mises à jour pour Firestore
+                    const updates = {
+                        items: items,
+                        updatedAt: Timestamp.now(),
+                    };
+
+                    // Si la commande ne contient qu'un seul produit, mettre à jour aussi le statut de la commande
+                    if (items.length === 1) {
+                        updates.status = newStatus;
+                    } else {
+                        // Vérifier si tous les produits ont le même statut que le nouveau statut
+                        const allSameStatus = items.every(item => item.status === newStatus);
+                        if (allSameStatus) {
+                            updates.status = newStatus;
+                        }
+                    }
+
+                    // Mettre à jour la commande dans Firestore
+                    await updateDoc(orderRef, updates);
+
+                    console.log("Mise à jour effectuée avec succès");
+
+                    resolve({
+                        status: 200,
+                        message: "Statut du produit et de la commande mis à jour avec succès",
+                    });
+                } catch (error) {
+                    console.error("Erreur lors de la mise à jour :", error.message);
+                    reject({
+                        status: 500,
+                        message: error.message,
+                    });
+                }
+            } else {
+                console.log("Utilisateur non connecté");
                 resolve({
                     status: 401,
                     message: "Utilisateur non connecté",
