@@ -73,10 +73,14 @@ function formatDateRange(startTimestamp, eventType) {
         case 'colis':
             eventText = " le";
             break;
+        case 'progress':
+            return `${"Livraison ce"} ${startDayOfWeek} ${startDay} ${startMonth}`;
+        case 'progress-checking':
+                return `${"Retour ce"} ${startDayOfWeek} ${startDay} ${startMonth}`;
         default:
-            eventText = "Événement entre le"; // Valeur par défaut si type non reconnu
-    }
-
+                eventText = "Événement entre le"; // Valeur par défaut si type non reconnu
+        }
+    
     return `${eventText} ${startDayOfWeek} ${startDay} ${startMonth} et le ${endDayOfWeek} ${endDay} ${endMonth}`;
 }
 
@@ -103,7 +107,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         //document.getElementById('loading-spinner').style.display = 'block';
         const ads = (shippingAddress.adresse_sup == "") ? shippingAddress.adresse : `${shippingAddress.adresse} , ${shippingAddress.adresse_sup}`;
         orderNum.textContent = `Commande n°${orderId}`;
-        console.log(orderData.createdAt);
         orderDate.textContent = formatDate(orderData.createdAt, "detailed");
         orderTotal.textContent = `Total: ${formatPrice(orderData.totalAmount)} FCFA`;
         orderTotal1.textContent = `Total: ${formatPrice(orderData.totalAmount)} FCFA`;
@@ -121,13 +124,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const detailsElement = document.createElement('div');
             cartItemElement.className = 'cart-content';
 
-            const content = (item.status == "checking") ? "La commande sera récupérée entre" : "Livraison à domicile. Expédié Niger.net Livraison entre" ;
-
+            const content1 = (item.status == "checking") ? `${"La commande sera récupérée entre"}  <strong>${formatDateRange(item.updatedAt, "colis")}</strong>` : `${"Livraison à domicile. Expédié Niger.net Livraison entre"} <strong>${formatDateRange(item.updatedAt, "colis")}</strong>` ;
+            const content2 = (item.status == "report-delivered" || item.status == "report-returned") ? `${"Reporter entre"} <strong>${formatDateRange(item.updatedAt, "colis")}</strong>` : content1;
             detailsElement.innerHTML = `
             
             <h3>Colis ${index + 1}</h3>
-            <span> ${content}
-            <strong>${formatDateRange(item.updatedAt, "colis")}</strong>
+            <span>
+                ${content2}
             </span>
 
             `;
@@ -142,7 +145,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="state1 text-white bg-green">COMMANDE LIVRÉE</div>
                     <div class="state2 text-white bg-red">NON-RETOURNABLE</div>
                 </div>
-                <div class="time">Le 21-02-2024</div>
+                <div class="time"></div>
             </header>
             <div class="cart-item">
                 <div class="image">
@@ -182,6 +185,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                 time.textContent = formatDateRange(item.updatedAt, 'checking');
             } else if(["report-delivered", "report-returned"].includes(item.status)){
                 time.textContent = formatDateRange(item.updatedAt, 'report');
+            } else if (item.status === "progress") {
+                const historyAll = item.history;
+                if (historyAll.length >= 2) { // Vérifie qu'il y a au moins deux éléments
+                    const avantDernier = historyAll[historyAll.length - 2];
+                    if (avantDernier.status === "checking") {
+                        state1.textContent = "RETOUR EN COURS";
+                        time.textContent = formatDateRange(item.updatedAt, "progress-checking");
+                    } else {
+                        state1.textContent = "LIVRAISON EN COURS";
+                        time.textContent = formatDateRange(item.updatedAt, "progress");
+                    }
+                } else {
+                    // Si le tableau n'a pas au moins deux éléments, utiliser le comportement par défaut
+                    state1.textContent = "LIVRAISON EN COURS";
+                    time.textContent = formatDateRange(item.updatedAt, "progress");
+                }
+                                                     
             } else {
                 time.textContent = formatDate(item.updatedAt); 
             }  
@@ -220,6 +240,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                     openCustomAlert(orderId, "cancelled", index);
                 });
             
+            } else if (item.status === "progress") {
+                state2.style.visibility = "hidden";
+                state1.style.backgroundColor = "hsl(var(--clr-green) / .5)";
+                // state1.textContent = "LIVRAISON EN COURS";
+                foot.style.display = "none";
+                btn1.textContent = "SUIVRE VOTRE COLIS";
+                btn2.style.display = 'none';
+                btn1.addEventListener('click', () => {
+                    window.location.href = `track.html?id=${orderData.orderId}&index=${index}`;
+                });                                     
             } else if (item.status === "delivered") {
                 if (now <= Edate1.getTime()) {
                     state2.textContent = "RETOURNABLE";
@@ -258,7 +288,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
             }else if (item.status == "cancelled"){
                 state2.style.visibility = "hidden";
-                state1.textContent = "ANNULÉE";
+                state1.textContent = "COMMANDE ANNULÉE";
                 state1.style.backgroundColor = "hsl(var(--clr-black) / .8)";
                 foot.style.display = "none";
                 btn1.style.display = "none";
@@ -266,7 +296,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     window.location.href = `track.html?id=${orderData.orderId}&index=${index}`;
                 });
             }else if (item.status == "returned"){
-                state2.textContent = "RETOURNÉE";
+                state2.textContent = "COMMANDE RETOURNÉE";
                 state2.style.backgroundColor = "hsl(var(--clr-red) / .8)";
                 foot.style.display = "none";
                 btn1.style.display = "none";
@@ -309,7 +339,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     state2.textContent = "RETOUR DE LA COMMANDE REJETÉE";
                     state2.style.backgroundColor = "hsl(var(--clr-red) / .9)";
                 }
-            }
+            }            
 
             cartItemsList.appendChild(cartItemElement);
 

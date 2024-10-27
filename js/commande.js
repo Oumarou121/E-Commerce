@@ -56,6 +56,8 @@ function formatDateRange(startTimestamp, eventType, interval = 2) {
             break;
         case 'progress':
             return `${"Livraison ce"} ${startDayOfWeek} ${startDay} ${startMonth}`;
+        case 'progress-checking':
+            return `${"Retour ce"} ${startDayOfWeek} ${startDay} ${startMonth}`;
         default:
             eventText = "Événement entre le"; // Valeur par défaut si type non reconnu
     }
@@ -134,14 +136,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                             date = formatDateRange(productItem.updatedAt, "delivery");
                             
                         }else if (productItem.status === "progress") {
-                            state = "LIVRAISON EN COURS";
                             const historyAll = productItem.history;
-                            const exists = historyAll.some(item => item.status === "report-delivered");
-                            if (exists) {
-                                date = formatDateRange(productItem.updatedAt, "progress");
-                            }else{
-                                date = formatDateRange(productItem.updatedAt, "progress");
-                            }                            
+
+                            if (historyAll.length >= 2) { // Vérifie qu'il y a au moins deux éléments dans le tableau
+                                const avantDernier = historyAll[historyAll.length - 2];
+                                if (avantDernier.status === "checking") {
+                                    state = "RETOUR EN COURS";
+                                    date = formatDateRange(item.updatedAt, "progress-checking");
+                                } else {
+                                    state = "LIVRAISON EN COURS";
+                                    date = formatDateRange(item.updatedAt, "progress");
+                                }
+                            } else {
+                                // Si le tableau n'a pas au moins deux éléments, on applique un comportement par défaut
+                                state = "LIVRAISON EN COURS";
+                                date = formatDateRange(item.updatedAt, "progress");
+                            }
+                            
                             
                         } else if (productItem.status === "delivered") {
                             state = "COMMANDE LIVRÉE";

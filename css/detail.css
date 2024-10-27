@@ -208,7 +208,8 @@ h2{
 
 .cart-icon-top{
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    /* grid-template-rows: 1fr 1fr; */
+    grid-template-rows: 1fr;
     padding-top: 10px;
     padding-left: 10px;    
 }

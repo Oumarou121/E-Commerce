@@ -263,7 +263,6 @@ const displayCartItems = async (orderId) => {
     const option4 = document.querySelector("#commande-select .option4");
 
     let orderData = await getAdminOrdersById(orderId);
-    console.log(orderData['order'])
     orderData = orderData['order'];
     const shippingAddress = orderData.shippingAddress;
     const status = orderData.status;
@@ -288,7 +287,7 @@ const displayCartItems = async (orderId) => {
         detailsList.removeChild(detailsList.firstChild);
     }
 
-    if (status == "pending") {
+    if (status == "pending" || status == "checking") {
         option0.style.display = 'block';
         option1_1.style.display = 'none';
         option3_1.style.display = 'none';
@@ -297,25 +296,10 @@ const displayCartItems = async (orderId) => {
         option3_2.style.display = 'none';
         option4.style.display = 'none';
         state_commande_box.style.display = 'block';
-    } else if (status == "progress") {
-        option0.style.display = 'none';
-        option1_1.style.display = 'none';
-        option3_1.style.display = 'none';
-        option2.style.display = 'none';
-        option1_2.style.display = 'block';
-        option3_2.style.display = 'block';
-        option4.style.display = 'block';
-        state_commande_box.style.display = 'block';
-    } else if (status == "checking") {
-        option0.style.display = 'none';
-        option1_1.style.display = 'block';
-        option3_1.style.display = 'block';
-        option2.style.display = 'block';
-        option1_2.style.display = 'none';
-        option3_2.style.display = 'none';
-        option4.style.display = 'none';
-        state_commande_box.style.display = 'block';
-    }else if (status == "report-returned" || status == "report-delivered") {
+    } else if (status == "progress") {  
+        state_commande_box.style.display = 'none';
+
+    } else if (status == "report-returned" || status == "report-delivered") {
         option0.style.display = 'block';
         option1_1.style.display = 'none';
         option3_1.style.display = 'none';
@@ -421,7 +405,7 @@ const displayCartItems = async (orderId) => {
         const Edate1 = new Date(time1); // Créer une autre date à partir de `updatedAt`
         Edate.setDate(Sdate.getDate() + 1); // Ajouter 1 jour à `updatedAt`
         Edate1.setDate(Sdate.getDate() + 3); // Ajouter 1 jour à `updatedAt`
-
+        // const historyAll = item.history;
 
         if (item.status == "pending"){
             state1.style.backgroundColor = "hsl(var(--clr-blue))";
@@ -454,7 +438,10 @@ const displayCartItems = async (orderId) => {
         }else if (item.status == "checking"){
             state1.textContent = "COMMANDE EN EXAMINATION DE RETOUR";
             state1.style.backgroundColor = "hsl(var(--clr-red) / .5)";
-            option0.style.display = 'none';
+            option0.style.display = 'block';
+            option1_1.style.display = 'none';
+            option3_1.style.display = 'none';
+            option2.style.display = 'none';
             option1_2.style.display = 'none';
             option3_2.style.display = 'none';
             option4.style.display = 'none';
@@ -464,9 +451,26 @@ const displayCartItems = async (orderId) => {
             state1.textContent = "LIVRAISON EN COURS";
             state1.style.backgroundColor = "hsl(var(--clr-green) / .5)";
             option0.style.display = 'none';
-            option1_1.style.display = 'none';
-            option3_1.style.display = 'none';
-            option2.style.display = 'none';
+            
+            const historyAll = item.history;
+            if (historyAll.length >= 2) { // Vérifie qu'il y a au moins deux éléments
+                const avantDernier = historyAll[historyAll.length - 2];
+                if (avantDernier.status === "checking") {
+                    option1_2.style.display = 'none';
+                    option3_2.style.display = 'none';
+                    option4.style.display = 'none';
+                } else {
+                    option1_1.style.display = 'none';
+                    option3_1.style.display = 'none';
+                    option2.style.display = 'none';
+                }
+            } else {
+                // Si le tableau n'a pas au moins deux éléments, utiliser le comportement par défaut
+                option1_1.style.display = 'none';
+                option3_1.style.display = 'none';
+                option2.style.display = 'none';
+            }
+
             select_box.style.display = 'block';
 
         }else if (item.status == "delivered"){
@@ -482,7 +486,6 @@ const displayCartItems = async (orderId) => {
             option4.style.display = 'none';
             select_box.style.display = 'block';
         }
-
         cartItemsList.appendChild(cartItemElement);
 
     }
