@@ -133,6 +133,7 @@ ul li .progress{
     width: 0;
     height: 0;
 }
+
 ul li .progress .uil{
     display: none;
 }
@@ -224,4 +225,9 @@ i{
 li {
     transition: opacity 0.5s ease; /* Transition sur 0.5s pour l'opacité */
     display: none; /* Masque l'élément au départ */
+}
+
+.masque::after{
+    width: 0;
+    height: 0;
 }

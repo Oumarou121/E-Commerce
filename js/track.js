@@ -27,7 +27,8 @@ const sixI = document.querySelector(".six i");
 const sevenI = document.querySelector(".seven i");
 const eightI = document.querySelector(".eight i");
 const fourText = document.querySelector(".fourText");
-
+const eightText = document.querySelector(".eightText");
+const eightIcon = document.querySelector("#eight i");
 
 // function Fone() {
 //     one.classList.add("active");
@@ -158,9 +159,10 @@ function Fseven() {
     iSeven.classList.remove("uil-check");
     iSeven.classList.add("uil-circle");
     sevenI.classList.add('custom-style');
+    AfterDelevered();
 }
 
-function Feight() {
+function Feight(content = "Commande retournée", newIcon = "") {
     one.classList.add("active");
     two.classList.add("active");
     three.classList.add("active");
@@ -180,6 +182,21 @@ function Feight() {
     iEight.classList.remove("uil-check");
     iEight.classList.add("uil-circle");
     eightI.classList.add('custom-style');
+    eightText.textContent = content;
+    AfterDelevered();
+    if (content != "Commande retournée") {
+        eightIcon.classList.remove("uil-redo");
+        eightIcon.classList.add(newIcon);
+    }
+}
+
+function AfterDelevered() {
+    liOne.style.display = "none";
+    liTwo.style.display = "none";
+    liThree.style.display = "none";
+    liFour.style.display = "none";
+    liFive.style.display = "none";
+    six.classList.add("masque");
 }
 
 document.getElementById('exit').addEventListener('click', ()=>{
@@ -222,11 +239,9 @@ import { getUserOrderById } from './firebase.js';
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-    //document.getElementById('loading-spinner').style.display = 'block';
 
     // Récupérer les données de commande pour l'utilisateur
     let orderData = await getUserOrderById(orderId);
-    // orderData = orderData[0];
     const item = orderData.items[index];
     const status = item.status;
     const time = item.updatedAt;
@@ -238,6 +253,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Récupération des dates
     const createTime = orderData.createdAt;
     const now = Date.now(); // Obtenir le timestamp actuel
+    
     const Sdate = new Date(time); // Créer un objet Date à partir de `updatedAt`
     const Edate = new Date(Sdate); // Créer une autre date à partir de `updatedAt`
     Edate.setDate(Sdate.getDate() + 1); // Ajouter 1 jour à `updatedAt`
@@ -264,11 +280,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             Ffour("Commande expédiée"); // Action à prendre si la commande a été expédiée
         }
         
-        if (now >= dateD1) {
-            oneTime4.textContent = formatDate(Edate);
-            oneTime5.textContent = formatDate(dateD1);
-            Ffive(); // Action à prendre si la commande est en retard
-        }
+        // if (now >= dateD1) {
+        //     oneTime4.textContent = formatDate(Edate);
+        //     oneTime5.textContent = formatDate(dateD1);
+        //     Ffive(); // Action à prendre si la commande est en retard
+        // }
         
     } else if (status === "delivered") {
         oneTime1.textContent = formatDateFirebase(createTime);
@@ -303,6 +319,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         oneTime6.textContent = formatDate(dateD1);
         oneTime7.textContent = formatDate(time);
         Fseven();
+    } else if (status === "dismiss-returned") {
+        oneTime1.textContent = formatDateFirebase(createTime);
+        oneTime2.textContent = formatDateFirebase(createTime);
+        oneTime3.textContent = formatDateFirebase(createTime);
+        oneTime4.textContent = formatDate(dateD);
+        oneTime5.textContent = formatDate(dateD1);
+        oneTime6.textContent = formatDate(dateD1);
+        oneTime7.textContent = formatDate(Edate1);
+        oneTime8.textContent = formatDate(Sdate);
+        Feight("Retour de commande rejetée", "uil-x");
+    }else if (status === "report-returned") {
+        oneTime1.textContent = formatDateFirebase(createTime);
+        oneTime2.textContent = formatDateFirebase(createTime);
+        oneTime3.textContent = formatDateFirebase(createTime);
+        oneTime4.textContent = formatDate(dateD);
+        oneTime5.textContent = formatDate(dateD1);
+        oneTime6.textContent = formatDate(dateD1);
+        oneTime7.textContent = formatDate(Edate1);
+        oneTime8.textContent = formatDate(Sdate);
+        Feight("Retour de commande reportée", "uil-step-forward");
     }
 
     //document.getElementById('loading-spinner').style.display = 'none'; // Cacher le spinner de chargement

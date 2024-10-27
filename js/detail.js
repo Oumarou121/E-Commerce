@@ -16,37 +16,39 @@ function formatPrice(price) {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
-function formatFirebaseTimestamp(firebaseTimestamp) {
-    // Conversion du Timestamp de Firebase en objet Date
-    const date = firebaseTimestamp.toDate();
+const interval = 2;
+const delayAvantExp = 1;
+const delayFinRetour = 3;
+
+function formatDate(timestamp, formatType = "standard") {
+    // Si l'entrée est un Timestamp de Firebase, la convertir en objet Date
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
 
     // Récupération du jour, du mois et de l'année
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
-    const year = date.getFullYear();
-
-    // Formatage final
-    return `Effectuée le ${day}-${month}-${year}`;
-}
-
-function formatDate(timestamp) {
-    const date = new Date(timestamp); // Convertir le timestamp en objet Date
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
 
-    return `Le ${day}-${month}-${year}`;
+    // Choisir le format en fonction du type spécifié
+    if (formatType === "standard") {
+        return `Le ${day}-${month}-${year}`;
+    } else if (formatType === "detailed") {
+        return `Effectuée le ${day}-${month}-${year}`;
+    } else {
+        // Si le formatType n'est pas reconnu, utiliser le format standard par défaut
+        return `Le ${day}-${month}-${year}`;
+    }
 }
 
-function formatDeliveryDateRange(startTimestamp) {
-    const daysOfWeek = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
-    const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
 
-    const startDate = new Date(startTimestamp);
-    const endDate = new Date(startTimestamp); // Créer une nouvelle date basée sur startTimestamp
+const daysOfWeek = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
 
-    // Ajouter 2 jours en millisecondes (2 jours * 24 heures * 60 minutes * 60 secondes * 1000 millisecondes)
-    endDate.setDate(startDate.getDate() + 2);
+function formatDateRange(startTimestamp, eventType) {
+    // Convertir le Timestamp en objet Date
+    const startDate = startTimestamp.toDate ? startTimestamp.toDate() : new Date(startTimestamp);
+    const endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + interval); // Ajouter interval jours
 
     const startDayOfWeek = daysOfWeek[startDate.getDay()];
     const startDay = startDate.getDate();
@@ -56,49 +58,26 @@ function formatDeliveryDateRange(startTimestamp) {
     const endDay = endDate.getDate();
     const endMonth = months[endDate.getMonth()];
 
-    return `Livré entre le ${startDayOfWeek} ${startDay} ${startMonth} et le ${endDayOfWeek} ${endDay} ${endMonth}`;
-}
+    // Déterminer le texte basé sur le type d'événement
+    let eventText;
+    switch (eventType) {
+        case 'delivery':
+            eventText = "Livré entre le";
+            break;
+        case 'checking':
+            eventText = "Fin d'examination entre le";
+            break;
+        case 'report':
+            eventText = "Reporter entre le";
+            break;
+        case 'colis':
+            eventText = " le";
+            break;
+        default:
+            eventText = "Événement entre le"; // Valeur par défaut si type non reconnu
+    }
 
-function formatCheckingDateRange(startTimestamp) {
-    const daysOfWeek = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
-    const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
-
-    const startDate = new Date(startTimestamp);
-    const endDate = new Date(startTimestamp); // Créer une nouvelle date basée sur startTimestamp
-
-    // Ajouter 2 jours en millisecondes (2 jours * 24 heures * 60 minutes * 60 secondes * 1000 millisecondes)
-    endDate.setDate(startDate.getDate() + 2);
-
-    const startDayOfWeek = daysOfWeek[startDate.getDay()];
-    const startDay = startDate.getDate();
-    const startMonth = months[startDate.getMonth()];
-
-    const endDayOfWeek = daysOfWeek[endDate.getDay()];
-    const endDay = endDate.getDate();
-    const endMonth = months[endDate.getMonth()];
-
-    return `Fin d'examination entre le ${startDayOfWeek} ${startDay} ${startMonth} et le ${endDayOfWeek} ${endDay} ${endMonth}`;
-}
-
-function formatDeliveryDateRange1(startTimestamp) {
-    const daysOfWeek = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
-    const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
-
-    const startDate = new Date(startTimestamp);
-    const endDate = new Date(startTimestamp); // Créer une nouvelle date basée sur startTimestamp
-
-    // Ajouter 2 jours en millisecondes (2 jours * 24 heures * 60 minutes * 60 secondes * 1000 millisecondes)
-    endDate.setDate(startDate.getDate() + 2);
-
-    const startDayOfWeek = daysOfWeek[startDate.getDay()];
-    const startDay = startDate.getDate();
-    const startMonth = months[startDate.getMonth()];
-
-    const endDayOfWeek = daysOfWeek[endDate.getDay()];
-    const endDay = endDate.getDate();
-    const endMonth = months[endDate.getMonth()];
-
-    return ` le ${startDayOfWeek} ${startDay} ${startMonth} et le ${endDayOfWeek} ${endDay} ${endMonth}`;
+    return `${eventText} ${startDayOfWeek} ${startDay} ${startMonth} et le ${endDayOfWeek} ${endDay} ${endMonth}`;
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -116,8 +95,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     //document.getElementById('loading-spinner').style.display = 'block';
     let orderData = await getUserOrderById(orderId);
-    console.log(orderData)
-    // orderData = orderData[0];
     const shippingAddress = orderData.shippingAddress;
     const items = orderData.items;
     let totalQty = 0;
@@ -127,7 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const ads = (shippingAddress.adresse_sup == "") ? shippingAddress.adresse : `${shippingAddress.adresse} , ${shippingAddress.adresse_sup}`;
         orderNum.textContent = `Commande n°${orderId}`;
         console.log(orderData.createdAt);
-        orderDate.textContent = formatFirebaseTimestamp(orderData.createdAt);
+        orderDate.textContent = formatDate(orderData.createdAt, "detailed");
         orderTotal.textContent = `Total: ${formatPrice(orderData.totalAmount)} FCFA`;
         orderTotal1.textContent = `Total: ${formatPrice(orderData.totalAmount)} FCFA`;
         orderSousTotal.textContent = `Sous-total: ${formatPrice(orderData.totalAmount - 2000)} FCFA`;
@@ -136,7 +113,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         region.textContent = `${shippingAddress.region}, Niger`;
 
         for(const [index, item] of items.entries()){
-            console.log(item);
             totalQty += item.quantity;
 
             const productId = item.productId; // Récupérer l'ID du produit
@@ -151,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             <h3>Colis ${index + 1}</h3>
             <span> ${content}
-            <strong>${formatDeliveryDateRange1(item.updatedAt)}</strong>
+            <strong>${formatDateRange(item.updatedAt, "colis")}</strong>
             </span>
 
             `;
@@ -201,9 +177,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             const btn2 = cartItemElement.querySelector(".btn-two");
 
             if (item.status == "pending") {
-                time.textContent = formatDeliveryDateRange(item.updatedAt);
+                time.textContent = formatDateRange(item.updatedAt, 'delivery');
             } else if (item.status == "checking") {
-                time.textContent = formatCheckingDateRange(item.updatedAt);
+                time.textContent = formatDateRange(item.updatedAt, 'checking');
+            } else if(["report-delivered", "report-returned"].includes(item.status)){
+                time.textContent = formatDateRange(item.updatedAt, 'report');
             } else {
                 time.textContent = formatDate(item.updatedAt); 
             }  
@@ -211,76 +189,73 @@ document.addEventListener('DOMContentLoaded', async () => {
             const foot = cartItemElement.querySelector(".cart-icon-bottom");
             const footContent = cartItemElement.querySelector(".uil-redo");
             const now = Date.now(); // Obtenir le timestamp actuel
-            const time1 = item.updatedAt; // Récupérer le timestamp de `updatedAt`
-            const Sdate = new Date(time1); // Créer un objet Date à partir de `updatedAt`
-            const Edate = new Date(time1); // Créer une autre date à partir de `updatedAt`
-            const Edate1 = new Date(time1); // Créer une autre date à partir de `updatedAt`
-            Edate.setDate(Sdate.getDate() + 1); // Ajouter 1 jour à `updatedAt`
-            Edate1.setDate(Sdate.getDate() + 3); // Ajouter 1 jour à `updatedAt`
-
-
-            if (item.status == "pending"){
+            const updataTime = item.updatedAt; // Récupérer le timestamp de `updatedAt`
+            const updatedAtDate = updataTime.toDate ? updataTime.toDate() : new Date(updataTime); // Convertir le Timestamp Firebase en Date
+                    
+            // Calculer les dates d'expiration
+            const Edate = new Date(updatedAtDate);
+            Edate.setDate(updatedAtDate.getDate() + delayAvantExp); // Ajouter 1 jour pour l'expédition
+                    
+            const Edate1 = new Date(updatedAtDate);
+            Edate1.setDate(updatedAtDate.getDate() + delayFinRetour); // Ajouter 3 jours pour le retour
+                    
+            if (item.status === "pending") {
                 state2.style.visibility = "hidden";
                 state1.style.backgroundColor = "hsl(var(--clr-blue))";
-
-                if (now <= Edate) {
-                    state1.textContent = "En ATTENTE D'EXPÉDITION";
-                } else if (now >= Edate){
-                    state1.textContent = "COMMANDE EN COURS";
-                } 
-
+            
+                state1.textContent = (now <= Edate.getTime()) 
+                    ? "En ATTENTE D'EXPÉDITION" 
+                    : "COMMANDE EN COURS";
+            
                 foot.style.display = "none";
                 btn1.style.display = "block";
                 btn1.textContent = "SUIVRE VOTRE COLIS";
                 btn2.textContent = "ANNULER VOTRE COMMANDE";
-                btn1.addEventListener('click', ()=>{
+            
+                btn1.addEventListener('click', () => {
                     window.location.href = `track.html?id=${orderData.orderId}&index=${index}`;
-
                 });
-
-                btn2.addEventListener('click', ()=>{
-                    openCustomAlert(orderId, "cancelled" ,index);
+            
+                btn2.addEventListener('click', () => {
+                    openCustomAlert(orderId, "cancelled", index);
                 });
-
-            }else if (item.status == "delivered"){
-
-                if (now <= Edate1) {
+            
+            } else if (item.status === "delivered") {
+                if (now <= Edate1.getTime()) {
                     state2.textContent = "RETOURNABLE";
                     state2.style.backgroundColor = "hsl(var(--clr-blue) / .8)";
-                    foot.addEventListener('click', ()=>{
+                    foot.addEventListener('click', () => {
                         openCustomAlertRetourne(product, item, orderId, "checking", index);
                     });
-                } else if (now >= Edate1){
+                } else {
                     state2.textContent = "NON-RETOURNABLE";
                     foot.style.cursor = "default";
-                    footContent.textContent = `La période de retour s'est terminée ${formatDate(Edate1)}, mais si s'est en rapport de la garantie consulté le +227 94464639`;
+                    footContent.textContent = `La période de retour s'est terminée ${formatDate(Edate1)}, mais si c'est en rapport avec la garantie, consultez le +227 94464639`;
                 }
-
+            
                 const cartIcon = cartItemElement.querySelector('.add-to-cart');
                 const isCart = await isInCart(productId);
-                            
+            
                 if (isCart) {
                     cartIcon.classList.add('in-cart');
                 }
-
-                btn1.addEventListener('click', async()=>{
+            
+                btn1.addEventListener('click', async () => {
                     if (cartIcon.classList.contains('in-cart')) {
-                        // Si le produit est déjà dans le panier, on le retire
                         await removeFromCart(productId);
                         cartIcon.classList.remove('in-cart');
                         showAlert('Le produit a été retiré de votre panier!');
                     } else {
-                        // Si le produit n'est pas dans le panier, on l'ajoute avec une quantité par défaut (1)
                         await addToCart(productId, 1); // Quantité par défaut de 1
                         cartIcon.classList.add('in-cart');
                         showAlert('Le produit a été ajouté à votre panier!');
                     }
                 });
-
-                btn2.addEventListener('click', ()=>{
+            
+                btn2.addEventListener('click', () => {
                     window.location.href = `track.html?id=${orderData.orderId}&index=${index}`;
                 });
-
+                
             }else if (item.status == "cancelled"){
                 state2.style.visibility = "hidden";
                 state1.textContent = "ANNULÉE";
@@ -307,6 +282,33 @@ document.addEventListener('DOMContentLoaded', async () => {
                 btn2.addEventListener('click', ()=>{
                     window.location.href = `track.html?id=${orderData.orderId}&index=${index}`;
                 });
+            } else if(["report-returned", "dismiss-delivered", "report-delivered", "dismiss-returned"].includes(item.status)) {
+                state1.style.display = "none";
+                foot.style.display = "none";
+                btn1.style.display = "none";
+                btn2.addEventListener('click', ()=>{
+                    window.location.href = `track.html?id=${orderData.orderId}&index=${index}`;
+                });
+
+                if (item.status == "report-delivered") {
+                    state2.textContent = "COMMANDE REPORTÉE";
+                    state2.style.backgroundColor = "hsl(var(--clr-blue) / .5)";
+                }
+
+                if (item.status == "report-returned") {
+                    state2.textContent = "RETOUR DE LA COMMANDE REPORTÉE";
+                    state2.style.backgroundColor = "hsl(var(--clr-blue) / .7)";
+                }
+
+                if (item.status == "dismiss-delivered") {
+                    state2.textContent = "COMMANDE REJETÉE";
+                    state2.style.backgroundColor = "hsl(var(--clr-red))";
+                }
+
+                if (item.status == "dismiss-returned") {
+                    state2.textContent = "RETOUR DE LA COMMANDE REJETÉE";
+                    state2.style.backgroundColor = "hsl(var(--clr-red) / .9)";
+                }
             }
 
             cartItemsList.appendChild(cartItemElement);

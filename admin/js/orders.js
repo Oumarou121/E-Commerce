@@ -69,6 +69,8 @@ function addOrderData(Uid, userName, status, date, amount) {
 
     if (status == "returned") {
         newRow.querySelector(".state").style.backgroundColor = "hsl(var(--clr-red) / .8)"; // Changer la couleur de fond
+    }else{
+        newRow.querySelector(".state").style.color = "hsl(var(--clr-black))"; // Changer la couleur de fond
     }
 
 
@@ -97,11 +99,16 @@ async function LoadListOrders() {
                 addOrderData(order.orderId, userName, order.status, formatDate(order.updatedAt), order.totalAmount);
             });
         } else {
-            productTable.innerHTML = '<p>Aucun produit disponible.</p>';
+            productTable.innerHTML = `
+            <div class="cart vide bold-800 flex" id="emptyCartMessage3" style="display: flex;">
+                <i class="uil uil-box"></i>
+                <p>Orders Is Empty</p>
+            </div>
+            `;
         }
     } catch (error) {
-        console.log('Erreur lors de la récupération des produits', error);
-        productTable.innerHTML = '<p>Erreur lors du chargement des produits.</p>';
+        console.log('Erreur lors de la récupération des commandes', error);
+        productTable.innerHTML = '<p>Erreur lors du chargement des commandes.</p>';
     }
 }
 
@@ -111,7 +118,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function detailsOrder(orderUid) {
     openCustomAlert(orderUid);
-    // document.getElementById('orderId').innerHTML = orderUid;
 }
 
 // Fonction pour ouvrir l'alerte et désactiver les interactions
@@ -235,6 +241,8 @@ function formatDeliveryDateRange1(startTimestamp) {
 
 const displayCartItems = async (orderId) => {
 
+    const state_commande_box = document.getElementById('select-box-commande');
+    state_commande_box.style.display = 'none';
     const orderNum = document.querySelector('.Num');
     const orderNbr = document.querySelector('.nbr');
     const orderDate = document.querySelector('.Comd-date');
@@ -246,31 +254,21 @@ const displayCartItems = async (orderId) => {
     const region = document.querySelector('.region');
     const cartItemsList = document.querySelector('.cart-items');
     const detailsList = document.querySelector('.detail-exp');
-    const option1_1 = document.querySelector(".option1_1");
-    const option1_2 = document.querySelector(".option1_2");
-    const option2 = document.querySelector(".option2");
-    const option3_1 = document.querySelector(".option3_1");
-    const option3_2 = document.querySelector(".option3_2");
-    const option4 = document.querySelector(".option4");
+    const option0 = document.querySelector("#commande-select .option0");
+    const option1_1 = document.querySelector("#commande-select .option1_1");
+    const option1_2 = document.querySelector("#commande-select .option1_2");
+    const option2 = document.querySelector("#commande-select .option2");
+    const option3_1 = document.querySelector("#commande-select .option3_1");
+    const option3_2 = document.querySelector("#commande-select .option3_2");
+    const option4 = document.querySelector("#commande-select .option4");
 
     let orderData = await getAdminOrdersById(orderId);
-    orderData = orderData[0];
+    console.log(orderData['order'])
+    orderData = orderData['order'];
     const shippingAddress = orderData.shippingAddress;
     const status = orderData.status;
     const items = orderData.items;
     let totalQty = 0;
-
-    if (status == "pending") {
-        option1_1.style.display = 'none';
-        option3_1.style.display = 'none';
-        option2.style.display = 'none';
-    } else if (status == "checking") {
-        option1_2.style.display = 'none';
-        option3_2.style.display = 'none';
-        option4.style.display = 'none';
-    }
-
-
     //document.getElementById('loading-spinner').style.display = 'block';
     const ads = (shippingAddress.adresse_sup == "") ? shippingAddress.adresse : `${shippingAddress.adresse} , ${shippingAddress.adresse_sup}`;
     orderNum.textContent = `Commande n°${orderId}`;
@@ -288,6 +286,53 @@ const displayCartItems = async (orderId) => {
 
     while (detailsList.firstChild) {
         detailsList.removeChild(detailsList.firstChild);
+    }
+
+    if (status == "pending") {
+        option0.style.display = 'block';
+        option1_1.style.display = 'none';
+        option3_1.style.display = 'none';
+        option2.style.display = 'none';
+        option1_2.style.display = 'none';
+        option3_2.style.display = 'none';
+        option4.style.display = 'none';
+        state_commande_box.style.display = 'block';
+    } else if (status == "progress") {
+        option0.style.display = 'none';
+        option1_1.style.display = 'none';
+        option3_1.style.display = 'none';
+        option2.style.display = 'none';
+        option1_2.style.display = 'block';
+        option3_2.style.display = 'block';
+        option4.style.display = 'block';
+        state_commande_box.style.display = 'block';
+    } else if (status == "checking") {
+        option0.style.display = 'none';
+        option1_1.style.display = 'block';
+        option3_1.style.display = 'block';
+        option2.style.display = 'block';
+        option1_2.style.display = 'none';
+        option3_2.style.display = 'none';
+        option4.style.display = 'none';
+        state_commande_box.style.display = 'block';
+    }else if (status == "report-returned" || status == "report-delivered") {
+        option0.style.display = 'block';
+        option1_1.style.display = 'none';
+        option3_1.style.display = 'none';
+        option2.style.display = 'none';
+        option1_2.style.display = 'none';
+        option3_2.style.display = 'none';
+        option4.style.display = 'none';
+        state_commande_box.style.display = 'block';
+    }else{            
+        option0.style.display = 'none';
+        option1_1.style.display = 'none';
+        option3_1.style.display = 'none';
+        option2.style.display = 'none';
+        option1_2.style.display = 'none';
+        option3_2.style.display = 'none';
+        option4.style.display = 'none';
+        state_commande_box.style.display = 'none';
     }
 
     for(const [index, item] of items.entries()){
@@ -318,9 +363,10 @@ const displayCartItems = async (orderId) => {
         <header class="cart-icon-top">
             <div class="state-box">
                 <div class="state1 text-white bg-green">COMMANDE LIVRÉE</div>
-                <div class="select-box">
+                <div id="select-box-product" class="select-box">
                     <select class="select">
                         <option value="" selected>Currente state</option>
+                        <option class="option0" value="progress">Progress</option>
                         <option class="option3_1" value="report-returned">Report</option>
                         <option class="option1_1" value="dismiss-returned">Dismiss</option>
                         <option class="option1_2" value="dismiss-delivered">Dismiss</option>
@@ -350,13 +396,14 @@ const displayCartItems = async (orderId) => {
         const state1 = cartItemElement.querySelector(".state1");
         const time = cartItemElement.querySelector(".time");
         const select_box = cartItemElement.querySelector(".select-box");
+        const option0 = cartItemElement.querySelector(".option0");
         const option1_1 = cartItemElement.querySelector(".option1_1");
         const option1_2 = cartItemElement.querySelector(".option1_2");
         const option2 = cartItemElement.querySelector(".option2");
         const option3_1 = cartItemElement.querySelector(".option3_1");
         const option3_2 = cartItemElement.querySelector(".option3_2");
         const option4 = cartItemElement.querySelector(".option4");
-
+        const state_product = cartItemElement.querySelector("#select-box-product");
 
         if (item.status == "pending") {
             time.textContent = formatDeliveryDateRange(item.updatedAt);
@@ -364,6 +411,7 @@ const displayCartItems = async (orderId) => {
             time.textContent = formatCheckingDateRange(item.updatedAt);
         } else {
             time.textContent = formatDate1(item.updatedAt); 
+            state_product.style.display = 'none';
         }  
         
         const now = Date.now(); // Obtenir le timestamp actuel
@@ -378,22 +426,22 @@ const displayCartItems = async (orderId) => {
         if (item.status == "pending"){
             state1.style.backgroundColor = "hsl(var(--clr-blue))";
             option1_1.style.display = 'none';
-            option2.style.display = 'none';
             option3_1.style.display = 'none';
+            option2.style.display = 'none';
+            option1_2.style.display = 'none';
+            option3_2.style.display = 'none';
+            option4.style.display = 'none';
+            ;
 
             if (now <= Edate) {
                 state1.textContent = "En ATTENTE D'EXPÉDITION";
                 select_box.style.display = 'none';
             } else if (now >= Edate){
                 state1.textContent = "COMMANDE EN COURS";
+                select_box.style.display = 'block'
             } 
 
-        }else if (item.status == "delivered"){
-
-            select_box.style.display = 'none';
-
         }else if (item.status == "cancelled"){
-            // state2.style.visibility = "hidden";
             state1.textContent = "ANNULÉE";
             state1.style.backgroundColor = "hsl(var(--clr-black) / .8)";
             select_box.style.display = 'none';
@@ -404,13 +452,35 @@ const displayCartItems = async (orderId) => {
             select_box.style.display = 'none';
             
         }else if (item.status == "checking"){
-            // state1.style.display = "none";
             state1.textContent = "COMMANDE EN EXAMINATION DE RETOUR";
             state1.style.backgroundColor = "hsl(var(--clr-red) / .5)";
+            option0.style.display = 'none';
             option1_2.style.display = 'none';
             option3_2.style.display = 'none';
             option4.style.display = 'none';
+            select_box.style.display = 'block';
 
+        }else if (item.status == "progress"){
+            state1.textContent = "LIVRAISON EN COURS";
+            state1.style.backgroundColor = "hsl(var(--clr-green) / .5)";
+            option0.style.display = 'none';
+            option1_1.style.display = 'none';
+            option3_1.style.display = 'none';
+            option2.style.display = 'none';
+            select_box.style.display = 'block';
+
+        }else if (item.status == "delivered"){
+            select_box.style.display = 'none';
+
+        }else if (status == "report-returned" || status == "report-delivered") {
+            option0.style.display = 'block';
+            option1_1.style.display = 'none';
+            option3_1.style.display = 'none';
+            option2.style.display = 'none';
+            option1_2.style.display = 'none';
+            option3_2.style.display = 'none';
+            option4.style.display = 'none';
+            select_box.style.display = 'block';
         }
 
         cartItemsList.appendChild(cartItemElement);

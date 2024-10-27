@@ -85,7 +85,12 @@ async function LoadListProducts() {
                 }
             });
         } else {
-            productTable.innerHTML = '<p>Aucun produit disponible.</p>';
+            productTable.innerHTML = `
+            <div class="cart vide bold-800 flex" id="emptyCartMessage3" style="display: flex;">
+                <i class="uil uil-box"></i>
+                <p>Products Is Empty</p>
+            </div>
+            `;
         }
     } catch (error) {
         console.log('Erreur lors de la récupération des produits', error);

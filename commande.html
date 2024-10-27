@@ -97,12 +97,7 @@
             <div class="shopping flex">
                 <p>Vos Commandes Basket</p>
             </div>
-            
-            <!-- Message de panier vide -->
-            <div class="cart vide bold-800 flex" id="emptyCartMessage" style="display: none;">
-                <i class="uil uil-heart-alt"></i>
-                <p>Vos Commandes Is Empty</p>
-            </div>
+        
 
             <section class="second">
                 
@@ -110,6 +105,7 @@
                     <ul class="bar-nav">
                         <li><a href="#livres" class="active" data-tab="livres">En cours/Livrés</a></li>
                         <li><a href="#annules" data-tab="annules">Annulées/Retournées</a></li>
+                        <li><a href="#report" data-tab="report">Reportée/Rejetée</a></li>
                     </ul>
                 </nav>
 
@@ -121,7 +117,11 @@
                 <div class="container1 tab-content" id="livres">
                     
                     <ul class="cart-items">
-        
+                        <!-- Message de panier vide -->
+                        <div class="cart vide bold-800 flex" id="emptyCartMessage1" style="display: none;">
+                            <i class="uil uil-box"></i>
+                            <p>Your Orders Is Empty</p>
+                        </div>
                     </ul>
             
                 </div>
@@ -129,7 +129,23 @@
                 <div class="container1 tab-content" id="annules" style="display:none;" style="transform:scale(0);">
                     
                     <ul class="cart-items1">
-        
+                        <!-- Message de panier vide -->
+                        <div class="cart vide bold-800 flex" id="emptyCartMessage2" style="display: none;">
+                            <i class="uil uil-box"></i>
+                            <p>Your Orders Is Empty</p>
+                        </div>
+                    </ul>
+
+                </div>
+
+                <div class="container1 tab-content" id="report" style="display:none;" style="transform:scale(0);">
+                    
+                    <ul class="cart-items2">
+                        <!-- Message de panier vide -->
+                        <div class="cart vide bold-800 flex" id="emptyCartMessage3" style="display: flex;">
+                            <i class="uil uil-box"></i>
+                            <p>Your Orders Is Empty</p>
+                        </div>
                     </ul>
 
                 </div>

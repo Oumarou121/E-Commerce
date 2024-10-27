@@ -1389,76 +1389,116 @@ export async function generateOrderId() {
 }
 
 export async function getOrdersList() {
-    toggleLoadingSpinner(true); // Show the loading spinner
-    try {
-        // Fetch orders from the "orders" collection even if the user is not logged in
-        const ordersSnapshot = await getDocs(collection(db, "orders"));
-        
-        if (!ordersSnapshot.empty) {
-            const ordersList = ordersSnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            ordersList.sort((a, b) => {
-                const idA = parseInt(a.orderId.replace('#', ''), 10); // Extract and convert to number
-                const idB = parseInt(b.orderId.replace('#', ''), 10); // Extract and convert to number
-                return idB - idA; // Sort in descending order
-            });
-            return ordersList; // Return the sorted list of orders
-        } else {
-            console.log("No orders found");
-            return []; // Return an empty array if no data is found
-        }
-    } catch (error) {
-        console.error("Error retrieving orders:", error);
-        throw error; // Handle errors
-    } finally {
-        toggleLoadingSpinner(false); // Hide the loading spinner after the request
-    }
-}
-
-// Fonction pour ajouter une commande
-export async function addOrder(orderData) {
-    toggleLoadingSpinner(true); // Affiche le spinner
+    toggleLoadingSpinner(true); // Affiche le spinner de chargement
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
-                    // Générer le nouvel orderId
-                    const orderId = await generateOrderId();
-                    
-                    // Afficher les données de la commande pour le débogage
-                    console.log(orderData);
+                    // Récupérer le document de l'utilisateur dans la collection users
+                    const userDocRef = doc(db, "users", user.uid);
+                    const userDocSnapshot = await getDoc(userDocRef);
 
-                    // Ajouter la commande à la collection "orders" avec l'orderId généré
-                    const docRef = await addDoc(collection(db, "orders"), {
-                        ...orderData,
-                        orderId: orderId, // Utiliser l'orderId personnalisé
-                        userId: user.uid,
-                        createdAt: Timestamp.now(),
-                        updatedAt: Timestamp.now()
-                    });
+                    if (!userDocSnapshot.exists()) {
+                        console.log("Utilisateur non trouvé dans la collection users");
+                        resolve([]); // Retourne un tableau vide si l'utilisateur n'est pas trouvé
+                        return;
+                    }
 
-                    resolve({
-                        status: 200,
-                        message: "Commande ajoutée avec succès",
-                        orderId: orderId
-                    });
+                    const userData = userDocSnapshot.data();
+                    if (userData.role !== "admin") {
+                        console.log("L'utilisateur n'est pas un administrateur");
+                        resolve([]); // Retourne un tableau vide si l'utilisateur n'est pas administrateur
+                        return;
+                    }
+
+                    // Si l'utilisateur est un administrateur, récupérer les commandes
+                    const ordersSnapshot = await getDocs(collection(db, "orders"));
+
+                    if (!ordersSnapshot.empty) {
+                        const ordersList = ordersSnapshot.docs.map(doc => ({
+                            id: doc.id,
+                            ...doc.data()
+                        }));
+                        ordersList.sort((a, b) => {
+                            const idA = parseInt(a.orderId.replace('#', ''), 10); // Extraire et convertir en nombre
+                            const idB = parseInt(b.orderId.replace('#', ''), 10); // Extraire et convertir en nombre
+                            return idB - idA; // Trier dans l'ordre décroissant
+                        });
+                        resolve(ordersList); // Retourner la liste triée des commandes
+                    } else {
+                        console.log("Aucune commande trouvée");
+                        resolve([]); // Retourne un tableau vide si aucune donnée n'est trouvée
+                    }
                 } catch (error) {
+                    console.error("Erreur lors de la récupération des commandes :", error);
                     reject({
                         status: 500,
                         message: error.message
                     });
                 }
             } else {
+                console.log("Utilisateur non connecté");
+                resolve([]); // Retourne un tableau vide si aucun utilisateur n'est connecté
+            }
+        });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masquer le spinner de chargement après la requête
+    });
+}
+
+export async function addOrder(orderData) {
+    toggleLoadingSpinner(true);
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
                 resolve({
                     status: 401,
                     message: "Utilisateur non connecté"
                 });
+                toggleLoadingSpinner(false);
+                return;
+            }
+
+            try {
+                const orderId = await generateOrderId();
+
+                // Ajouter les informations d'historique pour chaque produit
+                const itemsWithHistory = orderData.items.map(item => ({
+                    ...item,
+                    status: item.status || "pending",
+                    updatedAt: Timestamp.now(),
+                    history: [
+                        {
+                            status: item.status || "pending",
+                            updatedAt: Timestamp.now()
+                        }
+                    ]
+                }));
+
+                // Ajouter la commande avec les items et leur historique
+                await setDoc(doc(db, "orders", orderId), {
+                    ...orderData,
+                    items: itemsWithHistory,
+                    orderId: orderId,
+                    userId: user.uid,
+                    createdAt: Timestamp.now(),
+                    updatedAt: Timestamp.now()
+                });
+
+                resolve({
+                    status: 200,
+                    message: "Commande ajoutée avec succès",
+                    orderId: orderId
+                });
+            } catch (error) {
+                reject({
+                    status: 500,
+                    message: error.message
+                });
+            } finally {
+                toggleLoadingSpinner(false);
             }
         });
-    }).finally(() => {
-        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
 
@@ -1496,7 +1536,7 @@ export  const getUserOrders = () => {
     });
 }
 
-// Fonction pour récupérer toutes les commandes d'un utilisateur
+// Fonction pour récupérer une commande d'un utilisateur
 export const getUserOrderById = (orderID) => {
     toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
@@ -1513,21 +1553,22 @@ export const getUserOrderById = (orderID) => {
                 }
 
                 try {
-                    const q = query(
-                        collection(db, "orders"),
-                        where("userId", "==", user.uid),
-                        where("orderId", "==", orderID)
-                    );
+                    // Récupérer le document correspondant à l'orderId
+                    const orderDoc = await getDoc(doc(db, "orders", orderID));
 
-                    const querySnapshot = await getDocs(q);
-                    
                     // Vérifie si une commande a été trouvée
-                    if (querySnapshot.empty) {
+                    if (!orderDoc.exists()) {
                         console.warn("Aucune commande trouvée pour l'orderID :", orderID);
                         resolve(null); // Résoudre avec null si aucune commande n'est trouvée
                     } else {
-                        const order = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
-                        resolve(order); // Résoudre la promesse avec la commande trouvée
+                        const order = { id: orderDoc.id, ...orderDoc.data() };
+                        // Vérifier si l'utilisateur correspond à userId dans la commande
+                        if (order.userId === user.uid) {
+                            resolve(order); // Résoudre la promesse avec la commande trouvée
+                        } else {
+                            console.warn("L'utilisateur n'a pas accès à cette commande.");
+                            resolve(null); // Résoudre avec null si l'utilisateur n'est pas autorisé
+                        }
                     }
                 } catch (error) {
                     console.error("Error fetching order:", error);
@@ -1545,24 +1586,41 @@ export const getUserOrderById = (orderID) => {
     });
 }
 
-
 export const getAdminOrdersById = (orderID) => {
     toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
-                    // Crée une requête pour récupérer les commandes correspondant à l'utilisateur et à l'ID de commande
-                    const q = query(
-                        collection(db, "orders"),
-                        where("orderId", "==", orderID)
-                    );
+                    // Vérifier si l'utilisateur est administrateur
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (!userDoc.exists() || userDoc.data().role !== 'admin') {
+                        console.log("Accès refusé : l'utilisateur n'est pas un administrateur");
+                        resolve({
+                            status: 403,
+                            message: "Accès refusé : l'utilisateur n'est pas un administrateur"
+                        });
+                        return;
+                    }
 
-                    const querySnapshot = await getDocs(q);
+                    // Récupérer le document correspondant à l'orderId
+                    const orderDoc = await getDoc(doc(db, "orders", orderID));
 
-                    const orders = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    if (!orderDoc.exists()) {
+                        console.log("Commande non trouvée");
+                        resolve({
+                            status: 404,
+                            message: "Commande non trouvée"
+                        });
+                        return;
+                    }
 
-                    resolve(orders);
+                    const orderData = { id: orderDoc.id, ...orderDoc.data() };
+
+                    resolve({
+                        status: 200,
+                        order: orderData
+                    });
                 } catch (error) {
                     console.error("User ID:", user.uid);
                     console.error("Error details:", error);
@@ -1572,7 +1630,11 @@ export const getAdminOrdersById = (orderID) => {
                     });
                 }
             } else {
-                resolve([]); // Aucun utilisateur connecté
+                console.log("Utilisateur non connecté");
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté"
+                });
             }
         });
     }).finally(() => {
@@ -1591,7 +1653,8 @@ export const getPendingOrDeliveredOrders = () => {
                     const q = query(
                         collection(db, "orders"),
                         where("userId", "==", user.uid),
-                        where("status", "in", ["pending", "delivered", "checking", "report-delivered", "dismiss-returned"])
+                        where("status", "in", ["pending", "progress" ,"delivered", "checking"])
+                        // where("status", "in", ["pending", "delivered", "checking", "report-delivered", "dismiss-returned"])
                     );
 
                     const querySnapshot = await getDocs(q);
@@ -1628,7 +1691,45 @@ export const getCancelledOrReturnedOrders = () => {
                     const q = query(
                         collection(db, "orders"),
                         where("userId", "==", user.uid),
-                        where("status", "in", ["cancelled", "returned", "report-returned", "dismiss-delivered"])
+                        // where("status", "in", ["cancelled", "returned", "report-returned", "dismiss-delivered"])
+                        where("status", "in", ["cancelled", "returned"])
+                    );
+
+                    const querySnapshot = await getDocs(q);
+                    const orders = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    // Trier les commandes par orderId dans l'ordre croissant
+                    orders.sort((a, b) => {
+                        const idA = parseInt(a.orderId.replace('#', ''), 10);
+                        const idB = parseInt(b.orderId.replace('#', ''), 10);
+                        return idB - idA;
+                    });
+                    resolve(orders); // Résoudre la promesse avec les commandes annulées ou retournées triées
+                } catch (error) {
+                    reject({
+                        status: 500,
+                        message: error.message
+                    });
+                }
+            } else {
+                resolve([]); // Aucun utilisateur connecté
+            }
+        });
+    }).finally(() => {
+        toggleLoadingSpinner(false); // Masque le spinner après la requête
+    });
+}
+
+// Fonction pour récupérer les commandes annulées ou retournées
+export const getReportOrDismissOrders = () => {
+    toggleLoadingSpinner(true); // Affiche le spinner
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const q = query(
+                        collection(db, "orders"),
+                        where("userId", "==", user.uid),
+                        where("status", "in", ["report-returned", "dismiss-delivered", "report-delivered", "dismiss-returned"])
                     );
 
                     const querySnapshot = await getDocs(q);
@@ -1656,56 +1757,90 @@ export const getCancelledOrReturnedOrders = () => {
 }
 
 export async function updateOrderStatus(orderId, newStatus) {
-    toggleLoadingSpinner(true); // Affiche le spinner
-    try {
-        const user = auth.currentUser; // Vérifier si l'utilisateur est connecté
-        if (!user) {
-            console.log("Utilisateur non connecté");
-            return {
-                status: 401,
-                message: "Utilisateur non connecté"
-            };
-        }
+    toggleLoadingSpinner(true);
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                console.log("Utilisateur non connecté");
+                resolve({
+                    status: 401,
+                    message: "Utilisateur non connecté"
+                });
+                return;
+            }
 
-        // Rechercher le document correspondant à l'orderId
-        const ordersQuery = query(collection(db, "orders"), where("orderId", "==", orderId));
-        const querySnapshot = await getDocs(ordersQuery);
+            try {
+                // Vérifier si l'utilisateur est administrateur
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (!userDoc.exists() || userDoc.data().role !== 'admin') {
+                    console.log("Accès refusé : l'utilisateur n'est pas un administrateur");
+                    resolve({
+                        status: 403,
+                        message: "Accès refusé : l'utilisateur n'est pas un administrateur"
+                    });
+                    return;
+                }
 
-        if (querySnapshot.empty) {
-            console.log("Commande non trouvée");
-            return {
-                status: 404,
-                message: "Commande non trouvée"
-            };
-        }
+                // Rechercher le document correspondant à l'orderId
+                const orderRef = doc(db, "orders", orderId);
+                const orderDoc = await getDoc(orderRef);
 
-        // Il est supposé qu'il y a un seul document avec cet orderId
-        const orderDoc = querySnapshot.docs[0];
-        const orderRef = orderDoc.ref;
+                if (!orderDoc.exists()) {
+                    console.log("Commande non trouvée");
+                    resolve({
+                        status: 404,
+                        message: "Commande non trouvée"
+                    });
+                    return;
+                }
 
-        console.log("Document trouvé :", orderRef.id);
+                const orderData = orderDoc.data();
 
-        // Mettre à jour le document avec le nouveau statut
-        await updateDoc(orderRef, {
-            status: newStatus,
-            updatedAt: Timestamp.now()
+                // Mettre à jour le statut et le updatedAt des items
+                const updatedItems = orderData.items.map(item => {
+                    if (item.status !== "cancelled") {
+                        const historyEntry = {
+                            status: newStatus,
+                            updatedAt: Timestamp.now()
+                        };
+                        
+                        const updatedHistory = item.history || [];
+                        updatedHistory.push(historyEntry);
+
+                        return { 
+                            ...item, 
+                            status: newStatus, 
+                            updatedAt: Timestamp.now(),
+                            history: updatedHistory
+                        };
+                    }
+                    return item;
+                });
+
+                // Mettre à jour le document avec le nouveau statut pour la commande et les items
+                await updateDoc(orderRef, {
+                    status: newStatus,
+                    items: updatedItems,
+                    updatedAt: Timestamp.now()
+                });
+
+                console.log("Mise à jour effectuée avec succès");
+                resolve({
+                    status: 200,
+                    message: "Statut de la commande mis à jour avec succès"
+                });
+
+            } catch (error) {
+                console.error("Erreur lors de la mise à jour :", error.message);
+                reject({
+                    status: 500,
+                    message: error.message
+                });
+            } finally {
+                toggleLoadingSpinner(false); // Masquer le spinner après la requête
+            }
         });
-
-        console.log("Mise à jour effectuée avec succès");
-
-        return {
-            status: 200,
-            message: "Statut de la commande mis à jour avec succès"
-        };
-    } catch (error) {
-        console.error("Erreur lors de la mise à jour :", error.message);
-        return {
-            status: 500,
-            message: error.message
-        };
-    } finally {
-        toggleLoadingSpinner(false); // Masque le spinner après la requête
-    }
+    });
 }
 
 
@@ -1713,95 +1848,82 @@ export async function updateProductStatusInOrderAdmin(orderId, newStatus, produc
     toggleLoadingSpinner(true); // Affiche le spinner
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                try {
-                    // Rechercher le document correspondant à l'orderId
-                    const ordersQuery = query(collection(db, "orders"), where("orderId", "==", orderId));
-                    const querySnapshot = await getDocs(ordersQuery);
-
-                    if (querySnapshot.empty) {
-                        console.log("Commande non trouvée");
-                        resolve({
-                            status: 404,
-                            message: "Commande non trouvée",
-                        });
-                        return;
-                    }
-
-                    // Il est supposé qu'il y a un seul document avec cet orderId
-                    const orderDoc = querySnapshot.docs[0];
-                    const orderRef = orderDoc.ref;
-
-                    console.log("Document trouvé :", orderRef.id);
-
-                    // Récupérer les items actuels
-                    const orderData = orderDoc.data();
-                    const items = orderData.items;
-
-                    // Vérifier si l'index du produit est valide
-                    if (productIndex < 0 || productIndex >= items.length) {
-                        console.log("Index du produit invalide");
-                        resolve({
-                            status: 400,
-                            message: "Index du produit invalide",
-                        });
-                        return;
-                    }
-
-                    // Mettre à jour le statut et la date de mise à jour du produit
-                    items[productIndex].status = newStatus;
-                    items[productIndex].updatedAt = Date.now();
-
-                    // Si le statut est "checking", ajouter un paramètre supplémentaire
-                    if (newStatus === "checking") {
-                        items[productIndex].verificationNote = verificationNote || "Aucune note fournie";
-                    }
-
-                    console.log("Données mises à jour :", items);
-
-                    // Préparer les mises à jour pour Firestore
-                    const updates = {
-                        items: items,
-                        updatedAt: Timestamp.now(),
-                    };
-
-                    // Si la commande ne contient qu'un seul produit, mettre à jour aussi le statut de la commande
-                    if (items.length === 1) {
-                        updates.status = newStatus;
-                    } else {
-                        // Vérifier si tous les produits ont le même statut que le nouveau statut
-                        const allSameStatus = items.every(item => item.status === newStatus);
-                        if (allSameStatus) {
-                            updates.status = newStatus;
-                        }
-                    }
-
-                    // Mettre à jour la commande dans Firestore
-                    await updateDoc(orderRef, updates);
-
-                    console.log("Mise à jour effectuée avec succès");
-
-                    resolve({
-                        status: 200,
-                        message: "Statut du produit et de la commande mis à jour avec succès",
-                    });
-                } catch (error) {
-                    console.error("Erreur lors de la mise à jour :", error.message);
-                    reject({
-                        status: 500,
-                        message: error.message,
-                    });
-                }
-            } else {
+            if (!user) {
                 console.log("Utilisateur non connecté");
-                resolve({
-                    status: 401,
-                    message: "Utilisateur non connecté",
-                });
+                resolve({ status: 401, message: "Utilisateur non connecté" });
+                toggleLoadingSpinner(false);
+                return;
+            }
+
+            try {
+                // Vérifier si l'utilisateur est administrateur
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (!userDoc.exists() || userDoc.data().role !== 'admin') {
+                    console.log("Accès refusé : l'utilisateur n'est pas un administrateur");
+                    resolve({ status: 403, message: "Accès refusé : l'utilisateur n'est pas un administrateur" });
+                    toggleLoadingSpinner(false);
+                    return;
+                }
+
+                // Référence directe au document en utilisant l'orderId
+                const orderRef = doc(db, "orders", orderId);
+                const orderDoc = await getDoc(orderRef);
+
+                if (!orderDoc.exists()) {
+                    console.log("Commande non trouvée");
+                    resolve({ status: 404, message: "Commande non trouvée" });
+                    toggleLoadingSpinner(false);
+                    return;
+                }
+
+                // Récupérer les items actuels
+                const orderData = orderDoc.data();
+                const items = orderData.items;
+
+                // Vérifier si l'index du produit est valide
+                if (productIndex < 0 || productIndex >= items.length) {
+                    console.log("Index du produit invalide");
+                    resolve({ status: 400, message: "Index du produit invalide" });
+                    toggleLoadingSpinner(false);
+                    return;
+                }
+
+                // Mettre à jour le statut et l'historique du produit
+                const itemToUpdate = items[productIndex];
+                itemToUpdate.status = newStatus;
+                itemToUpdate.updatedAt = Timestamp.now();
+                itemToUpdate.history = itemToUpdate.history || [];
+                itemToUpdate.history.push({ status: newStatus, updatedAt: itemToUpdate.updatedAt });
+
+                // Ajouter une note de vérification si le statut est "checking"
+                if (newStatus === "checking") {
+                    itemToUpdate.verificationNote = verificationNote || "Aucune note fournie";
+                }
+
+                // Vérifier les statuts des autres produits
+                const allCancelled = items.every(item => item.status === "cancelled");
+                const allSameStatus = items.every(item => item.status === newStatus);
+
+                const updates = {
+                    items,
+                    updatedAt: Timestamp.now(),
+                    // La commande est annulée seulement si tous les produits ont le statut "cancelled"
+                    status: allCancelled ? "cancelled" : allSameStatus ? newStatus : orderData.status
+                };
+
+
+                // Mettre à jour la commande dans Firestore
+                await updateDoc(orderRef, updates);
+
+                console.log("Mise à jour effectuée avec succès");
+                resolve({ status: 200, message: "Statut du produit et de la commande mis à jour avec succès" });
+            } catch (error) {
+                console.error("Erreur lors de la mise à jour :", error.message);
+                reject({ status: 500, message: error.message });
+            } finally {
+                toggleLoadingSpinner(false); // Masque le spinner après la requête
             }
         });
-    }).finally(() => {
-        toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
 
@@ -1811,11 +1933,12 @@ export async function updateProductStatusInOrder(orderId, newStatus, productInde
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
-                    // Rechercher le document correspondant à l'orderId
-                    const ordersQuery = query(collection(db, "orders"), where("userId", "==", user.uid), where("orderId", "==", orderId));
-                    const querySnapshot = await getDocs(ordersQuery);
+                    // Obtenir la référence du document directement avec l'orderId
+                    const orderRef = doc(db, "orders", orderId);
 
-                    if (querySnapshot.empty) {
+                    // Récupérer les données de la commande
+                    const orderDoc = await getDoc(orderRef);
+                    if (!orderDoc.exists()) {
                         console.log("Commande non trouvée");
                         resolve({
                             status: 404,
@@ -1824,14 +1947,18 @@ export async function updateProductStatusInOrder(orderId, newStatus, productInde
                         return;
                     }
 
-                    // Il est supposé qu'il y a un seul document avec cet orderId
-                    const orderDoc = querySnapshot.docs[0];
-                    const orderRef = orderDoc.ref;
-
-                    console.log("Document trouvé :", orderRef.id);
+                    // Vérifier si l'utilisateur a accès à cette commande
+                    const orderData = orderDoc.data();
+                    if (orderData.userId !== user.uid) {
+                        console.log("Utilisateur non autorisé à modifier cette commande");
+                        resolve({
+                            status: 403,
+                            message: "Utilisateur non autorisé à modifier cette commande",
+                        });
+                        return;
+                    }
 
                     // Récupérer les items actuels
-                    const orderData = orderDoc.data();
                     const items = orderData.items;
 
                     // Vérifier si l'index du produit est valide
@@ -1846,9 +1973,18 @@ export async function updateProductStatusInOrder(orderId, newStatus, productInde
 
                     // Mettre à jour le statut et la date de mise à jour du produit
                     items[productIndex].status = newStatus;
-                    items[productIndex].updatedAt = Date.now();
+                    items[productIndex].updatedAt = Timestamp.now();
 
-                    // Si le statut est "checking", ajouter un paramètre supplémentaire
+                    // Ajouter une entrée à l'historique du produit
+                    if (!items[productIndex].history) {
+                        items[productIndex].history = [];
+                    }
+                    items[productIndex].history.push({
+                        status: newStatus,
+                        updatedAt: items[productIndex].updatedAt,
+                    });
+
+                    // Si le statut est "checking", ajouter une note de vérification
                     if (newStatus === "checking") {
                         items[productIndex].verificationNote = verificationNote || "Aucune note fournie";
                     }
@@ -1861,8 +1997,12 @@ export async function updateProductStatusInOrder(orderId, newStatus, productInde
                         updatedAt: Timestamp.now(),
                     };
 
-                    // Si la commande ne contient qu'un seul produit, mettre à jour aussi le statut de la commande
-                    if (items.length === 1) {
+                    // Vérifier si tous les produits sauf le courant ont le statut "cancelled"
+                    const allCancelled = items.every((item, index) => index === productIndex || item.status === "cancelled");
+                    if (allCancelled) {
+                        updates.status = "cancelled";
+                    } else if (items.length === 1) {
+                        // Si la commande ne contient qu'un seul produit, mettre à jour aussi le statut de la commande
                         updates.status = newStatus;
                     } else {
                         // Vérifier si tous les produits ont le même statut que le nouveau statut
@@ -1900,6 +2040,7 @@ export async function updateProductStatusInOrder(orderId, newStatus, productInde
         toggleLoadingSpinner(false); // Masque le spinner après la requête
     });
 }
+
 
 export async function deleteOrder(orderId) {
     toggleLoadingSpinner(true); // Affiche le spinner
@@ -1938,7 +2079,7 @@ export async function addMessage(email, content) {
         const docRef = await addDoc(collection(db, 'messages'), {
             email: email,
             content: content,
-            timestamp: Date.now() // Ajout d'un timestamp pour trier les messages si nécessaire
+            timestamp: Timestamp.now() // Ajout d'un timestamp pour trier les messages si nécessaire
         });
         console.log('Message ajouté avec l\'ID : ', docRef.id);
         return docRef.id; // Retourne l'ID du document ajouté

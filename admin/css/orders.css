@@ -894,3 +894,19 @@ td button {
     color: #707070;
     font-size: 1rem;
 }
+
+.cart{
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    --flex-gap:0.5rem;
+    align-items: center;
+    font-family: var(--font-poppins);
+    text-transform: uppercase;
+    color: hsl(var(--clr-black) / 0.5);
+}
+
+.cart > i{
+    font-size: 5rem;
+    margin-bottom: -2rem;
+}

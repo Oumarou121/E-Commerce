@@ -1,4 +1,4 @@
-import { getPendingOrDeliveredOrders, getCancelledOrReturnedOrders, getProductById } from './firebase.js';
+import { getPendingOrDeliveredOrders, getCancelledOrReturnedOrders, getReportOrDismissOrders , getProductById } from './firebase.js';
 
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -12,8 +12,12 @@ function isMobile() {
     return window.matchMedia("(max-width: 35em)").matches;
 }
 
+// const interval = 2;
+const delayAvantExp = 1;
+
 function formatDate(timestamp) {
-    const date = new Date(timestamp); // Convertir le timestamp en objet Date
+    // Vérifier si l'entrée est un Timestamp de Firebase et le convertir en Date
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
@@ -21,15 +25,14 @@ function formatDate(timestamp) {
     return `Le ${day}-${month}-${year}`;
 }
 
-function formatDeliveryDateRange(startTimestamp) {
-    const daysOfWeek = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
-    const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+const daysOfWeek = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
 
-    const startDate = new Date(startTimestamp);
-    const endDate = new Date(startTimestamp); // Créer une nouvelle date basée sur startTimestamp
-
-    // Ajouter 2 jours en millisecondes (2 jours * 24 heures * 60 minutes * 60 secondes * 1000 millisecondes)
-    endDate.setDate(startDate.getDate() + 2);
+function formatDateRange(startTimestamp, eventType, interval = 2) {
+    // Convertir le Timestamp en objet Date
+    const startDate = startTimestamp.toDate ? startTimestamp.toDate() : new Date(startTimestamp);
+    const endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + interval); // Ajouter interval jours
 
     const startDayOfWeek = daysOfWeek[startDate.getDay()];
     const startDay = startDate.getDate();
@@ -39,8 +42,27 @@ function formatDeliveryDateRange(startTimestamp) {
     const endDay = endDate.getDate();
     const endMonth = months[endDate.getMonth()];
 
-    return `Livré entre le ${startDayOfWeek} ${startDay} ${startMonth} et le ${endDayOfWeek} ${endDay} ${endMonth}`;
+    // Déterminer le texte basé sur le type d'événement
+    let eventText;
+    switch (eventType) {
+        case 'delivery':
+            eventText = "Livré entre le";
+            break;
+        case 'checking':
+            eventText = "Fin d'examination entre le";
+            break;
+        case 'report':
+            eventText = "Reporter entre le";
+            break;
+        case 'progress':
+            return `${"Livraison ce"} ${startDayOfWeek} ${startDay} ${startMonth}`;
+        default:
+            eventText = "Événement entre le"; // Valeur par défaut si type non reconnu
+    }
+
+    return `${eventText} ${startDayOfWeek} ${startDay} ${startMonth} et le ${endDayOfWeek} ${endDay} ${endMonth}`;
 }
+
 
 // Sélectionnez tous les liens de navigation
 const navLinks = document.querySelectorAll('.bar-nav li a');
@@ -71,60 +93,66 @@ navLinks.forEach(link => {
 document.addEventListener('DOMContentLoaded', async () => {
     const cartItemsList = document.querySelector('.cart-items');
     const cartItemsList1 = document.querySelector('.cart-items1');
-    const emptyCartMessage = document.getElementById('emptyCartMessage');
+    const cartItemsList2 = document.querySelector('.cart-items2');
+    const emptyCartMessage1 = document.getElementById('emptyCartMessage1');
+    const emptyCartMessage2 = document.getElementById('emptyCartMessage2');
+    const emptyCartMessage3 = document.getElementById('emptyCartMessage3');
     //document.getElementById('loading-spinner').style.display = 'block';
     const PendingOrDeliveredOrders = await getPendingOrDeliveredOrders();
     const CancelledOrReturnedOrders = await getCancelledOrReturnedOrders();
-    
+    const ReportOrDismissOrders = await getReportOrDismissOrders();
+
     const displayCartItems = async () => {
         //document.getElementById('loading-spinner').style.display = 'block';
         
         if (PendingOrDeliveredOrders && PendingOrDeliveredOrders.length > 0){
-            emptyCartMessage.style.display = 'none'; // Masque le message de panier vide
-            console.log(PendingOrDeliveredOrders);
+            emptyCartMessage1.style.display = 'none'; // Masque le message de panier vide
             for (const item of PendingOrDeliveredOrders){
                 
                 const items = item.items;
-                console.log(items);
                 for(const productItem of items){
                     const productId = productItem.productId; // Récupérer l'ID du produit
                     const product = await getProductById(productId);
-                    console.log(product)
                     const cartItemElement = document.createElement('li');
                     cartItemElement.className = 'cart-item';
                     let state;
                     let date;
 
 
-                    // if (productItem.status == "pending" || productItem.status == "delivered" || productItem.status == "checking"){
-                        if (productItem.status == "pending") {
+                    if (["pending", "progress" ,"delivered", "checking"].includes(productItem.status)){
+                        if (productItem.status === "pending") {
                             const now = Date.now(); // Obtenir le timestamp actuel
-                            const time = productItem.updatedAt; // Récupérer le timestamp de `updatedAt`
-                            const Sdate = new Date(time); // Créer un objet Date à partir de `updatedAt`
-                            const Edate = new Date(time); // Créer une autre date à partir de `updatedAt`
-                            Edate.setDate(Sdate.getDate() + 1); // Ajouter 1 jour à `updatedAt`
+                            const time = productItem.updatedAt.toDate ? productItem.updatedAt.toDate() : new Date(productItem.updatedAt); // Convertir le timestamp Firebase en Date
+                            const Edate = new Date(time); // Créer un objet Date à partir de `updatedAt`
+                            Edate.setDate(Edate.getDate() + delayAvantExp); // Ajouter 1 jour à `updatedAt`
                         
-                            if (now <= Edate) {
-                                state = "En ATTENTE D'EXPÉDITION";
-                            } else if (now >= Edate){
+                            if (now <= Edate.getTime()) {
+                                state = "EN ATTENTE D'EXPÉDITION";
+                            } else {
                                 state = "COMMANDE EN COURS";
-                            } 
-                        
-                            date = formatDeliveryDateRange(productItem.updatedAt);
-                        
-                        } else if (productItem.status == "delivered") {
+                            }
+                            date = formatDateRange(productItem.updatedAt, "delivery");
+                            
+                        }else if (productItem.status === "progress") {
+                            state = "LIVRAISON EN COURS";
+                            const historyAll = productItem.history;
+                            const exists = historyAll.some(item => item.status === "report-delivered");
+                            if (exists) {
+                                date = formatDateRange(productItem.updatedAt, "progress");
+                            }else{
+                                date = formatDateRange(productItem.updatedAt, "progress");
+                            }                            
+                            
+                        } else if (productItem.status === "delivered") {
                             state = "COMMANDE LIVRÉE";
                             date = formatDate(productItem.updatedAt);
-                        } else if (productItem.status == "checking"){
+                        
+                        } else if (productItem.status === "checking") {
                             state = "COMMANDE EN EXAMINATION";
-                            date = formatDate(productItem.updatedAt);
-                        }else if (productItem.status == "report-delivered"){
-                            state = "COMMANDE REPORTÉE";
-                            date = formatDeliveryDateRange(productItem.updatedAt);
-                        }else if (productItem.status == "dismiss-returned"){
-                            state = "RETOUR DE LA COMMANDE REJETÉE";
-                            date = formatDate(productItem.updatedAt);
+                            date = formatDateRange(productItem.updatedAt, "checking");
                         }
+                        
+                        
                     
                         cartItemElement.innerHTML = `
                         <div class="image">
@@ -151,17 +179,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                         if (productItem.status == "pending") {
                             cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-blue))"; // Changer la couleur de fond
                         }
-                        
-                        if (productItem.status == "report-delivered") {
-                            cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-blue) / .7)"; // Changer la couleur de fond
+
+                        if (productItem.status == "progress") {
+                            cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-green) / .5)"; // Changer la couleur de fond
                         }
 
                         if (productItem.status == "checking") {
                             cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-red) / .5)"; // Changer la couleur de fond
-                        }
-                    
-                        if (productItem.status == "dismiss-returned") {
-                            cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-red) / .9)"; // Changer la couleur de fond
                         }
 
                         if (productItem.quantity == 1) {
@@ -171,12 +195,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                         }
                     
                         if (isMobile()) {
-                            console.log("Vous êtes sur un appareil mobile.");
                             cartItemElement.addEventListener('click', ()=>{
                                 window.location.href = `detail.html?id=${item.orderId}`;
                             })
                         } else {
-                            console.log("Vous êtes sur un ordinateur.");
                             const detail = cartItemElement.querySelector('.Add');
                             detail.addEventListener('click', ()=>{
                                 window.location.href = `detail.html?id=${item.orderId}`;
@@ -184,20 +206,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                         }
                     
                         cartItemsList.appendChild(cartItemElement);
-                    // }
+                    }
                 }
                 
             }
-            //document.getElementById('loading-spinner').style.display = 'none';
+        }else{
+            emptyCartMessage1.style.display = 'flex';
         }
 
         if (CancelledOrReturnedOrders && CancelledOrReturnedOrders.length > 0){
-            emptyCartMessage.style.display = 'none'; // Masque le message de panier vide
-            console.log(CancelledOrReturnedOrders);
+            emptyCartMessage2.style.display = 'none'; // Masque le message de panier vide
             for (const item of CancelledOrReturnedOrders){
                 
                 const items = item.items;
-                console.log(items);
                 for(const productItem of items){
                     const productId = productItem.productId; // Récupérer l'ID du produit
                     const product = await getProductById(productId);
@@ -207,69 +228,164 @@ document.addEventListener('DOMContentLoaded', async () => {
                     let date;
                     date = formatDate(productItem.updatedAt);
 
-                    if (productItem.status == "cancelled") {
-                        state = "ANNULÉE";
-                    } else if (productItem.status == "returned") {
-                        state = "RETOURNÉE";
-                    }
+                    if (["cancelled", "returned"].includes(productItem.status)){
 
-                    cartItemElement.innerHTML = `
-                    <div class="image">
-                    <img src="${product.images[0]}" alt="${product.name}">
-                    </div>
-                    <div class="div-name">
-                        <div class="name text-black">
-                            ${product.name}
+                        if (productItem.status == "cancelled") {
+                            state = "COMMANDE ANNULÉE";
+                        } else if (productItem.status == "returned") {
+                            state = "COMMANDE RETOURNÉE";
+                        } 
+    
+                        cartItemElement.innerHTML = `
+                        <div class="image">
+                        <img src="${product.images[0]}" alt="${product.name}">
                         </div>
-                        <div class="Num-comd">Commande ${item.orderId}</div>
-                        <div class="qty">Quantité: ${productItem.quantity}</div>
-                        <div class="state text-white bg-red">${state}</div>
-                        <div class="time">${date}</div>
-                    </div>
-                    <div class="div-btn">
-                        <div class="Add text-black">
-                            <i class="uil uil-shopping-cart-alt"></i>
-                            DÉTAILS
+                        <div class="div-name">
+                            <div class="name text-black">
+                                ${product.name}
+                            </div>
+                            <div class="Num-comd">Commande ${item.orderId}</div>
+                            <div class="qty">Quantité: ${productItem.quantity}</div>
+                            <div class="state text-white bg-red">${state}</div>
+                            <div class="time">${date}</div>
                         </div>
-                        <div></div>
-                    </div>
-                    `;
+                        <div class="div-btn">
+                            <div class="Add text-black">
+                                <i class="uil uil-shopping-cart-alt"></i>
+                                DÉTAILS
+                            </div>
+                            <div></div>
+                        </div>
+                        `;
+    
+                        if (productItem.status == "cancelled") {
+                            cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-black) / .8)"; // Changer la couleur de fond
+                        } 
+    
+                        if (productItem.status == "returned") {
+                            cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-red) / .8)"; // Changer la couleur de fond
+                        } 
+    
+                        if (productItem.quantity == 1) {
+                            cartItemElement.querySelector(".qty").style.visibility = "hidden";
+                        } else {
+                            cartItemElement.querySelector(".qty").style.visibility = "visible";
+                        }
+    
+                        if (isMobile()) {
+                            cartItemElement.addEventListener('click', ()=>{
+                                window.location.href = `detail.html?id=${item.orderId}`;
+                            })
+                        } else {
+                            const detail = cartItemElement.querySelector('.Add');
+                            detail.addEventListener('click', ()=>{
+                                window.location.href = `detail.html?id=${item.orderId}`;
+                            })
+                        }
+    
+                        cartItemsList1.appendChild(cartItemElement);
 
-                    if (productItem.status == "cancelled") {
-                        cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-black) / .8)"; // Changer la couleur de fond
-                    } 
-
-                    if (productItem.status == "returned") {
-                        cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-red) / .8)"; // Changer la couleur de fond
-                    } 
-
-                    if (productItem.quantity == 1) {
-                        cartItemElement.querySelector(".qty").style.visibility = "hidden";
-                    } else {
-                        cartItemElement.querySelector(".qty").style.visibility = "visible";
                     }
-
-                    if (isMobile()) {
-                        console.log("Vous êtes sur un appareil mobile.");
-                        cartItemElement.addEventListener('click', ()=>{
-                            window.location.href = `detail.html?id=${item.orderId}`;
-                        })
-                    } else {
-                        console.log("Vous êtes sur un ordinateur.");
-                        const detail = cartItemElement.querySelector('.Add');
-                        detail.addEventListener('click', ()=>{
-                            window.location.href = `detail.html?id=${item.orderId}`;
-                        })
-                    }
-
-                    cartItemsList1.appendChild(cartItemElement);
+                    
                 }
                 
             }
-            //document.getElementById('loading-spinner').style.display = 'none';
+        }else{
+            emptyCartMessage2.style.display = 'flex';
         }
 
-        //document.getElementById('loading-spinner').style.display = 'none';
+
+        if (ReportOrDismissOrders && ReportOrDismissOrders.length > 0){
+            emptyCartMessage3.style.display = 'none'; // Masque le message de panier vide
+            for (const item of ReportOrDismissOrders){
+                
+                const items = item.items;
+                for(const productItem of items){
+                    const productId = productItem.productId; // Récupérer l'ID du produit
+                    const product = await getProductById(productId);
+                    const cartItemElement = document.createElement('li');
+                    cartItemElement.className = 'cart-item';
+                    let state;
+                    let date;
+                    date = formatDate(productItem.updatedAt);
+
+                    if (["report-returned", "dismiss-delivered", "report-delivered", "dismiss-returned"].includes(productItem.status)){
+
+                        if (productItem.status == "dismiss-delivered") {
+                            state = "COMMANDE REJETÉE";
+                        } else if (productItem.status == "report-returned") {
+                            state = "RETOUR DE LA COMMANDE REPORTÉE";
+                            date = formatDateRange(productItem.updatedAt, "report");
+                        }else if (productItem.status == "report-delivered"){
+                            state = "LIVRAISON REPORTÉE";
+                            date = formatDateRange(productItem.updatedAt, "report");
+                        }else if (productItem.status == "dismiss-returned"){
+                            state = "RETOUR DE LA COMMANDE REJETÉE";
+                        }
+    
+                        cartItemElement.innerHTML = `
+                        <div class="image">
+                        <img src="${product.images[0]}" alt="${product.name}">
+                        </div>
+                        <div class="div-name">
+                            <div class="name text-black">
+                                ${product.name}
+                            </div>
+                            <div class="Num-comd">Commande ${item.orderId}</div>
+                            <div class="qty">Quantité: ${productItem.quantity}</div>
+                            <div class="state text-white bg-red">${state}</div>
+                            <div class="time">${date}</div>
+                        </div>
+                        <div class="div-btn">
+                            <div class="Add text-black">
+                                <i class="uil uil-shopping-cart-alt"></i>
+                                DÉTAILS
+                            </div>
+                            <div></div>
+                        </div>
+                        `;
+
+                        if (productItem.status == "report-returned") {
+                            cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-blue) / .8)"; // Changer la couleur de fond
+                            date = formatDateRange(productItem.updatedAt, "report");
+                        }
+
+                        if (productItem.status == "dismiss-returned") {
+                            cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-red) / .9)"; // Changer la couleur de fond
+                        }
+
+                        if (productItem.status == "report-delivered") {
+                            cartItemElement.querySelector(".state").style.backgroundColor = "hsl(var(--clr-blue) / .7)"; // Changer la couleur de fond
+                        }
+    
+                        if (productItem.quantity == 1) {
+                            cartItemElement.querySelector(".qty").style.visibility = "hidden";
+                        } else {
+                            cartItemElement.querySelector(".qty").style.visibility = "visible";
+                        }
+    
+                        if (isMobile()) {
+                            cartItemElement.addEventListener('click', ()=>{
+                                window.location.href = `detail.html?id=${item.orderId}`;
+                            })
+                        } else {
+                            const detail = cartItemElement.querySelector('.Add');
+                            detail.addEventListener('click', ()=>{
+                                window.location.href = `detail.html?id=${item.orderId}`;
+                            })
+                        }
+    
+                        cartItemsList2.appendChild(cartItemElement);
+
+                    }
+                    
+                }
+                
+            }
+        }else{
+            emptyCartMessage3.style.display = 'flex';
+        }
+
 
     }
 
