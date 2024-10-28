@@ -287,12 +287,12 @@ const displayCartItems = async (orderId) => {
         detailsList.removeChild(detailsList.firstChild);
     }
 
-    if (status == "pending" || status == "checking") {
+    if (status == "pending") {
         option0.style.display = 'block';
         option1_1.style.display = 'none';
+        option1_2.style.display = 'block';
         option3_1.style.display = 'none';
         option2.style.display = 'none';
-        option1_2.style.display = 'none';
         option3_2.style.display = 'none';
         option4.style.display = 'none';
         state_commande_box.style.display = 'block';
@@ -308,7 +308,16 @@ const displayCartItems = async (orderId) => {
         option3_2.style.display = 'none';
         option4.style.display = 'none';
         state_commande_box.style.display = 'block';
-    }else{            
+    }else if(status == "checking"){
+        option0.style.display = 'block';
+        option1_1.style.display = 'block';
+        option1_2.style.display = 'none';
+        option3_1.style.display = 'none';
+        option2.style.display = 'none';
+        option3_2.style.display = 'none';
+        option4.style.display = 'none';
+        state_commande_box.style.display = 'block';
+    } else{            
         option0.style.display = 'none';
         option1_1.style.display = 'none';
         option3_1.style.display = 'none';
@@ -412,7 +421,6 @@ const displayCartItems = async (orderId) => {
             option1_1.style.display = 'none';
             option3_1.style.display = 'none';
             option2.style.display = 'none';
-            option1_2.style.display = 'none';
             option3_2.style.display = 'none';
             option4.style.display = 'none';
             ;
@@ -439,7 +447,7 @@ const displayCartItems = async (orderId) => {
             state1.textContent = "COMMANDE EN EXAMINATION DE RETOUR";
             state1.style.backgroundColor = "hsl(var(--clr-red) / .5)";
             option0.style.display = 'block';
-            option1_1.style.display = 'none';
+            option1_1.style.display = 'block';
             option3_1.style.display = 'none';
             option2.style.display = 'none';
             option1_2.style.display = 'none';
@@ -460,6 +468,7 @@ const displayCartItems = async (orderId) => {
                     option3_2.style.display = 'none';
                     option4.style.display = 'none';
                 } else {
+                    option1_2.style.display = 'none';
                     option1_1.style.display = 'none';
                     option3_1.style.display = 'none';
                     option2.style.display = 'none';

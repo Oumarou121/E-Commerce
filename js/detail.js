@@ -496,6 +496,7 @@ function openCustomAlertRetourne(product, item, orderId, newStatus, productIndex
         }else{
             try {
                 await updateProductStatusInOrder(orderId, newStatus, productIndex, texteMotif);
+                console.log(orderId, newStatus, productIndex, texteMotif)
             } catch (error) {
                 
             } finally {

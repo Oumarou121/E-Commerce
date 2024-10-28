@@ -1908,7 +1908,7 @@ export async function updateProductStatusInOrderAdmin(orderId, newStatus, produc
                     items,
                     updatedAt: Timestamp.now(),
                     // La commande est annulée seulement si tous les produits ont le statut "cancelled"
-                    status: allCancelled ? "cancelled" : allSameStatus ? newStatus : orderData.status
+                    status: allCancelled ? "cancelled" : (allSameStatus && orderData.status != newStatus) ? newStatus : orderData.status
                 };
 
 
@@ -1998,7 +1998,7 @@ export async function updateProductStatusInOrder(orderId, newStatus, productInde
                     };
 
                     // Vérifier si tous les produits sauf le courant ont le statut "cancelled"
-                    const allCancelled = items.every((item, index) => index === productIndex || item.status === "cancelled");
+                    const allCancelled = items.every((item, index) =>item.status === "cancelled");
                     if (allCancelled) {
                         updates.status = "cancelled";
                     } else if (items.length === 1) {
@@ -2007,7 +2007,7 @@ export async function updateProductStatusInOrder(orderId, newStatus, productInde
                     } else {
                         // Vérifier si tous les produits ont le même statut que le nouveau statut
                         const allSameStatus = items.every(item => item.status === newStatus);
-                        if (allSameStatus) {
+                        if (allSameStatus && updates.status != newStatus) {
                             updates.status = newStatus;
                         }
                     }
@@ -2089,4 +2089,9 @@ export async function addMessage(email, content) {
     }finally{
         toggleLoadingSpinner(false); // Masque le spinner après la requête
     }
+}
+
+// // Convertir la date en Timestamp Firebase
+export const firebaseTimestamp = (Edate) =>{
+    return Timestamp.fromDate(Edate);
 }
