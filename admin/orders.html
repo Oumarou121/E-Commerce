@@ -66,6 +66,7 @@
                             <div class="select-box-commande">
                                 <select id="commande-select">
                                     <option value="" selected>Currente state</option>
+                                    <option class="optionP" value="pending">Pending</option>
                                     <option class="option0" value="progress">Progress</option>
                                     <option class="option3_1" value="report-returned">Report</option>
                                     <option class="option1_1" value="dismiss-returned">Dismiss</option>
@@ -78,6 +79,18 @@
                         </div>
                     
                     </section>
+
+                    <!-- <section id="message" class="second">
+                        <div class="motif">
+                            <div>
+                              <h4>Message</h4>
+                            </div>
+              
+                            <div class="motif-content">
+                                <textarea id="motif" class="text-black fs-poppins" rows="10" placeholder="Votre message ici" required></textarea>
+                            </div>
+                        </div>
+                    </section> -->
 
                     <section class="third">
                         <div class="paiement">
@@ -261,6 +274,38 @@
                 <input type="text" id="orderSearch" placeholder="Search orders...">
             </div>
         
+            <div class="filtre">
+                <ul>
+                    <li class="thirdli"><input name="pending" type="checkbox"> Pending</li>
+                    <li class="thirdli"><input name="progress" type="checkbox"> Progress</li>
+                    <li class="thirdli"><input name="delivered" type="checkbox"> Delivered</li>
+                    <li class="thirdli"><input name="cancelled" type="checkbox"> Cancelled</li>
+                    <li class="thirdli"><input name="returned" type="checkbox"> Returned</li>
+                    <li class="thirdli"><input name="checking" type="checkbox"> Checking</li>
+                    <li class="thirdli"><input name="report-delivered" type="checkbox"> Report-delivered</li>
+                    <li class="thirdli"><input name="report-returned" type="checkbox"> Report-returned</li>
+                    <li class="thirdli"><input name="dismiss-delivered" type="checkbox"> Dismiss-delivered</li>
+                    <li class="thirdli"><input name="dismiss-returned" type="checkbox"> Dismiss-returned</li>
+                </ul>
+
+                <div class="sort-options">
+                    <div class="sort-group">
+                        <button data-criteria="orderId" class="sort-btn">Sort by Order ID</button>
+                        <span class="arrow" id="orderId-arrow"></span>
+                    </div>
+                    <div class="sort-group">
+                        <button data-criteria="price" class="sort-btn">Sort by Total Amount</button>
+                        <span class="arrow" id="price-arrow"></span>
+                    </div>
+                    <div class="sort-group">
+                        <button data-criteria="updatedAt" class="sort-btn">Sort by Date</button>
+                        <span class="arrow" id="updatedAt-arrow"></span>
+                    </div>
+                </div>
+                
+                
+            </div>
+
             <!-- Table des produits -->
             <table id="orderTable" class="orders-table">
                 <thead>

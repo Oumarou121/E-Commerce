@@ -1,6 +1,19 @@
-document.getElementById('exit').addEventListener('click', ()=>{
-    window.history.back();
-})
+const exitBtn = document.getElementById('exit');
+const exitBtnArrow = document.querySelector('.uil-arrow-left');
+
+function isMobile() {
+    return window.matchMedia("(max-width: 35em)").matches;
+}
+
+if (isMobile()) {
+    exitBtnArrow.style.visibility = "visible";
+    exitBtn.addEventListener('click', ()=>{
+        window.history.back();
+    });
+} else {
+    exitBtn.style.cursor = "default";
+    exitBtnArrow.style.visibility = "hidden";
+}
 
 import { getUserOrderById, getProductById, isInCart, removeFromCart, addToCart, updateProductStatusInOrder } from './firebase.js';
 

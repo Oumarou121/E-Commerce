@@ -112,14 +112,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 await getTotalQuantityInCart();
 
             } else {
-                await removeFromCart(productId); // Supprime l'article si la quantité atteint 0
                 event.target.closest('.cart-item').remove();
+                updateTotalPrice(event.target.closest('.cart-item')); // Met à jour le prix total de cet article
                 const itemCount = cartItemsList.querySelectorAll('li').length;
                 console.log(`Le nombre d'articles dans le panier est : ${itemCount}`);
                 if (itemCount == 0) {
                     emptyCartMessage.style.display = 'flex';
                 }
-                // displayCartItems(); // Rafraîchit l'affichage du panier
+                await removeFromCart(productId); // Supprime l'article si la quantité atteint 0
             }
         }
 
@@ -127,7 +127,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const productId = event.target.closest('.delete').dataset.id;
             await removeFromCart(productId); // Retire l'article du panier
             event.target.closest('.cart-item').remove();
-            // displayCartItems(); // Rafraîchit l'affichage du panier
             await getTotalQuantityInCart();
             const itemCount = cartItemsList.querySelectorAll('li').length;
             console.log(`Le nombre d'articles dans le panier est : ${itemCount}`);

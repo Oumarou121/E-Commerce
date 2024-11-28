@@ -1,121 +1,3 @@
-/* Styles for the Orders section
-.orders-section {
-    padding: 20px;
-}
-
-.orders-section h2 {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-}
-
-Table styles
-.orders-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.orders-table th, .orders-table td {
-    padding: 12px;
-    text-align: left;
-}
-
-.orders-table thead {
-    background-color: #f2f2f2;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-}
-
-.orders-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.orders-table tr:hover {
-    background-color: #f1f1f1;
-}
-
-Style for the status dropdown
-.order-status {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-Details button
-.view-details {
-    padding: 8px 12px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.view-details:hover {
-    background-color: #2980b9;
-}
-
-Responsive Design
-@media (max-width: 768px) {
-    .orders-table, .orders-table thead, .orders-table tbody, .orders-table th, .orders-table td, .orders-table tr {
-        display: block;
-        width: 100%;
-    }
-    .orders-table thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-    .orders-table tr {
-        border-bottom: 1px solid #ddd;
-        margin-bottom: 10px;
-        padding: 10px;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    .orders-table td {
-        border: none;
-        position: relative;
-        padding-left: 50%;
-        text-align: right;
-    }
-    .orders-table td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 10px;
-        font-weight: bold;
-        text-transform: uppercase;
-    }
-    .view-details {
-        width: 100%;
-        text-align: center;
-    }
-}
-
-Styles for the Orders section
-Search input
-.order-search {
-    width: 100%;
-    padding: 12px 20px;
-    font-size: 16px;
-    border: 2px solid #ddd;
-    border-radius: 30px;
-    outline: none;
-    background-color: #f8f9fa;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    flex: 1;
-    margin-bottom: 10px;
-}
-.order-search:focus {
-    border-color: #3498db;
-} */
-
-
 /* Global styles */
 body {
     /* font-family: 'Roboto', sans-serif; */
@@ -741,34 +623,27 @@ td button {
 }
 
 .content-right{
-    padding-top: 10px;
+    margin-top: 10px;
     padding: 0 10px;
     text-align: center;
 }
 
-.btn-one{
-    border-radius: 5px;
-    padding: 10px;
-    background: hsl(var(--clr-red) / 0.5);
-    margin-top: 10px;
-    margin-bottom: 10px;
+.content-right ul{
+    display: grid;
+    gap: 10px;
+}
+
+.content-right ul li{
     cursor: pointer;
 }
 
-.btn-two{
-    cursor: pointer;
-    padding: 5px;
-    border-radius: 5px;
-    margin-bottom: 5px;
+.content-right ul li i{
+    /* padding-right: 5px; */
+    font-size: 1.2rem;
 }
 
-.btn-two:hover{
-    background: hsl(var(--clr-red) / 0.2);
-}
-
-.cart-icon-bottom{
-    padding: 5px;
-    color: hsl(var(--clr-black) / 0.8);
+.content-right ul li:hover{
+    text-decoration: underline;
 }
 
 @media (max-width: 35em){
@@ -785,9 +660,6 @@ td button {
         text-align: center;
     }
 
-    .btn-one{
-        margin-bottom: 10px;
-    }
 }
 
 .cart-content{
@@ -909,4 +781,189 @@ td button {
 .cart > i{
     font-size: 5rem;
     margin-bottom: -2rem;
+}
+
+/* Conteneur du filtre */
+.filtre {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Liste des éléments de filtre */
+.filtre ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+}
+
+/* Éléments de la liste de filtre */
+.filtre li {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Couleur de fond au survol */
+.filtre li:hover {
+    background-color: #e0e0e0;
+}
+
+/* Style des cases à cocher */
+.filtre li input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: #0073e6;
+}
+
+/* Style lorsque la case est cochée */
+.filtre li.checked {
+    background-color: #0073e6;
+    color: #fff;
+    border-color: #0073e6;
+}
+
+/* Conteneur des boutons de tri */
+.sort-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Boutons de tri */
+.sort-options button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    background-color: #0073e6;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Changement de couleur au survol des boutons de tri */
+.sort-options button:hover {
+    background-color: #005bb5;
+}
+
+/* Responsive - Tablettes */
+@media (max-width: 768px) {
+    .filtre {
+        padding: 10px;
+    }
+
+    .filtre ul {
+        gap: 10px;
+    }
+
+    .filtre li {
+        width: 45%;
+        text-align: center;
+    }
+
+    .sort-options {
+        gap: 8px;
+    }
+
+    .sort-options button {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+}
+
+/* Responsive - Mobiles */
+@media (max-width: 480px) {
+    .filtre ul {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filtre li {
+        width: 100%;
+    }
+
+    .sort-options {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .sort-options button {
+        width: 100%;
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+.sort-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.sort-btn {
+    padding: 10px 20px;
+    border: 1px solid #0073e6;
+    background-color: #fff;
+    color: #0073e6;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.sort-btn:hover {
+    background-color: #0073e6;
+    color: #fff;
+}
+
+.arrow {
+    margin-left: 10px;
+    font-size: 16px;
+    display: inline-block;
+    width: 20px; /* Largeur fixe pour les flèches */
+    text-align: center; /* Centrer le texte dans la flèche */
+}
+
+/* Flèche vers le haut */
+.arrow.up::after {
+    content: '▲'; /* Unicode pour flèche vers le haut */
+}
+
+/* Flèche vers le bas */
+.arrow.down::after {
+    content: '▼'; /* Unicode pour flèche vers le bas */
+}
+
+h4{
+    text-align: center;
+}
+
+.motif{
+    padding: 0 10px;
+}
+
+/* Style pour la zone de texte */
+.motif-content textarea {
+    width: 100%;
+    height: 100%;
+    background: hsl(var(--clr-white) / .7);
+    border: 1px solid hsl(var(--clr-black) / 0.5);
+    border-radius: 4px;
+    padding: 10px;
+    resize: none; /* Empêche le redimensionnement */
 }

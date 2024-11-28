@@ -58,7 +58,7 @@
 
 /* ======================================= */
 
-.head{
+/* .head{
     text-align: center;
 }
 .head_1{
@@ -74,24 +74,24 @@
     font-weight: 600;
     color: #333;
     margin-top: 3px;
-}
-ul{
+} */
+.second ul{
     display: flex;
     margin: 80px 0;
     justify-content: center;
 }
-ul li{
+.second ul li{
     list-style: none;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-ul li .icon{
+.second ul li .icon{
     font-size: 35px;
     color: #ff4732;
     margin: 0 60px;
 }
-ul li .text{
+.second ul li .text{
     font-size: 14px;
     font-weight: 600;
     color: #ff4732;
@@ -101,7 +101,7 @@ h2{
     color: #ff4732;
 }
 
-ul li .text1{
+.second ul li .text1{
     font-size: 14px;
     font-weight: 600;
     color: #333;
@@ -109,7 +109,7 @@ ul li .text1{
 
 /* Progress Div Css  */
 
-ul li .progress{
+.second ul li .progress{
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -134,27 +134,27 @@ ul li .progress{
     height: 0;
 }
 
-ul li .progress .uil{
+.second ul li .progress .uil{
     display: none;
 }
-ul li .progress p{
+.second  ul li .progress p{
     font-size: 13px;
 }
 
 /* Active Css  */
 
-ul li .active{
+.second ul li .active{
     background-color: #ff4732;
     display: grid;
     place-items: center;
 }
-li .active::after{
+.second  li .active::after{
     background-color: #ff4732;
 }
-ul li .active p{
+.second  ul li .active p{
     display: none;
 }
-ul li .active .uil{
+.second  ul li .active .uil{
     /* font-size: 20px; */
     display: flex;
 }
@@ -165,17 +165,17 @@ i{
 
 /* Responsive Css  */
 
-@media (max-width: 980px) {
-    ul{
+/* @media (max-width: 980px) { */
+    .second ul{
         flex-direction: column;
         display: grid;
         justify-content: center;
         margin: 20px 0;
     }
-    ul li{
+    .second ul li{
         flex-direction: row;
     }
-    ul li .progress{
+    .second ul li .progress{
         margin: 0 30px;
     }
     .progress::after{
@@ -189,30 +189,20 @@ i{
     .one::after{
         height: 0;
     }
-    ul li .icon{
+    .second ul li .icon{
         margin: 15px 0;
     }
-}
+/* } */
 
-@media (max-width:600px) {
+/* @media (max-width:600px) {
     .head .head_1{
         font-size: 24px;
     }
     .head .head_2{
         font-size: 16px;
     }
-}
-
-/* .three i,
-.four i,
-.five i,
-.six i{
-    background: white;
-    border-radius: 15px;
-    width: 50%;
-    height: 50%;
-    font-size: 0;
 } */
+
 
 .custom-style {
     background: white;

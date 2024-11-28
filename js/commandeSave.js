@@ -1,4 +1,4 @@
-import { getUserOrders, getProductById } from './firebase.js';
+import { getPendingOrDeliveredOrders, getCancelledOrReturnedOrders, getReportOrDismissOrders , getProductById } from './firebase.js';
 
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -99,15 +99,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     const emptyCartMessage1 = document.getElementById('emptyCartMessage1');
     const emptyCartMessage2 = document.getElementById('emptyCartMessage2');
     const emptyCartMessage3 = document.getElementById('emptyCartMessage3');
-    const ordersList = await getUserOrders();
-
+    //document.getElementById('loading-spinner').style.display = 'block';
+    const PendingOrDeliveredOrders = await getPendingOrDeliveredOrders();
+    const CancelledOrReturnedOrders = await getCancelledOrReturnedOrders();
+    const ReportOrDismissOrders = await getReportOrDismissOrders();
 
     const displayCartItems = async () => {
-        if (ordersList && ordersList.length > 0) {
-            for(const item of ordersList){
+        //document.getElementById('loading-spinner').style.display = 'block';
+        
+        if (PendingOrDeliveredOrders && PendingOrDeliveredOrders.length > 0){
+            emptyCartMessage1.style.display = 'none'; // Masque le message de panier vide
+            for (const item of PendingOrDeliveredOrders){
+                
                 const items = item.items;
                 for(const productItem of items){
-
                     const productId = productItem.productId; // Récupérer l'ID du produit
                     const product = await getProductById(productId);
                     const cartItemElement = document.createElement('li');
@@ -115,10 +120,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     let state;
                     let date;
 
+
                     if (["pending", "progress" ,"delivered", "checking"].includes(productItem.status)){
-
-                        emptyCartMessage1.style.display = "none";
-
                         if (productItem.status === "pending") {
                             const now = Date.now(); // Obtenir le timestamp actuel
                             const time = productItem.updatedAt.toDate ? productItem.updatedAt.toDate() : new Date(productItem.updatedAt); // Convertir le timestamp Firebase en Date
@@ -214,11 +217,29 @@ document.addEventListener('DOMContentLoaded', async () => {
                         }
                     
                         cartItemsList.appendChild(cartItemElement);
+                    }
+                }
+                
+            }
+        }else{
+            emptyCartMessage1.style.display = 'flex';
+        }
 
-                    }else if (["cancelled", "returned"].includes(productItem.status)){
+        if (CancelledOrReturnedOrders && CancelledOrReturnedOrders.length > 0){
+            emptyCartMessage2.style.display = 'none'; // Masque le message de panier vide
+            for (const item of CancelledOrReturnedOrders){
+                
+                const items = item.items;
+                for(const productItem of items){
+                    const productId = productItem.productId; // Récupérer l'ID du produit
+                    const product = await getProductById(productId);
+                    const cartItemElement = document.createElement('li');
+                    cartItemElement.className = 'cart-item';
+                    let state;
+                    let date;
+                    date = formatDate(productItem.updatedAt);
 
-                        emptyCartMessage2.style.display = "none";
-                        date = formatDate(productItem.updatedAt);
+                    if (["cancelled", "returned"].includes(productItem.status)){
 
                         if (productItem.status == "cancelled") {
                             state = "COMMANDE ANNULÉE";
@@ -275,10 +296,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     
                         cartItemsList1.appendChild(cartItemElement);
 
-                    }else if (["report-returned", "dismiss-delivered", "report-delivered", "dismiss-returned"].includes(productItem.status)){
+                    }
+                    
+                }
+                
+            }
+        }else{
+            emptyCartMessage2.style.display = 'flex';
+        }
 
-                        emptyCartMessage3.style.display = "none";
-                        date = formatDate(productItem.updatedAt);
+
+        if (ReportOrDismissOrders && ReportOrDismissOrders.length > 0){
+            emptyCartMessage3.style.display = 'none'; // Masque le message de panier vide
+            for (const item of ReportOrDismissOrders){
+                
+                const items = item.items;
+                for(const productItem of items){
+                    const productId = productItem.productId; // Récupérer l'ID du produit
+                    const product = await getProductById(productId);
+                    const cartItemElement = document.createElement('li');
+                    cartItemElement.className = 'cart-item';
+                    let state;
+                    let date;
+                    date = formatDate(productItem.updatedAt);
+
+                    if (["report-returned", "dismiss-delivered", "report-delivered", "dismiss-returned"].includes(productItem.status)){
 
                         if (productItem.status == "dismiss-delivered") {
                             state = "COMMANDE REJETÉE";
@@ -347,41 +389,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                         cartItemsList2.appendChild(cartItemElement);
 
                     }
+                    
                 }
+                
             }
-        } else {
-            emptyCartMessage1.style.display = "flex";
-            emptyCartMessage2.style.display = "flex";
-            emptyCartMessage3.style.display = "flex";
+        }else{
+            emptyCartMessage3.style.display = 'flex';
         }
+
+
     }
 
     await displayCartItems();
-    const childCount1 = cartItemsList.children.length;
-    console.log("Nombre d'enfants : ", childCount1);
-    const childCount2 = cartItemsList1.children.length;
-    console.log("Nombre d'enfants : ", childCount2);
-    const childCount3 = cartItemsList2.children.length;
-    console.log("Nombre d'enfants : ", childCount3);
     
-    if (childCount1 > 0) {
-        emptyCartMessage1.style.display = "none";
-    } else {
-        emptyCartMessage1.style.display = "flex";
-    }
-
-    if (childCount2 > 0) {
-        emptyCartMessage2.style.display = "none";
-    } else {
-        emptyCartMessage2.style.display = "flex";
-    }
-
-    if (childCount3 > 0) {
-        emptyCartMessage3.style.display = "none";
-    } else {
-        emptyCartMessage3.style.display = "flex";
-    }
-
+        
 });
 
                 

@@ -1,3 +1,24 @@
+import { getUserOrderById, compareAndAdjustTimestamps } from './firebase.js'
+
+const exitBtn = document.getElementById('exit');
+const exitBtnArrow = document.querySelector('.uil-arrow-left');
+
+function isMobile() {
+    return window.matchMedia("(max-width: 35em)").matches;
+}
+
+if (isMobile()) {
+    exitBtnArrow.style.visibility = "visible";
+    exitBtn.addEventListener('click', ()=>{
+        window.history.back();
+    })
+} else {
+    exitBtn.style.cursor = "default";
+    exitBtnArrow.style.visibility = "hidden";
+}
+
+
+
 const one = document.querySelector(".one");
 const two = document.querySelector(".two");
 const three = document.querySelector(".three");
@@ -31,40 +52,14 @@ const sixI = document.querySelector(".six i");
 const sevenI = document.querySelector(".seven i");
 const eightI = document.querySelector(".eight i");
 const fourText = document.querySelector(".fourText");
+const sixText = document.querySelector(".sixText");
 const eightText = document.querySelector(".eightText");
 const eightIcon = document.querySelector("#eight i");
+const sixIcon = document.querySelector("#six i");
 const fourIcon = document.querySelector("#four i");
-
-// function Fone() {
-//     one.classList.add("active");
-//     two.classList.remove("active");
-//     three.classList.remove("active");
-//     four.classList.remove("active");
-//     five.classList.remove("active");
-//     six.classList.remove("active");
-//     liOne.style.display = "flex";
-//     liTwo.style.display = "none";
-//     liThree.style.display = "none";
-//     liFour.style.display = "none";
-//     liFive.style.display = "none";
-//     liSix.style.display = "none";
-// }
-
-// function Ftwo() {
-//     one.classList.add("active");
-//     two.classList.add("active");
-//     three.classList.remove("active");
-//     four.classList.remove("active");
-//     five.classList.remove("active");
-//     six.classList.remove("active");
-//     liOne.style.display = "flex";
-//     liTwo.style.display = "flex";
-//     liThree.style.display = "none";
-//     liFour.style.display = "none";
-//     liFive.style.display = "none";
-//     liSix.style.display = "none";
-// }
-// 
+const reportText = document.querySelector('.report-text');
+const reportDate = document.querySelector('.report-date');
+reportText.style.display = "none";
 
 function Fthree() {
     one.classList.add("active");
@@ -132,7 +127,7 @@ function Ffive() {
     fiveI.classList.add('custom-style');
 }
 
-function Fsix() {
+function Fsix(content = "Commande livrée", newIcon) {
     one.classList.add("active");
     two.classList.add("active");
     three.classList.add("active");
@@ -151,6 +146,11 @@ function Fsix() {
     iSix.classList.remove("uil-check");
     iSix.classList.add("uil-circle");
     sixI.classList.add('custom-style');
+    sixText.textContent = content;
+    if (content != "Commande livrée") {
+        sixIcon.classList.remove("uil-map-marker");
+        sixIcon.classList.add(newIcon);
+    }
 }
 
 function Fseven() {
@@ -230,6 +230,65 @@ function Feight(content = "Commande retournée", newIcon = "") {
     }
 }
 
+function Feight2(content = "Commande retournée", newIcon = "") {
+    one.classList.add("active");
+    two.classList.add("active");
+    three.classList.add("active");
+    four.classList.add("active");
+    five.classList.add("active");
+    six.classList.add("active");
+    seven.classList.add("active");
+    eight.classList.add("active");
+    liOne.style.display = "flex";
+    liTwo.style.display = "flex";
+    liThree.style.display = "flex";
+    liFour.style.display = "flex";
+    liFive.style.display = "flex";
+    liFive2.style.display = "none";
+    liSix.style.display = "flex";
+    liSeven.style.display = "flex";
+    liEight.style.display = "flex";
+    iEight.classList.remove("uil-check");
+    iEight.classList.add("uil-circle");
+    eightI.classList.add('custom-style');
+    eightText.textContent = content;
+    AfterDelevered();
+    if (content != "Commande retournée") {
+        eightIcon.classList.remove("uil-redo");
+        eightIcon.classList.add(newIcon);
+    }
+}
+
+function Feight3(content = "Commande retournée", newIcon = "") {
+    one.classList.add("active");
+    two.classList.add("active");
+    three.classList.add("active");
+    four.classList.add("active");
+    five.classList.add("active");
+    five2.classList.add("active");
+    six.classList.add("active");
+    seven.classList.add("active");
+    eight.classList.add("active");
+    liOne.style.display = "flex";
+    liTwo.style.display = "flex";
+    liThree.style.display = "flex";
+    liFour.style.display = "flex";
+    liFive.style.display = "flex";
+    liFive2.style.display = "flex";
+    liSix.style.display = "flex";
+    liSeven.style.display = "flex";
+    liEight.style.display = "flex";
+    iEight.classList.remove("uil-check");
+    iEight.classList.add("uil-circle");
+    eightI.classList.add('custom-style');
+    eightText.textContent = content;
+    AfterDelevered();
+    if (content != "Commande retournée") {
+        eightIcon.classList.remove("uil-redo");
+        eightIcon.classList.add(newIcon);
+    }
+}
+
 function AfterDelevered() {
     liOne.style.display = "none";
     liTwo.style.display = "none";
@@ -238,10 +297,6 @@ function AfterDelevered() {
     liFive.style.display = "none";
     six.classList.add("masque");
 }
-
-document.getElementById('exit').addEventListener('click', ()=>{
-    window.history.back();
-})
 
 // Récupération de l'URL complète
 const fullUrl = window.location.href;
@@ -276,8 +331,6 @@ function formatDate(timestamp, formatType = "standard") {
     }
 }
 
-import { getUserOrderById, firebaseTimestamp } from './firebase.js';
-
 const delayAvantExp = 1;
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -301,20 +354,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Calculer les dates d'expiration
     const Edate = new Date(updatedAtDate);
     Edate.setDate(updatedAtDate.getDate() + delayAvantExp); // Ajouter 1 jour pour l'expédition
-
-
-    // const Sdate = new Date(time); // Créer un objet Date à partir de `updatedAt`
-    // const Edate = new Date(Sdate); // Créer une autre date à partir de `updatedAt`
-    // Edate.setDate(Sdate.getDate() + 1); // Ajouter 1 jour à `updatedAt`
-    
-    // const dateD = createTime.toDate(); // Créer une date à partir de `createdAt`
-    // dateD.setDate(dateD.getDate() + 1); // Ajouter 1 jour à `createdAt`
-
-    // const dateD1 = createTime.toDate(); // Créer une autre date à partir de `createdAt`
-    // dateD1.setDate(dateD1.getDate() + 2); // Ajouter 2 jours à `createdAt`
-
-    // const Edate1 = new Date(Sdate); // Créer une autre date à partir de `updatedAt`
-    // Edate1.setDate(Sdate.getDate() - 3); // Ajouter 1 jour à `updatedAt`
 
     // Gérer les différents statuts de la commande
     if (status === "pending") {
@@ -370,11 +409,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 oneTime7.textContent = formatDate(avantDernier.updatedAt);
                 oneTime5_2.textContent = formatDate(updataTime);
                 Ffive2();
+            }else if(avantDernier.status === "report-returned" || avantDernier.status === "report-delivered"){
+                reportText.style.display = "block";
+                reportDate.textContent = formatDate(avantDernier.updatedAt);
+                oneTime4.textContent = formatDate(compareAndAdjustTimestamps(historyAll[lastPendingIndex].updatedAt, updataTime));
+                Ffive();
             } else{
-                const timeFour = createTime.toDate ? createTime.toDate() : new Date(createTime); // Convertir le Timestamp Firebase en Date
-                const timeFour2 = new Date(timeFour)
-                timeFour2.setDate(timeFour2.getDate() + delayAvantExp)
-                oneTime4.textContent = formatDate(timeFour2);
+                oneTime4.textContent = formatDate(compareAndAdjustTimestamps(historyAll[lastPendingIndex].updatedAt, updataTime));
                 Ffive();
             }
         } 
@@ -393,76 +434,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         oneTime1.textContent = formatDate(historyAll[lastPendingIndex].updatedAt);
         oneTime2.textContent = formatDate(historyAll[lastPendingIndex].updatedAt);
         oneTime3.textContent = formatDate(historyAll[lastPendingIndex].updatedAt);
-        // Calculer les dates d'expiration
-        // const EdateD = new Date(historyAll[lastPendingIndex].updatedAt);
-        // EdateD.setDate(historyAll[lastPendingIndex].updatedAt.getDate() + delayAvantExp); // Ajouter 1 jour pour l'expédition
-        // oneTime4.textContent = formatDate(firebaseTimestamp(EdateD));
         const lastProgressIndex = historyAll.map((entry, index) => entry.status === 'progress' ? index : -1).filter(index => index !== -1).pop();
         oneTime5.textContent = formatDate(historyAll[lastProgressIndex].updatedAt);
         oneTime6.textContent = formatDate(item.updatedAt);
+        oneTime4.textContent = formatDate(compareAndAdjustTimestamps(historyAll[lastPendingIndex].updatedAt, historyAll[lastProgressIndex].updatedAt));
         Fsix();
+    }else if(status === "dismiss-returned"){
+        const historyAll = item.history;
+        const lastDeleveredIndex = historyAll.map((entry, index) => entry.status === 'delivered' ? index : -1).filter(index => index !== -1).pop();
+        oneTime6.textContent = formatDate(historyAll[lastDeleveredIndex].updatedAt);
+        const lastCheckingIndex = historyAll.map((entry, index) => entry.status === 'checking' ? index : -1).filter(index => index !== -1).pop();
+        oneTime7.textContent = formatDate(historyAll[lastCheckingIndex].updatedAt);
+        oneTime8.textContent = formatDate(item.updatedAt);
+        Feight2("Retour de commande rejetée", "uil-x");
+    } else if(status === "report-delivered"){
+        const historyAll = item.history;
+        const lastPendingIndex = historyAll.map((entry, index) => entry.status === 'pending' ? index : -1).filter(index => index !== -1).pop();
+        oneTime1.textContent = formatDate(historyAll[lastPendingIndex].updatedAt);
+        oneTime2.textContent = formatDate(historyAll[lastPendingIndex].updatedAt);
+        oneTime3.textContent = formatDate(historyAll[lastPendingIndex].updatedAt);
+        const lastProgressIndex = historyAll.map((entry, index) => entry.status === 'progress' ? index : -1).filter(index => index !== -1).pop();
+        oneTime5.textContent = formatDate(historyAll[lastProgressIndex].updatedAt);
+        oneTime4.textContent = formatDate(compareAndAdjustTimestamps(historyAll[lastPendingIndex].updatedAt, historyAll[lastProgressIndex].updatedAt));
+        oneTime6.textContent = formatDate(item.updatedAt);
+        Fsix("Livraison reportée", "uil-step-forward");
+    } else if(status === "report-returned"){
+        const historyAll = item.history;
+        const lastDeleveredIndex = historyAll.map((entry, index) => entry.status === 'delivered' ? index : -1).filter(index => index !== -1).pop();
+        oneTime6.textContent = formatDate(historyAll[lastDeleveredIndex].updatedAt);
+        const lastCheckingIndex = historyAll.map((entry, index) => entry.status === 'checking' ? index : -1).filter(index => index !== -1).pop();
+        oneTime7.textContent = formatDate(historyAll[lastCheckingIndex].updatedAt);
+        const lastProgressIndex = historyAll.map((entry, index) => entry.status === 'progress' ? index : -1).filter(index => index !== -1).pop();
+        oneTime5_2.textContent = formatDate(historyAll[lastProgressIndex].updatedAt);
+        oneTime8.textContent = formatDate(item.updatedAt);
+        Feight3("Retour de commande reportée", "uil-step-forward")
     }
-    // else if (status === "dismiss-returned") {
-    //     oneTime1.textContent = formatDate(createTime);
-    //     oneTime2.textContent = formatDate(createTime);
-    //     oneTime3.textContent = formatDate(createTime);
-    //     oneTime4.textContent = formatDate(updataTime);        
-    //     Ffour("Retour DE COMMANDE REJETÉE"); // Action à prendre si la commande a été annulée
-    // }
-    //else if (status === "delivered") {
-    //     oneTime1.textContent = formatDate(createTime);
-    //     oneTime2.textContent = formatDate(createTime);
-    //     oneTime3.textContent = formatDate(createTime);
-    //     oneTime4.textContent = formatDate(dateD);
-    //     oneTime5.textContent = formatDate(time);
-    //     oneTime6.textContent = formatDate(time);
-    //     Fsix(); // Action à prendre si la commande a été livrée
-    // } else if (status === "cancelled") {
-    //     oneTime1.textContent = formatDate(createTime);
-    //     oneTime2.textContent = formatDate(createTime);
-    //     oneTime3.textContent = formatDate(createTime);
-    //     oneTime4.textContent = formatDate(Sdate);
-    //     Ffour("ANNULÉE"); // Action à prendre si la commande a été annulée
-    // } else if (status === "returned") {
-    //     oneTime1.textContent = formatDate(createTime);
-    //     oneTime2.textContent = formatDate(createTime);
-    //     oneTime3.textContent = formatDate(createTime);
-    //     oneTime4.textContent = formatDate(dateD);
-    //     oneTime5.textContent = formatDate(dateD1);
-    //     oneTime6.textContent = formatDate(dateD1);
-    //     oneTime7.textContent = formatDate(Edate1);
-    //     oneTime8.textContent = formatDate(Sdate);
-    //     Feight();
-    // } else if (status === "checking"){
-    //     oneTime1.textContent = formatDate(createTime);
-    //     oneTime2.textContent = formatDate(createTime);
-    //     oneTime3.textContent = formatDate(createTime);
-    //     oneTime4.textContent = formatDate(dateD);
-    //     oneTime5.textContent = formatDate(dateD1);
-    //     oneTime6.textContent = formatDate(dateD1);
-    //     oneTime7.textContent = formatDate(time);
-    //     Fseven();
-    // } else if (status === "dismiss-returned") {
-    //     oneTime1.textContent = formatDate(createTime);
-    //     oneTime2.textContent = formatDate(createTime);
-    //     oneTime3.textContent = formatDate(createTime);
-    //     oneTime4.textContent = formatDate(dateD);
-    //     oneTime5.textContent = formatDate(dateD1);
-    //     oneTime6.textContent = formatDate(dateD1);
-    //     oneTime7.textContent = formatDate(Edate1);
-    //     oneTime8.textContent = formatDate(Sdate);
-    //     Feight("Retour de commande rejetée", "uil-x");
-    // }else if (status === "report-returned") {
-    //     oneTime1.textContent = formatDate(createTime);
-    //     oneTime2.textContent = formatDate(createTime);
-    //     oneTime3.textContent = formatDate(createTime);
-    //     oneTime4.textContent = formatDate(dateD);
-    //     oneTime5.textContent = formatDate(dateD1);
-    //     oneTime6.textContent = formatDate(dateD1);
-    //     oneTime7.textContent = formatDate(Edate1);
-    //     oneTime8.textContent = formatDate(Sdate);
-    //     Feight("Retour de commande reportée", "uil-step-forward");
-    // }
-
-    //document.getElementById('loading-spinner').style.display = 'none'; // Cacher le spinner de chargement
 });

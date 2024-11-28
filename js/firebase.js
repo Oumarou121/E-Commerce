@@ -1419,11 +1419,12 @@ export async function getOrdersList() {
                             id: doc.id,
                             ...doc.data()
                         }));
-                        ordersList.sort((a, b) => {
-                            const idA = parseInt(a.orderId.replace('#', ''), 10); // Extraire et convertir en nombre
-                            const idB = parseInt(b.orderId.replace('#', ''), 10); // Extraire et convertir en nombre
-                            return idB - idA; // Trier dans l'ordre décroissant
-                        });
+                        // ordersList.sort((a, b) => {
+                        //     const idA = parseInt(a.orderId.replace('#', ''), 10); // Extraire et convertir en nombre
+                        //     const idB = parseInt(b.orderId.replace('#', ''), 10); // Extraire et convertir en nombre
+                        //     return idB - idA; // Trier dans l'ordre décroissant
+                        // });
+                        // ordersList.sort((a, b) => b.updateAt - a.updateAt);
                         resolve(ordersList); // Retourner la liste triée des commandes
                     } else {
                         console.log("Aucune commande trouvée");
@@ -2092,6 +2093,20 @@ export async function addMessage(email, content) {
 }
 
 // // Convertir la date en Timestamp Firebase
-export const firebaseTimestamp = (Edate) =>{
-    return Timestamp.fromDate(Edate);
+export function compareAndAdjustTimestamps(timestamp1, timestamp2) {
+    // Ajouter 1 jour au premier Timestamp
+    const date1PlusOne = timestamp1.toDate();
+    date1PlusOne.setDate(date1PlusOne.getDate() + 1);
+    const timestamp1PlusOne = Timestamp.fromDate(date1PlusOne);
+
+    // Comparer avec le deuxième Timestamp
+    if (timestamp1PlusOne.toMillis() > timestamp2.toMillis()) {
+        // Si le premier +1 jour est supérieur, retourner le deuxième -1 jour
+        const date2MinusOne = timestamp2.toDate();
+        date2MinusOne.setDate(date2MinusOne.getDate() - 1);
+        return Timestamp.fromDate(date2MinusOne);
+    } else {
+        // Sinon, retourner le premier +1 jour
+        return timestamp1PlusOne;
+    }
 }

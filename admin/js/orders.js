@@ -1,40 +1,76 @@
 import { getAdminOrdersById, getProductById, updateProductStatusInOrderAdmin, updateOrderStatus, getOrdersList, getUserNameByUid } from './../../js/firebase.js';
 
+// Sélectionne tous les éléments de filtre
+document.querySelectorAll('.filtre li').forEach(li => {
+    li.addEventListener('click', () => {
+        // Trouve l'input checkbox à l'intérieur du `li` et change son état
+        const checkbox = li.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+        
+        // Applique le style si la case est cochée
+        if (checkbox.checked) {
+            li.classList.add('checked');
+            filterOrders()
+        } else {
+            li.classList.remove('checked');
+            filterOrders()
+        }
+    });
+});
 
-// Fonction de "debounce" pour retarder la recherche
+// Fonction de debounce
 function debounce(func, delay) {
-    let timeoutId;
+    let timeout;
     return function(...args) {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => func.apply(this, args), delay);
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), delay);
     };
 }
 
-// Filtrer les commandes en fonction de la recherche avec le "debounce"
-document.getElementById('orderSearch').addEventListener('input', debounce(function () {
-    const searchValue = this.value.toLowerCase();
+// Fonction pour filtrer les commandes
+function filterOrders() {
+    const searchValue = document.getElementById('orderSearch').value.toLowerCase();
+    const selectedStatuses = Array.from(document.querySelectorAll('.filtre li input[type="checkbox"]:checked'))
+                                  .map(checkbox => checkbox.getAttribute('name'));
+
     const orderRows = document.querySelectorAll('.orders-table tbody tr');
     
     orderRows.forEach(row => {
         const rowText = row.textContent.toLowerCase();
-        if (rowText.includes(searchValue)) {
+        const rowStatus = row.getAttribute('data-status'); // Assurez-vous que chaque ligne possède un attribut `data-status`
+
+        // Vérifie si la ligne correspond à la recherche et aux statuts cochés
+        const matchesSearch = rowText.includes(searchValue);
+        const matchesStatus = selectedStatuses.length === 0 || selectedStatuses.includes(rowStatus);
+
+        if (matchesSearch && matchesStatus) {
             row.style.display = ''; // Afficher la ligne
         } else {
             row.style.display = 'none'; // Masquer la ligne
         }
     });
-}, 300)); // Délai de 300 ms pour le "debounce"
+}
 
+// Événement de recherche avec debounce
+document.getElementById('orderSearch').addEventListener('input', debounce(filterOrders, 300));
 
 function capitalizeFirstLetter(string) {
     if (!string) return string; // Vérifie si la chaîne n'est pas vide
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
-// Function to add a new product
+// Function to add a new order
 function addOrderData(Uid, userName, status, date, amount) {
     const productTable = document.getElementById('orderTable').getElementsByTagName('tbody')[0];
     const newRow = productTable.insertRow();
+
+    // Ajout d'attributs pour le tri
+    newRow.setAttribute('data-orderId', Uid); // Attribut pour Order ID
+    newRow.setAttribute('data-updatedAt', date); // Convertir la date en timestamp pour le tri
+    newRow.setAttribute('data-price', amount); // Attribut pour le montant
+
+    // Ajout d'un attribut data-status pour le filtrage
+    newRow.setAttribute('data-status', status);
 
     newRow.innerHTML = `
         <td>${Uid}</td>
@@ -47,36 +83,49 @@ function addOrderData(Uid, userName, status, date, amount) {
         </td>
     `;
 
-    newRow.querySelector(".view-details").addEventListener('click', ()=>{
+    newRow.querySelector(".view-details").addEventListener('click', () => {
         detailsOrder(Uid);
-    })
+    });
 
-    if (status == "pending") {
-        newRow.querySelector(".state").style.backgroundColor = "hsl(var(--clr-blue))"; // Changer la couleur de fond
-    } 
-
-    if (status == "delivered") {
-        newRow.querySelector(".state").style.backgroundColor = "hsl(var(--clr-green))"; // Changer la couleur de fond
+    // Changer la couleur de fond en fonction du statut
+    const statusElement = newRow.querySelector(".state");
+    switch (status) {
+        case "pending":
+            statusElement.style.backgroundColor = "hsl(var(--clr-blue))";
+            break;
+        case "progress":
+            statusElement.style.backgroundColor = "hsl(var(--clr-green) / .5)";
+            break;
+        case "delivered":
+            statusElement.style.backgroundColor = "hsl(var(--clr-green))";
+            break;
+        case "cancelled":
+            statusElement.style.backgroundColor = "hsl(var(--clr-black) / .8)";
+            break;
+        case "returned":
+            statusElement.style.backgroundColor = "hsl(var(--clr-red) / .8)";
+            break;
+        case "checking":
+            statusElement.style.backgroundColor = "hsl(var(--clr-red) / .5)";
+            break;
+        case "report-delivered":
+            statusElement.style.backgroundColor = "hsl(var(--clr-blue) / .5)";
+            break;
+        case "report-returned":
+            statusElement.style.backgroundColor = "hsl(var(--clr-blue) / .7)";
+            break;
+        case "dismiss-delivered":
+            statusElement.style.backgroundColor = "hsl(var(--clr-red))";
+            break;
+        case "dismiss-returned":
+            statusElement.style.backgroundColor = "hsl(var(--clr-red) / .9)";
+            break;
     }
-
-    if (status == "checking") {
-        newRow.querySelector(".state").style.backgroundColor = "hsl(var(--clr-red) / .5)"; // Changer la couleur de fond
-    }
-
-    if (status == "cancelled") {
-        newRow.querySelector(".state").style.backgroundColor = "hsl(var(--clr-black) / .8)"; // Changer la couleur de fond
-    } 
-
-    if (status == "returned") {
-        newRow.querySelector(".state").style.backgroundColor = "hsl(var(--clr-red) / .8)"; // Changer la couleur de fond
-    }else{
-        newRow.querySelector(".state").style.color = "hsl(var(--clr-black))"; // Changer la couleur de fond
-    }
-
-
 }
 
-function formatDate(timestamp) {
+
+
+function formatDateTable(timestamp) {
     const date = timestamp.toDate(); // Convertir le timestamp en objet Date
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -89,14 +138,22 @@ async function LoadListOrders() {
     const productTable = document.getElementById('orderTable').getElementsByTagName('tbody')[0];
 
     try {
+        // const OrdersList = await getOrdersList();
+        // OrdersList.sort((a, b) => a.updateAt - b.updateAt);
+
         const OrdersList = await getOrdersList();
+        // OrdersList.sort((a, b) => {
+        //     const idA = parseInt(a.orderId.replace('#', ''), 10); // Extraire et convertir en nombre
+        //     const idB = parseInt(b.orderId.replace('#', ''), 10); // Extraire et convertir en nombre
+        //     return idA - idB; // Trier dans l'ordre décroissant
+        // });
 
         if (OrdersList.length > 0) {
             productTable.innerHTML = '';
 
             OrdersList.forEach(async order => {
                 const userName = await getUserNameByUid(order.userId);                
-                addOrderData(order.orderId, userName, order.status, formatDate(order.updatedAt), order.totalAmount);
+                addOrderData(order.orderId, userName, order.status, formatDateTable(order.updatedAt), order.totalAmount);
             });
         } else {
             productTable.innerHTML = `
@@ -111,6 +168,76 @@ async function LoadListOrders() {
         productTable.innerHTML = '<p>Erreur lors du chargement des commandes.</p>';
     }
 }
+
+export function sortItems(criteria, isAscending) {
+    const tbody = document.querySelector('#orderTable tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+
+    rows.sort((a, b) => {
+        let valA, valB;
+
+        // Vérifiez si le critère est 'orderId' pour gérer le #
+        if (criteria === 'orderId') {
+            valA = parseInt(a.getAttribute(`data-${criteria}`).replace('#', ''), 10); // Retire le '#' avant de parser
+            valB = parseInt(b.getAttribute(`data-${criteria}`).replace('#', ''), 10);
+        } else {
+            valA = parseInt(a.getAttribute(`data-${criteria}`), 10);
+            valB = parseInt(b.getAttribute(`data-${criteria}`), 10);
+        }
+
+        return (isAscending == "asc") ? valA - valB : valB - valA;
+    });
+
+    // Réorganise les lignes dans le DOM
+    rows.forEach(row => tbody.appendChild(row));
+}
+
+let currentSort = {
+    criteria: null,
+    order: null
+};
+
+// Fonction pour mettre à jour les flèches
+function updateArrows() {
+    const arrows = document.querySelectorAll('.arrow');
+    arrows.forEach(arrow => arrow.classList.remove('up', 'down')); // Réinitialiser toutes les flèches
+
+    if (currentSort.criteria) {
+        const currentArrow = document.getElementById(`${currentSort.criteria}-arrow`);
+        currentArrow.classList.add(currentSort.order === 'asc' ? 'up' : 'down');
+    }
+}
+
+// Gestion des boutons de tri
+document.querySelectorAll('.sort-options button').forEach(button => {
+    button.addEventListener('click', (event) => {
+        const { target } = event;
+        const criteria = target.getAttribute('data-criteria');
+        
+        // Vérifiez si le bouton cliqué a déjà la classe 'up' ou 'down'
+        const currentArrow = document.getElementById(`${criteria}-arrow`);
+
+        if (currentArrow.classList.contains('up')) {
+            currentSort.order = 'desc'; // Passer à décroissant
+            currentArrow.classList.remove('up');
+            currentArrow.classList.add('down');
+        } else {
+            currentSort.order = 'asc'; // Passer à croissant
+            currentArrow.classList.remove('down');
+            currentArrow.classList.add('up');
+        }
+
+        // Réinitialiser le critère courant si un nouveau critère est sélectionné
+        if (currentSort.criteria !== criteria) {
+            currentSort.criteria = criteria; 
+        }
+
+        console.log(currentSort.order)
+        // Appel de la fonction de tri
+        sortItems(currentSort.criteria, currentSort.order);
+        updateArrows(); // Mettre à jour les flèches après le tri
+    });
+});
 
 document.addEventListener('DOMContentLoaded', async () => {
     await LoadListOrders();
@@ -154,21 +281,11 @@ function formatPrice(price) {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
-function formatFirebaseTimestamp(firebaseTimestamp) {
-    // Conversion du Timestamp de Firebase en objet Date
-    const date = firebaseTimestamp.toDate();
+const delayAvantExp = 1;
 
-    // Récupération du jour, du mois et de l'année
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
-    const year = date.getFullYear();
-
-    // Formatage final
-    return `Effectuée le ${day}-${month}-${year}`;
-}
-
-function formatDate1(timestamp) {
-    const date = new Date(timestamp); // Convertir le timestamp en objet Date
+function formatDate(timestamp) {
+    // Vérifier si l'entrée est un Timestamp de Firebase et le convertir en Date
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
@@ -176,36 +293,14 @@ function formatDate1(timestamp) {
     return `Le ${day}-${month}-${year}`;
 }
 
-function formatDeliveryDateRange(startTimestamp) {
-    const daysOfWeek = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
-    const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+const daysOfWeek = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
 
-    const startDate = new Date(startTimestamp);
-    const endDate = new Date(startTimestamp); // Créer une nouvelle date basée sur startTimestamp
-
-    // Ajouter 2 jours en millisecondes (2 jours * 24 heures * 60 minutes * 60 secondes * 1000 millisecondes)
-    endDate.setDate(startDate.getDate() + 2);
-
-    const startDayOfWeek = daysOfWeek[startDate.getDay()];
-    const startDay = startDate.getDate();
-    const startMonth = months[startDate.getMonth()];
-
-    const endDayOfWeek = daysOfWeek[endDate.getDay()];
-    const endDay = endDate.getDate();
-    const endMonth = months[endDate.getMonth()];
-
-    return `Livré entre le ${startDayOfWeek} ${startDay} ${startMonth} et le ${endDayOfWeek} ${endDay} ${endMonth}`;
-}
-
-function formatCheckingDateRange(startTimestamp) {
-    const daysOfWeek = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
-    const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
-
-    const startDate = new Date(startTimestamp);
-    const endDate = new Date(startTimestamp); // Créer une nouvelle date basée sur startTimestamp
-
-    // Ajouter 2 jours en millisecondes (2 jours * 24 heures * 60 minutes * 60 secondes * 1000 millisecondes)
-    endDate.setDate(startDate.getDate() + 2);
+function formatDateRange(startTimestamp, eventType, interval = 2) {
+    // Convertir le Timestamp en objet Date
+    const startDate = startTimestamp.toDate ? startTimestamp.toDate() : new Date(startTimestamp);
+    const endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + interval); // Ajouter interval jours
 
     const startDayOfWeek = daysOfWeek[startDate.getDay()];
     const startDay = startDate.getDate();
@@ -215,28 +310,29 @@ function formatCheckingDateRange(startTimestamp) {
     const endDay = endDate.getDate();
     const endMonth = months[endDate.getMonth()];
 
-    return `Fin d'examination entre le ${startDayOfWeek} ${startDay} ${startMonth} et le ${endDayOfWeek} ${endDay} ${endMonth}`;
-}
+    // Déterminer le texte basé sur le type d'événement
+    let eventText;
+    switch (eventType) {
+        case 'delivery':
+            eventText = "Livré entre le";
+            break;
+        case 'checking':
+            eventText = "Fin d'examination entre le";
+            break;
+        case 'report':
+            eventText = "Reporter entre le";
+            break;
+        case 'effectue':
+            return `${"Effectuée le"} ${startDayOfWeek} ${startDay} ${startMonth}`;
+        case 'progress':
+            return `${"Livraison ce"} ${startDayOfWeek} ${startDay} ${startMonth}`;
+        case 'progress-checking':
+            return `${"Retour ce"} ${startDayOfWeek} ${startDay} ${startMonth}`;
+        default:
+            eventText = "Événement entre le"; // Valeur par défaut si type non reconnu
+    }
 
-function formatDeliveryDateRange1(startTimestamp) {
-    const daysOfWeek = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
-    const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
-
-    const startDate = new Date(startTimestamp);
-    const endDate = new Date(startTimestamp); // Créer une nouvelle date basée sur startTimestamp
-
-    // Ajouter 2 jours en millisecondes (2 jours * 24 heures * 60 minutes * 60 secondes * 1000 millisecondes)
-    endDate.setDate(startDate.getDate() + 2);
-
-    const startDayOfWeek = daysOfWeek[startDate.getDay()];
-    const startDay = startDate.getDate();
-    const startMonth = months[startDate.getMonth()];
-
-    const endDayOfWeek = daysOfWeek[endDate.getDay()];
-    const endDay = endDate.getDate();
-    const endMonth = months[endDate.getMonth()];
-
-    return ` le ${startDayOfWeek} ${startDay} ${startMonth} et le ${endDayOfWeek} ${endDay} ${endMonth}`;
+    return `${eventText} ${startDayOfWeek} ${startDay} ${startMonth} et le ${endDayOfWeek} ${endDay} ${endMonth}`;
 }
 
 const displayCartItems = async (orderId) => {
@@ -254,6 +350,7 @@ const displayCartItems = async (orderId) => {
     const region = document.querySelector('.region');
     const cartItemsList = document.querySelector('.cart-items');
     const detailsList = document.querySelector('.detail-exp');
+    const optionP = document.querySelector("#commande-select .optionP");
     const option0 = document.querySelector("#commande-select .option0");
     const option1_1 = document.querySelector("#commande-select .option1_1");
     const option1_2 = document.querySelector("#commande-select .option1_2");
@@ -271,7 +368,7 @@ const displayCartItems = async (orderId) => {
     //document.getElementById('loading-spinner').style.display = 'block';
     const ads = (shippingAddress.adresse_sup == "") ? shippingAddress.adresse : `${shippingAddress.adresse} , ${shippingAddress.adresse_sup}`;
     orderNum.textContent = `Commande n°${orderId}`;
-    orderDate.textContent = formatFirebaseTimestamp(orderData.createdAt);
+    orderDate.textContent = formatDateRange(orderData.createdAt, "effectue");
     orderTotal.textContent = `Total: ${formatPrice(orderData.totalAmount)} FCFA`;
     orderTotal1.textContent = `Total: ${formatPrice(orderData.totalAmount)} FCFA`;
     orderSousTotal.textContent = `Sous-total: ${formatPrice(orderData.totalAmount - 2000)} FCFA`;
@@ -288,6 +385,7 @@ const displayCartItems = async (orderId) => {
     }
 
     if (status == "pending") {
+        optionP.style.display = 'none';
         option0.style.display = 'block';
         option1_1.style.display = 'none';
         option1_2.style.display = 'block';
@@ -300,6 +398,7 @@ const displayCartItems = async (orderId) => {
         state_commande_box.style.display = 'none';
 
     } else if (status == "report-returned" || status == "report-delivered") {
+        optionP.style.display = 'none';
         option0.style.display = 'block';
         option1_1.style.display = 'none';
         option3_1.style.display = 'none';
@@ -309,6 +408,7 @@ const displayCartItems = async (orderId) => {
         option4.style.display = 'none';
         state_commande_box.style.display = 'block';
     }else if(status == "checking"){
+        optionP.style.display = 'none';
         option0.style.display = 'block';
         option1_1.style.display = 'block';
         option1_2.style.display = 'none';
@@ -317,7 +417,18 @@ const displayCartItems = async (orderId) => {
         option3_2.style.display = 'none';
         option4.style.display = 'none';
         state_commande_box.style.display = 'block';
+    } else if(status == "returned"){
+        optionP.style.display = 'block';
+        option0.style.display = 'none';
+        option1_1.style.display = 'none';
+        option1_2.style.display = 'none';
+        option3_1.style.display = 'none';
+        option2.style.display = 'none';
+        option3_2.style.display = 'none';
+        option4.style.display = 'none';
+        state_commande_box.style.display = 'block';
     } else{            
+        optionP.style.display = 'none';
         option0.style.display = 'none';
         option1_1.style.display = 'none';
         option3_1.style.display = 'none';
@@ -337,16 +448,17 @@ const displayCartItems = async (orderId) => {
         const detailsElement = document.createElement('div');
         cartItemElement.className = 'cart-content';
 
-        const content = (item.status == "checking") ? "La commande sera récupérée entre" : "Livraison à domicile. Expédié Niger.net Livraison entre" ;
-
-        detailsElement.innerHTML = `
+        const content1 = (item.status == "checking") ? `${"La commande sera récupérée entre"}  <strong>${formatDateRange(item.updatedAt, "colis")}</strong>` : `${"Livraison à domicile. Expédié Niger.net Livraison entre"} <strong>${formatDateRange(item.updatedAt, "colis")}</strong>` ;
+        const content2 = (item.status == "report-delivered" || item.status == "report-returned") ? `${"Reporter entre"} <strong>${formatDateRange(item.updatedAt, "colis")}</strong>` : content1;
         
-        <h3>Colis ${index + 1}</h3>
-        <span> ${content}
-        <strong>${formatDeliveryDateRange1(item.updatedAt)}</strong>
-        </span>
+        detailsElement.innerHTML = `
+            
+            <h3>Colis ${index + 1}</h3>
+            <span>
+                ${content2}
+            </span>
 
-        `;
+            `;
 
         detailsList.appendChild(detailsElement);
 
@@ -355,10 +467,11 @@ const displayCartItems = async (orderId) => {
         <div class="content-left">
         <header class="cart-icon-top">
             <div class="state-box">
-                <div class="state1 text-white bg-green">COMMANDE LIVRÉE</div>
+                <div class="state1 text-white"></div>
                 <div id="select-box-product" class="select-box">
                     <select class="select">
                         <option value="" selected>Currente state</option>
+                        <option class="optionP" value="pending">Pending</option>
                         <option class="option0" value="progress">Progress</option>
                         <option class="option3_1" value="report-returned">Report</option>
                         <option class="option1_1" value="dismiss-returned">Dismiss</option>
@@ -383,12 +496,31 @@ const displayCartItems = async (orderId) => {
                 <div class="price">${formatPrice(item.price)} FCFA</div>
             </div>
         </div>
+        <div class="motif">
+            <div>
+                  <h4>Message</h4>
+            </div>
+            <div class="motif-content">
+                    <textarea class="motifText" class="text-black fs-poppins" rows="4" placeholder="Votre message ici" required></textarea>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="content-right">
+            <ul>
+                <li class="value1"><i class="uil uil-wrap-text"></i> Value 1</li>
+                <li class="value2"><i class="uil uil-wrap-text"></i> Value 2</li>
+                <li class="value3"><i class="uil uil-wrap-text"></i> Value 3</li>
+                <li class="value4"><i class="uil uil-wrap-text"></i> Value 4</li>
+                <li class="delete"><i class="uil uil-trash"></i> Delete</li>
+            </ul>
         </div>
 
         `;
         const state1 = cartItemElement.querySelector(".state1");
         const time = cartItemElement.querySelector(".time");
         const select_box = cartItemElement.querySelector(".select-box");
+        const optionP = cartItemElement.querySelector(".optionP");
         const option0 = cartItemElement.querySelector(".option0");
         const option1_1 = cartItemElement.querySelector(".option1_1");
         const option1_2 = cartItemElement.querySelector(".option1_2");
@@ -396,34 +528,57 @@ const displayCartItems = async (orderId) => {
         const option3_1 = cartItemElement.querySelector(".option3_1");
         const option3_2 = cartItemElement.querySelector(".option3_2");
         const option4 = cartItemElement.querySelector(".option4");
-        const state_product = cartItemElement.querySelector("#select-box-product");
+        // const state_product = cartItemElement.querySelector("#select-box-product");
+        const message = cartItemElement.querySelector(".motif");
+        const valueBox = cartItemElement.querySelector(".content-right");
+        const deleteValue = cartItemElement.querySelector(".delete");
+        const value1 = cartItemElement.querySelector(".value1");
+        const value2 = cartItemElement.querySelector(".value2");
+        const value3 = cartItemElement.querySelector(".value3");
+        const value4 = cartItemElement.querySelector(".value4");
+        const motifText = cartItemElement.querySelector(".motifText");
 
-        if (item.status == "pending") {
-            time.textContent = formatDeliveryDateRange(item.updatedAt);
-        } else if (item.status == "checking") {
-            time.textContent = formatCheckingDateRange(item.updatedAt);
-        } else {
-            time.textContent = formatDate1(item.updatedAt); 
-            state_product.style.display = 'none';
-        }  
+        deleteValue.style.color = "red";
+
+        deleteValue.addEventListener('click', ()=>{
+            motifText.value = "";
+        });
+
+        value1.addEventListener('click', ()=>{
+            motifText.value = "Value 1";
+        });
+
+        value2.addEventListener('click', ()=>{
+            motifText.value = "Value 2";
+        });
+
+        value3.addEventListener('click', ()=>{
+            motifText.value = "Value 3";
+        });
+
+        value4.addEventListener('click', ()=>{
+            motifText.value = "Value 4";
+        });
         
+    
         const now = Date.now(); // Obtenir le timestamp actuel
         const time1 = item.updatedAt; // Récupérer le timestamp de `updatedAt`
-        const Sdate = new Date(time1); // Créer un objet Date à partir de `updatedAt`
-        const Edate = new Date(time1); // Créer une autre date à partir de `updatedAt`
-        const Edate1 = new Date(time1); // Créer une autre date à partir de `updatedAt`
-        Edate.setDate(Sdate.getDate() + 1); // Ajouter 1 jour à `updatedAt`
-        Edate1.setDate(Sdate.getDate() + 3); // Ajouter 1 jour à `updatedAt`
-        // const historyAll = item.history;
+        // Calculer les dates d'expiration
+        const updatedAtDate = time1.toDate ? time1.toDate() : new Date(time1); // Convertir le Timestamp Firebase en Date
+        const Edate = new Date(updatedAtDate);
+        Edate.setDate(updatedAtDate.getDate() + delayAvantExp); // Ajouter 1 jour pour l'expédition
 
         if (item.status == "pending"){
+            time.textContent = formatDateRange(item.updatedAt, 'delivery');
             state1.style.backgroundColor = "hsl(var(--clr-blue))";
+            optionP.style.display = 'none';
             option1_1.style.display = 'none';
             option3_1.style.display = 'none';
             option2.style.display = 'none';
             option3_2.style.display = 'none';
             option4.style.display = 'none';
-            ;
+            message.style.display = "none";
+            valueBox.style.display = "none";
 
             if (now <= Edate) {
                 state1.textContent = "En ATTENTE D'EXPÉDITION";
@@ -434,18 +589,36 @@ const displayCartItems = async (orderId) => {
             } 
 
         }else if (item.status == "cancelled"){
-            state1.textContent = "ANNULÉE";
+            message.style.display = "none";
+            valueBox.style.display = "none";
+            time.textContent = formatDate(item.updatedAt);
+            state1.textContent = "COMMANDE ANNULÉE";
             state1.style.backgroundColor = "hsl(var(--clr-black) / .8)";
             select_box.style.display = 'none';
            
         }else if (item.status == "returned"){
-            state1.textContent = "RETOURNÉE";
+            message.style.display = "block";
+            valueBox.style.display = "block";
+            time.textContent = formatDate(item.updatedAt);
+            state1.textContent = "COMMANDE RETOURNÉE";
             state1.style.backgroundColor = "hsl(var(--clr-red) / .8)";
-            select_box.style.display = 'none';
+            optionP.style.display = 'block';
+            option0.style.display = 'none';
+            option1_1.style.display = 'none';
+            option3_1.style.display = 'none';
+            option2.style.display = 'none';
+            option1_2.style.display = 'none';
+            option3_2.style.display = 'none';
+            option4.style.display = 'none';
+            select_box.style.display = 'block';
             
         }else if (item.status == "checking"){
+            message.style.display = "block";
+            valueBox.style.display = "block";
+            time.textContent = formatDateRange(item.updatedAt, 'checking');
             state1.textContent = "COMMANDE EN EXAMINATION DE RETOUR";
             state1.style.backgroundColor = "hsl(var(--clr-red) / .5)";
+            optionP.style.display = 'none';
             option0.style.display = 'block';
             option1_1.style.display = 'block';
             option3_1.style.display = 'none';
@@ -456,17 +629,23 @@ const displayCartItems = async (orderId) => {
             select_box.style.display = 'block';
 
         }else if (item.status == "progress"){
-            state1.textContent = "LIVRAISON EN COURS";
+            message.style.display = "block";
+            valueBox.style.display = "block";
             state1.style.backgroundColor = "hsl(var(--clr-green) / .5)";
+            optionP.style.display = 'none';
             option0.style.display = 'none';
-            
+            select_box.style.display = 'block';
+            state1.textContent = "LIVRAISON EN COURS";
+            time.textContent = formatDateRange(item.updatedAt, "progress");
             const historyAll = item.history;
             if (historyAll.length >= 2) { // Vérifie qu'il y a au moins deux éléments
                 const avantDernier = historyAll[historyAll.length - 2];
                 if (avantDernier.status === "checking") {
+                    state1.textContent = "RETOUR EN COURS";
                     option1_2.style.display = 'none';
                     option3_2.style.display = 'none';
                     option4.style.display = 'none';
+                    time.textContent = formatDateRange(item.updatedAt, "progress-checking");
                 } else {
                     option1_2.style.display = 'none';
                     option1_1.style.display = 'none';
@@ -480,12 +659,18 @@ const displayCartItems = async (orderId) => {
                 option2.style.display = 'none';
             }
 
-            select_box.style.display = 'block';
-
         }else if (item.status == "delivered"){
+            message.style.display = "none";
+            valueBox.style.display = "none";
+            state1.textContent = "COMMANDE LIVRÉE";
+            state1.style.backgroundColor = "hsl(var(--clr-green))";
+            time.textContent = formatDate(item.updatedAt);
             select_box.style.display = 'none';
 
-        }else if (status == "report-returned" || status == "report-delivered") {
+        }else if (item.status == "report-returned" || item.status == "report-delivered") {
+            message.style.display = "block";
+            valueBox.style.display = "block";
+            optionP.style.display = 'none';
             option0.style.display = 'block';
             option1_1.style.display = 'none';
             option3_1.style.display = 'none';
@@ -494,6 +679,32 @@ const displayCartItems = async (orderId) => {
             option3_2.style.display = 'none';
             option4.style.display = 'none';
             select_box.style.display = 'block';
+            time.textContent = formatDateRange(item.updatedAt, "report");
+
+            if (item.status == "report-delivered") {
+                state1.textContent = "COMMANDE REPORTÉE";
+                state1.style.backgroundColor = "hsl(var(--clr-blue) / .5)";
+            }
+
+            if (item.status == "report-returned") {
+                state1.textContent = "RETOUR DE LA COMMANDE REPORTÉE";
+                state1.style.backgroundColor = "hsl(var(--clr-blue) / .7)";
+            }
+        }else if(item.status == "dismiss-returned" || item.status == "dismiss-delivered"){
+            message.style.display = "none";
+            valueBox.style.display = "none";
+            select_box.style.display = 'none';
+            time.textContent = formatDate(item.updatedAt);
+
+            if (item.status == "dismiss-delivered") {
+                state1.textContent = "COMMANDE REJETÉE";
+                state1.style.backgroundColor = "hsl(var(--clr-red))";
+            }
+
+            if (item.status == "dismiss-returned") {
+                state1.textContent = "RETOUR DE LA COMMANDE REJETÉE";
+                state1.style.backgroundColor = "hsl(var(--clr-red) / .9)";
+            }
         }
         cartItemsList.appendChild(cartItemElement);
 
