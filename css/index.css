@@ -364,9 +364,9 @@ body {
   align-items: center;
 }
 
-.logo {
-  /* margin-right: 2rem; */
-}
+/* .logo {
+  margin-right: 2rem;
+} */
 
 .mobile-close-btn {
   display: none;

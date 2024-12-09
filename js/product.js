@@ -270,6 +270,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Vérification initiale si le produit est dans les favoris
         const isFavori = await isFavorite(productId);
 
+        if (isFavori === "NO AUTHORIZATION") {
+            return;
+        }
+
         // Mise à jour du bouton Favori en fonction de l'état actuel
         if (isFavori) {
             favoriBtn.classList.add("favorited");
@@ -295,6 +299,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         cartBtn.addEventListener("click", async function () {
             const isInCartFlag = await isInCart(productId); // Vérifie si le produit est déjà dans le panier
         
+            if (isInCartFlag === "NO AUTHORIZATION") {
+                return;
+            }
+
             // Récupère la quantité entrée par l'utilisateur
             const nbr = parseInt(qty.value); // Assure-toi que `qty` est l'élément input pour la quantité
         
