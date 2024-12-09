@@ -364,9 +364,9 @@ body {
   align-items: center;
 }
 
-/* .logo {
+.logo {
   margin-right: 2rem;
-} */
+}
 
 .mobile-close-btn {
   display: none;
@@ -566,11 +566,19 @@ body {
     z-index: 9999;
     position: fixed;
   }
+
+  .logo {
+    margin-right: 0;
+  }
 }
 
 /* =============Ipad =========================== */
 
 @media (min-width: 35em) and (max-width: 59em) {
+  .logo {
+    margin-right: 0;
+  }
+  
   .primary-navigation {
     position: fixed;
     flex-direction: column;
