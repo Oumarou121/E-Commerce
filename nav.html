@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!--============Google Fonts==============-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!--============Google Fonts==============-->
+
+    <!--============Icon Cdn==============-->
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jaini+Purva&display=swap"
+      rel="stylesheet"
+    />
+    <!--============Icon Cdn==============-->
+    <link rel="stylesheet" href="css/nav.css" />
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+
+  <header>
+    <!-- JavaScript -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const show = document.getElementById("showNavBar");
+        const nav = document.getElementById("navbar");
+
+        if (show && nav) {
+          show.addEventListener("click", () => {
+            nav.classList.toggle("show");
+          });
+        } else {
+          console.error("Navbar or toggle button not found in the DOM.");
+        }
+      });
+    </script>
+    <div class="topHeader">
+      <li class="topOne">
+        <div class="logoTexte fs-150">
+          <i id="showNavBar" class="uil uil-align-justify"></i>Niger.<span
+            >Net</span
+          >
+        </div>
+      </li>
+      <li class="topThree">
+        <div class="sidebar-search">
+          <input type="text" placeholder="Search Her" />
+          <i class="uil uil-search"></i>
+        </div>
+      </li>
+      <li class="topTwo fs-150">
+        <div>
+          <i id="cart-box" class="uil uil-shopping-bag" data-quantity="0"></i>
+          Register/Login
+        </div>
+      </li>
+    </div>
+    <nav id="navbar" class="navbar">
+      <li class="fs-150 text-black">Home</li>
+      <li class="fs-150 text-gray">Shop</li>
+      <li class="fs-150 text-gray">Abouts Us</li>
+      <li class="fs-150 text-gray">Blog</li>
+      <li class="fs-150 text-gray">Contact Us</li>
+    </nav>
+  </header>
+  <body></body>
+</html>
