@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Responsive Admin Dashboard | Korsat X Parmaga</title>
     <!-- ======= Styles ====== -->
 
@@ -14,303 +13,325 @@
       href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
     />
     <!--============Icon Cdn==============-->
-    
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/products.css">
+
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/products.css" />
     <!-- <link rel="stylesheet" href="/css/index.css"> -->
 
     <!-- =========== Scripts =========  -->
     <script src="js/index.js" type="module"></script>
     <script src="js/products.js" type="module"></script>
-</head>
+  </head>
 
-<header>
+  <header>
     <!-- Alerte personnalisée -->
     <div id="customAlert" class="custom-alert">
-        <div class="alert-content">
-            <div class="block">
-                <div>
-                    <h3>Produit</h3>
-                    <span class="close-btn" id="closeAlert">&times;</span>
+      <div class="alert-content">
+        <div class="block">
+          <div>
+            <h3>Produit</h3>
+            <span class="close-btn" id="closeAlert">&times;</span>
+          </div>
+
+          <form action="#" class="form">
+            <div class="content1">
+              <h3>Images</h3>
+              <div class="imageContent">
+                <div class="image-section">
+                  <div id="chooseMainImage" class="chooseMainImage">
+                    <i class="uil uil-upload"></i>
+                  </div>
+                  <input
+                    type="file"
+                    id="mainImage"
+                    accept="image/*"
+                    style="display: none"
+                  />
+                  <img
+                    id="mainImagePreview"
+                    src=""
+                    alt="Aperçu de l'image principale"
+                    style="display: none"
+                  />
                 </div>
 
-                <form action="#" class="form">
-                    <div class="content1">
-                        <h3>Images</h3>
-                        <div class="imageContent">                        
-                            <div class="image-section">
-                                <div id="chooseMainImage" class="chooseMainImage">
-                                    <i class="uil uil-upload"></i>
-                                </div>
-                                <input type="file" id="mainImage" accept="image/*" style="display: none;">
-                                <img id="mainImagePreview" src="" alt="Aperçu de l'image principale" style="display: none;"/>
-                            </div>
-                        
-                            <!-- Section pour les images secondaires -->
-                            <div class="secondary-images" id="secondaryImagesContainer">
-                                <!-- <label>Images secondaires :</label> -->
-                                <button type="button" id="addSecondaryImage">Ajouter une image secondaire</button>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Section pour les images secondaires -->
+                <div class="secondary-images" id="secondaryImagesContainer">
+                  <!-- <label>Images secondaires :</label> -->
+                  <button type="button" id="addSecondaryImage">
+                    Ajouter une image secondaire
+                  </button>
+                </div>
+              </div>
+            </div>
 
-                    <div class="content1">
-                        <h3>Détails</h3>
-                        <div>
-                            <div class="input-box1">
-                                <input type="text" placeholder="Entrez le nom du produit" required />
-                            </div>
-                            <div class="column">
-                                <div class="select-box">
-                                    <select id="category-select" required>
-                                        <option value="" disabled selected hidden>Sélectionnez une catégorie</option>
-                                        <option value="Téléphonie & Tablette">Téléphonie & Tablette</option>
-                                        <option value="Informatique">Informatique</option>
-                                    </select>
-                                </div>
-                            
-                                <div class="select-box">
-                                    <select id="sous-category-select" required>
-                                        <option value="" disabled selected hidden>Sélectionnez une sous-catégorie</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="input-box1">
-                                <input type="text" placeholder="Entrez la réfrence du produit" required />
-                            </div>
-                            <div class="column">
-                                <div class="input-box1">
-                                    <input type="number" placeholder="Entrez le prix du produit" required />
-                                </div>
-                                <div class="input-box1">
-                                    <input type="number" placeholder="Entrez la quandtité en stock" required />
-                                </div>
-                            </div>
-                            <div class="input-box1">
-                                <input type="text" placeholder="Entrez la marque du produit" required />
-                            </div>
-                            <!-- <div class="motif-content">
+            <div class="content1">
+              <h3>Détails</h3>
+              <div>
+                <div class="input-box1">
+                  <input
+                    type="text"
+                    placeholder="Entrez le nom du produit"
+                    required
+                  />
+                </div>
+                <div class="column">
+                  <div class="select-box">
+                    <select id="category-select" required>
+                      <option value="" disabled selected hidden>
+                        Sélectionnez une catégorie
+                      </option>
+                      <option value="Téléphonie & Tablette">
+                        Téléphonie & Tablette
+                      </option>
+                      <option value="Informatique">Informatique</option>
+                    </select>
+                  </div>
+
+                  <div class="select-box">
+                    <select id="sous-category-select" required>
+                      <option value="" disabled selected hidden>
+                        Sélectionnez une sous-catégorie
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="input-box1">
+                  <input
+                    type="text"
+                    placeholder="Entrez la réfrence du produit"
+                    required
+                  />
+                </div>
+                <div class="column">
+                  <div class="input-box1">
+                    <input
+                      type="number"
+                      placeholder="Entrez le prix du produit"
+                      required
+                    />
+                  </div>
+                  <div class="input-box1">
+                    <input
+                      type="number"
+                      placeholder="Entrez la quandtité en stock"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="input-box1">
+                  <input
+                    type="text"
+                    placeholder="Entrez la marque du produit"
+                    required
+                  />
+                </div>
+                <!-- <div class="motif-content">
                                 <textarea id="motif" class="bg-gray text-black fs-poppins" rows="10" placeholder="Entrez la description du produit" required></textarea>
                             </div> -->
-                            
-                        </div>
-                    </div>
-
-                    <div class="content1">
-                        <div class="specsTitle">
-                            <h3>Specs</h3>
-                            <i id="specsAdd" class="uil uil-book-medical"></i>
-                        </div>
-                        <div id="specsContent" class="specsContent">                        
-                            <div class="column">
-                                <div class="input-box1">
-                                    <input type="text" value="sim" readonly />
-                                </div>
-                                <div class="input-box1 specs">
-                                    <input type="text" placeholder="Entrez la valeur" required />
-                                    <i class="uil uil-trash"></i>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="input-box1">
-                                    <input type="text" value="screen" readonly />
-                                </div>
-                                <div class="input-box1 specs">
-                                    <input type="text" placeholder="Entrez la valeur" required />
-                                    <i class="uil uil-trash"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+              </div>
             </div>
 
-            <div id="confirmer" class="confirmer">
-                Ajouter
+            <div class="content1">
+              <div class="specsTitle">
+                <h3>Specs</h3>
+                <i id="specsAdd" class="uil uil-book-medical"></i>
+              </div>
+              <div id="specsContent" class="specsContent">
+                <div class="column">
+                  <div class="input-box1">
+                    <input type="text" value="sim" readonly />
+                  </div>
+                  <div class="input-box1 specs">
+                    <input
+                      type="text"
+                      placeholder="Entrez la valeur"
+                      required
+                    />
+                    <i class="uil uil-trash"></i>
+                  </div>
+                </div>
+                <div class="column">
+                  <div class="input-box1">
+                    <input type="text" value="screen" readonly />
+                  </div>
+                  <div class="input-box1 specs">
+                    <input
+                      type="text"
+                      placeholder="Entrez la valeur"
+                      required
+                    />
+                    <i class="uil uil-trash"></i>
+                  </div>
+                </div>
+              </div>
             </div>
+          </form>
         </div>
+
+        <div id="confirmer" class="confirmer">Ajouter</div>
+      </div>
     </div>
+  </header>
 
-
-</header>
-
-<body>
+  <body>
     <!-- =============== Navigation ================ -->
     <main id="main">
-    <div class="container">
+      <div class="container">
         <div class="navigation">
-            <ul>
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="storefront-outline"></ion-icon>
-                        </span>
-                        <span class="title">Niger.net</span>
-                    </a>
-                </li>
+          <ul>
+            <li>
+              <a href="#">
+                <span class="icon">
+                  <ion-icon name="storefront-outline"></ion-icon>
+                </span>
+                <span class="title">Niger.net</span>
+              </a>
+            </li>
 
-                <li>
-                    <a href="index.html">
-                        <span class="icon">
-                            <ion-icon name="home-outline"></ion-icon>
-                        </span>
-                        <span class="title">Dashboard</span>
-                    </a>
-                </li>
+            <li>
+              <a href="index.html">
+                <span class="icon">
+                  <ion-icon name="home-outline"></ion-icon>
+                </span>
+                <span class="title">Dashboard</span>
+              </a>
+            </li>
 
-                <li class="hovered">
-                    <a href="products.html">
-                        <span class="icon">
-                            <ion-icon name="server-outline"></ion-icon>
-                        </span>
-                        <span class="title">Products</span>
-                    </a>
-                </li>
+            <li class="hovered">
+              <a href="products.html">
+                <span class="icon">
+                  <ion-icon name="server-outline"></ion-icon>
+                </span>
+                <span class="title">Products</span>
+              </a>
+            </li>
 
-                <li>
-                    <a href="orders.html">
-                        <span class="icon">
-                            <ion-icon name="reorder-four-outline"></ion-icon>
-                        </span>
-                        <span class="title">Orders</span>
-                    </a>
-                </li>
+            <li>
+              <a href="orders.html">
+                <span class="icon">
+                  <ion-icon name="reorder-four-outline"></ion-icon>
+                </span>
+                <span class="title">Orders</span>
+              </a>
+            </li>
 
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="people-outline"></ion-icon>
-                        </span>
-                        <span class="title">Customers</span>
-                    </a>
-                </li>
+            <li>
+              <a href="#">
+                <span class="icon">
+                  <ion-icon name="people-outline"></ion-icon>
+                </span>
+                <span class="title">Customers</span>
+              </a>
+            </li>
 
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="analytics-outline"></ion-icon>
-                        </span>
-                        <span class="title">Analytics and Reporting</span>
-                    </a>
-                </li>
+            <li>
+              <a href="#">
+                <span class="icon">
+                  <ion-icon name="analytics-outline"></ion-icon>
+                </span>
+                <span class="title">Analytics and Reporting</span>
+              </a>
+            </li>
 
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="chatbubble-outline"></ion-icon>
-                        </span>
-                        <span class="title">Messages</span>
-                    </a>
-                </li>
+            <li>
+              <a href="#">
+                <span class="icon">
+                  <ion-icon name="chatbubble-outline"></ion-icon>
+                </span>
+                <span class="title">Messages</span>
+              </a>
+            </li>
 
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <!-- <ion-icon name="repeat-outline"></ion-icon> -->
-                            <ion-icon name="reload-outline"></ion-icon>
-                        </span>
-                        <span class="title">Review and Return</span>
-                    </a>
-                </li>
+            <li>
+              <a href="#">
+                <span class="icon">
+                  <!-- <ion-icon name="repeat-outline"></ion-icon> -->
+                  <ion-icon name="reload-outline"></ion-icon>
+                </span>
+                <span class="title">Review and Return</span>
+              </a>
+            </li>
 
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="settings-outline"></ion-icon>
-                        </span>
-                        <span class="title">Settings</span>
-                    </a>
-                </li>
+            <li>
+              <a href="#">
+                <span class="icon">
+                  <ion-icon name="settings-outline"></ion-icon>
+                </span>
+                <span class="title">Settings</span>
+              </a>
+            </li>
 
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="log-out-outline"></ion-icon>
-                        </span>
-                        <span class="title">Sign Out</span>
-                    </a>
-                </li>
-            </ul>
+            <li>
+              <a href="#">
+                <span class="icon">
+                  <ion-icon name="log-out-outline"></ion-icon>
+                </span>
+                <span class="title">Sign Out</span>
+              </a>
+            </li>
+          </ul>
         </div>
 
         <!-- ========================= Main ==================== -->
         <div class="main">
-            <div class="topbar">
-                <div class="toggle">
-                    <ion-icon name="menu-outline"></ion-icon>
-                </div>
-
-                <div class="search">
-                    <label>
-                        <input type="text" placeholder="Search here">
-                        <ion-icon name="search-outline"></ion-icon>
-                    </label>
-                </div>
-
-                <div class="user">
-                    <img src="imgs/moi.jpeg" alt="">
-                </div>
+          <div class="topbar">
+            <div class="toggle">
+              <ion-icon name="menu-outline"></ion-icon>
             </div>
 
-        <!-- ============================================================     -->
+            <div class="search">
+              <label>
+                <input type="text" placeholder="Search here" />
+                <ion-icon name="search-outline"></ion-icon>
+              </label>
+            </div>
 
-        <div class="admin-dashboard">
+            <div class="user">
+              <img src="imgs/moi.jpeg" alt="" />
+            </div>
+          </div>
+
+          <!-- ============================================================     -->
+
+          <div class="admin-dashboard">
             <h1>Manage Products</h1>
-            
+
             <!-- Actions pour les produits : recherche et ajout -->
             <div class="product-actions">
-                <input type="text" id="search" placeholder="Search products...">
-                <button id="add">
-                    <i class="fas fa-plus"></i> Add New Product
-                </button>
+              <input type="text" id="search" placeholder="Search products..." />
+              <button id="add">
+                <i class="fas fa-plus"></i> Add New Product
+              </button>
             </div>
-    
+
             <!-- Table des produits -->
             <table id="productTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- <tr>
-                        <td data-label="ID">001</td>
-                        <td data-label="Nom du produit">Produit A</td>
-                        <td data-label="Catégorie">Catégorie 1</td>
-                        <td data-label="Prix">25,00 €</td>
-                        <td data-label="Quantité">10</td>
-                        <td data-label="Actions">
-                            <button class="edit">Modifier</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td data-label="ID">002</td>
-                        <td data-label="Nom du produit">Produit B</td>
-                        <td data-label="Catégorie">Catégorie 2</td>
-                        <td data-label="Prix">45,00 €</td>
-                        <td data-label="Quantité">5</td>
-                        <td data-label="Actions">
-                            <button class="edit">Modifier</button>
-                        </td>
-                    </tr> -->
-                    <!-- D'autres lignes de produits peuvent être ajoutées ici -->
-                </tbody>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Product Name</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
             </table>
+          </div>
         </div>
-            
-        </div>
-    </div>
-</main>
-    
+      </div>
+    </main>
 
     <!-- ====== ionicons ======= -->
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-</body>
-
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
 </html>
