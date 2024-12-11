@@ -578,7 +578,7 @@ body {
   .logo {
     margin-right: 0;
   }
-  
+
   .primary-navigation {
     position: fixed;
     flex-direction: column;
@@ -2161,4 +2161,8 @@ body {
 
 #forgot-password {
   left: 450px;
+}
+
+body.modal-open {
+  overflow: hidden;
 }

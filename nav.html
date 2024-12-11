@@ -22,55 +22,128 @@
       href="https://fonts.googleapis.com/css2?family=Jaini+Purva&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- CSS de Slick Slider -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/jquery.slick/1.8.1/slick.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/jquery.slick/1.8.1/slick-theme.css"
+    />
+
     <!--============Icon Cdn==============-->
     <link rel="stylesheet" href="css/nav.css" />
     <link rel="stylesheet" href="css/index.css" />
+    <script src="js/nav.js"></script>
   </head>
 
-  <header>
-    <!-- JavaScript -->
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const show = document.getElementById("showNavBar");
-        const nav = document.getElementById("navbar");
+  <body>
+    <header id="header">
+      <div class="topHeader">
+        <li class="topOne">
+          <div class="logoTexte fs-150">
+            <i id="showNavBar" class="uil uil-align-justify"></i>Niger.<span
+              >Net</span
+            >
+          </div>
+        </li>
+        <li class="topThree">
+          <div class="sidebar-search">
+            <input type="text" placeholder="Search Her" />
+            <i class="uil uil-search"></i>
+          </div>
+        </li>
+        <li class="topTwo fs-150">
+          <div>
+            <i id="cart-box" class="uil uil-shopping-bag" data-quantity="0"></i>
+            Register/Login
+          </div>
+        </li>
+      </div>
+      <nav id="navbar" class="navbar">
+        <li class="fs-150 text-black">Home</li>
+        <li class="fs-150 text-gray">Shop</li>
+        <li class="fs-150 text-gray">Abouts Us</li>
+        <li class="fs-150 text-gray">Blog</li>
+        <li class="fs-150 text-gray">Contact Us</li>
+      </nav>
+    </header>
 
-        if (show && nav) {
-          show.addEventListener("click", () => {
-            nav.classList.toggle("show");
-          });
-        } else {
-          console.error("Navbar or toggle button not found in the DOM.");
-        }
-      });
-    </script>
-    <div class="topHeader">
-      <li class="topOne">
-        <div class="logoTexte fs-150">
-          <i id="showNavBar" class="uil uil-align-justify"></i>Niger.<span
-            >Net</span
-          >
-        </div>
-      </li>
-      <li class="topThree">
-        <div class="sidebar-search">
-          <input type="text" placeholder="Search Her" />
-          <i class="uil uil-search"></i>
-        </div>
-      </li>
-      <li class="topTwo fs-150">
-        <div>
-          <i id="cart-box" class="uil uil-shopping-bag" data-quantity="0"></i>
-          Register/Login
-        </div>
-      </li>
+    <div class="slider-container">
+      <!-- Flèche gauche -->
+      <button class="arrow arrow-left">&lt;</button>
+
+      <!-- Images du slider -->
+      <div id="slider" class="slider">
+        <img src="image/slider3.jpg" alt="Product 3" />
+        <img src="image/slider4.jpg" alt="Product 4" />
+        <img src="image/slider5.jpg" alt="Product 5" />
+        <img src="image/slider6.jpg" alt="Product 6" />
+        <img src="image/slider7.jpg" alt="Product 7" />
+        <img src="image/slider8.jpg" alt="Product 8" />
+        <img src="image/slider9.jpg" alt="Product 5" />
+        <img src="image/slider10.jpg" alt="Product 6" />
+        <img src="image/slider11.jpg" alt="Product 7" />
+        <img src="image/slider12.jpg" alt="Product 8" />
+      </div>
+
+      <!-- Flèche droite -->
+      <button class="arrow arrow-right">&gt;</button>
+
+      <!-- Indicateurs -->
+      <div class="indicators">
+        <button class="active"></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+      </div>
     </div>
-    <nav id="navbar" class="navbar">
-      <li class="fs-150 text-black">Home</li>
-      <li class="fs-150 text-gray">Shop</li>
-      <li class="fs-150 text-gray">Abouts Us</li>
-      <li class="fs-150 text-gray">Blog</li>
-      <li class="fs-150 text-gray">Contact Us</li>
-    </nav>
-  </header>
-  <body></body>
+
+    <!-- <div class="slider-container1">
+      <div id="slider1" class="slider1">
+        <img src="image/marque/acer.png" alt="Brand 1" />
+        <img src="image/marque/asus.png" alt="Brand 2" />
+        <img src="image/marque/dell.png" alt="Brand 3" />
+        <img src="image/marque/huawei.png" alt="Brand 4" />
+        <img src="image/marque/iphone.png" alt="Brand 5" />
+        <img src="image/marque/lenovo.png" alt="Brand 6" />
+        <img src="image/marque/msi.png" alt="Brand 7" />
+        <img src="image/marque/ph.png" alt="Brand 8" />
+        <img src="image/marque/samsung.png" alt="Brand 9" />
+      </div>
+    </div> -->
+
+    <div class="slider-container1">
+      <div id="slider1" class="slider1">
+        <img src="image/marque/acer.png" alt="Acer" />
+        <img src="image/marque/asus.png" alt="Asus" />
+        <img src="image/marque/dell.png" alt="Dell" />
+        <img src="image/marque/huawei.png" alt="Huawei" />
+        <img src="image/marque/iphone.png" alt="iPhone" />
+        <img src="image/marque/lenovo.png" alt="Lenovo" />
+        <img src="image/marque/msi.png" alt="MSI" />
+        <img src="image/marque/ph.png" alt="HP" />
+        <img src="image/marque/samsung.png" alt="Samsung" />
+      </div>
+    </div>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- JS de Slick Slider -->
+    <script src="https://cdn.jsdelivr.net/jquery.slick/1.8.1/slick.min.js"></script>
+  </body>
 </html>
