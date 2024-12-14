@@ -3,81 +3,226 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Categories Slider</title>
+    <title>E-Commerce</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    /> -->
+    <!--============Icon Cdn==============-->
     <link
       rel="stylesheet"
       href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Jaini+Purva&display=swap"
-      rel="stylesheet"
-    />
+
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"
-    />
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="css/index.css" />
-  </head>
-  <body class="">
-    <header id="header">
-      <div class="topHeader">
-        <li class="topOne">
-          <div class="logoTexte fs-150">
-            <i id="showNavBar" class="uil uil-align-justify"></i>Niger.<span
-              >Net</span
-            >
-          </div>
-        </li>
-        <li class="topThree">
-          <div class="sidebar-search">
-            <input type="text" placeholder="Search Her" />
-            <i class="uil uil-search"></i>
-          </div>
-        </li>
-        <li class="topTwo fs-150">
-          <div>
-            <i id="cart-box" class="uil uil-shopping-bag" data-quantity="0"></i>
-            Register/Login
-          </div>
-        </li>
-      </div>
-      <nav id="navbar" class="navbar">
-        <!-- <ul class="navbar"> -->
-        <li class="fs-150 text-black">Home</li>
-        <li class="fs-150 text-gray">Shop</li>
-        <li class="fs-150 text-gray">About Us</li>
-        <li class="fs-150 text-gray">Blog</li>
-        <li class="fs-150 text-gray">Contact Us</li>
-        <!-- </ul> -->
-      </nav>
 
-      <nav id="categoriesBar" class="categoriesBar">
-        <li>Informatique</li>
-        <li>Téléphonie & Tablette</li>
-        <li>Stockage</li>
-        <li>Impression</li>
-        <li>TV-Son-Photos</li>
-        <li>Electroménager</li>
-        <li>Sécurité</li>
-        <li>Burautique</li>
-        <li>Réseau & Connectiqués</li>
-      </nav>
+    <!--============Icon Cdn==============-->
+
+    <!--============Google Fonts==============-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!--============Google Fonts==============-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"
+    />
+  </head>
+  <body>
+    <div id="preloader_active">
+      <div id="loading-center">
+        <div id="loading-center-absolute">
+          <div class="object" id="object_one"></div>
+          <div class="object" id="object_two"></div>
+          <div class="object" id="object_three"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="searchBar">
+      <div class="exit">
+        <svg
+          id="hiddenSearch"
+          xmlns="http://www.w3.org/2000/svg"
+          height="32"
+          viewBox="0 -960 960 960"
+          width="32"
+        >
+          <path
+            fill="black"
+            d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+          />
+        </svg>
+      </div>
+      <input class="searchInput" type="text" placeholder="Search our store" />
+    </div>
+
+    <header class="myheader">
+      <div class="headerTop fs-poppins fs-100">
+        <div class="phone">+227 98 66 32 48</div>
+        <div class="location">Store location</div>
+        <div class="log">Log In / Sign Up</div>
+      </div>
+      <div class="custom-container">
+        <div class="logo logo-width-1">
+          <a href="/" class="theme-logo">
+            <img
+              src="//drou-electronics-store.myshopify.com/cdn/shop/files/logo_300x300.png?v=1674276674"
+              alt="Drou - Electronics Store Shopify 2.0 Theme"
+            />
+          </a>
+        </div>
+
+        <nav class="navBar">
+          <ul>
+            <li>Home</li>
+            <li>Shop</li>
+            <li>Blog</li>
+            <li>About Us</li>
+            <li>Contact Us</li>
+          </ul>
+        </nav>
+
+        <div class="header-action-right">
+          <div id="showSearch" class="header-action-icon">
+            <a class="search-active" href="#"><i class="uil uil-search"></i></a>
+          </div>
+          <div class="header-action-icon">
+            <a href="/pages/wishlist"><i class="uil uil-heart"></i></a>
+          </div>
+
+          <ul>
+            <li class="showCart">
+              <a href="/cart">
+                <span class="uil uil-shopping-bag"></span>
+                <span class="total-pro bigcounter">0</span>
+              </a>
+              <!-- <ul id="ht-dropdown" class="ht-dropdown cart-box-width">
+                <li class="cart-empty-title" style="display: none">
+                  <h3>Your cart is currently empty.</h3>
+                </li>
+
+                <div class="single-cart-box">
+                  <div class="cart-img">
+                    <a
+                      href="/products/droubook-air-space-gray?variant=40092813295703"
+                      ><img
+                        src="https://cdn.shopify.com/s/files/1/1130/3412/products/p2_ea1ad2a2-ba0d-4dd2-b29a-e51fd931583b.jpg?v=1674275324"
+                        alt="" /></a
+                    ><span class="pro-quantity">1x</span>
+                  </div>
+                  <div class="cart-content">
+                    <h6>
+                      <a
+                        href="/products/droubook-air-space-gray?variant=40092813295703"
+                        >Droubook space gray - m / gold</a
+                      >
+                    </h6>
+                    <span class="cart-price"
+                      ><span
+                        class="money"
+                        data-currency-eur="&amp;euro;1,211.49"
+                        data-currency="EUR"
+                        >€1,211.49</span
+                      ></span
+                    >
+                  </div>
+                  <a
+                    class="del-icone"
+                    href="javascript:void(0);"
+                    onclick="Shopify.removeItem(40092813295703)"
+                    ><i class="far fa-times"></i
+                  ></a>
+                </div>
+
+                <div class="single-cart-box">
+                  <div class="cart-img">
+                    <a
+                      href="/products/droubook-air-space-gray?variant=40092813295703"
+                      ><img
+                        src="https://cdn.shopify.com/s/files/1/1130/3412/products/p2_ea1ad2a2-ba0d-4dd2-b29a-e51fd931583b.jpg?v=1674275324"
+                        alt="" /></a
+                    ><span class="pro-quantity">1x</span>
+                  </div>
+                  <div class="cart-content">
+                    <h6>
+                      <a
+                        href="/products/droubook-air-space-gray?variant=40092813295703"
+                        >Droubook space gray - m / gold</a
+                      >
+                    </h6>
+                    <span class="cart-price"
+                      ><span
+                        class="money"
+                        data-currency-eur="&amp;euro;1,211.49"
+                        data-currency="EUR"
+                        >€1,211.49</span
+                      ></span
+                    >
+                  </div>
+                  <a
+                    class="del-icone"
+                    href="javascript:void(0);"
+                    onclick="Shopify.removeItem(40092813295703)"
+                    ><i class="far fa-times"></i
+                  ></a>
+                </div>
+
+                <li
+                  class="single-product-cart mini-cart-action mini-cart-footer"
+                >
+                  <div class="cart-footer">
+                    <ul class="price-content">
+                      <li class="content">
+                        Total :
+                        <span class="shopping-cart__total"
+                          ><span
+                            class="money"
+                            data-currency-eur="&amp;euro;1,277.74"
+                            data-currency="EUR"
+                            >€1,277.74</span
+                          ></span
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+
+                <li
+                  class="single-product-cart mini-cart-action"
+                  style="display: block"
+                >
+                  <div class="cart-actions text-center">
+                    <a class="cart--title" href="/cart">View cart</a>
+                    <a class="cart-checkout" href="/checkout">Checkout</a>
+                  </div>
+                </li>
+              </ul> -->
+            </li>
+          </ul>
+
+          <div id="showMenu" class="header-action-icon">
+            <i class="uil uil-align-justify"></i>
+          </div>
+        </div>
+      </div>
 
       <div id="fond" class="fond">
-        <nav id="links-container" class="links-container">
-          <li class="linksCategorie">
-            CATÉGORIE
+        <nav id="links-container" class="links-container fs-150">
+          <li class="linksTitle">
+            PAGES
             <svg
               id="hiddenLink"
               xmlns="http://www.w3.org/2000/svg"
@@ -91,382 +236,151 @@
               />
             </svg>
           </li>
-          <li class="text-red">Informatique</li>
-          <li class="text-red">Téléphonie & Tablette</li>
-          <li class="text-red">Stockage</li>
-          <li class="text-red">Impression</li>
-          <li class="text-red">TV-Son-Photos</li>
-          <li class="text-red">Electroménager</li>
-          <li class="text-red">Sécurité</li>
-          <li class="text-red">Burautique</li>
-          <li class="text-red">Réseau & Connectiqués</li>
+          <li>Home</li>
+          <li>Shop</li>
+          <li>Blog</li>
+          <li>Abouts Us</li>
+          <li>Contact Us</li>
+
+          <li class="login">Log In / Sign Up</li>
         </nav>
       </div>
     </header>
 
-    <div class="slider">
-      <div class="slider-item">
-        <div class="slider-wrap">
-          <div class="slider-img">
-            <a href="/collections/watch">
-              <img src="image/slider3.jpg" alt="Product 3" />
-            </a>
+    <main id="main">
+      <!-- <div class="hero">
+        <div class="glide" id="glide1">
+          <div class="glide__track" data-glide-el="track">
+            <ul class="glide__slides">
+              <li class="glide__slide">
+                <div class="center">
+                  <div class="left">
+                    <span>New Inspiration 2021</span>
+                    <h1>NEW COLLECTION</h1>
+                    <p>Trending from men's and women's style collection</p>
+                    <a href="" class="hero-btn">SHOW NOW</a>
+                  </div>
+                  <div class="right">
+                    <img src="image/hero-1.png" class="img1" alt="" />
+                  </div>
+                </div>
+              </li>
+              <li class="glide__slide">
+                <div class="center">
+                  <div class="left">
+                    <span>New Inspiration 2021</span>
+                    <h1>NEW COLLECTION</h1>
+                    <p>Trending from men's and women's style collection</p>
+                    <a href="" class="hero-btn">SHOW NOW</a>
+                  </div>
+                  <div class="right">
+                    <img src="image/hero-2.png" class="img2" alt="" />
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
-      </div>
-      <div class="slider-item">
-        <div class="slider-wrap">
-          <div class="slider-img">
-            <a href="/collections/iphone">
-              <img src="image/slider4.jpg" alt="Product 3" />
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="slider-item">
-        <div class="slider-wrap">
-          <div class="slider-img">
-            <a href="/collections/iphone">
-              <img src="image/slider5.jpg" alt="Product 3" />
-            </a>
-          </div>
-        </div>
-      </div>
+      </div> -->
 
-      <div class="slider-item">
-        <div class="slider-wrap">
-          <div class="slider-img">
-            <a href="/collections/iphone">
-              <img src="image/slider6.jpg" alt="Product 3" />
-            </a>
+      <!-- <section class="slider">
+        <main class="hero-section">
+          <div>
+            <h1 class="fs-200 text-red fs-poppins">
+              SALE UP TO 30% OFF
+              <span
+                class="big-wireless text-black block fs-300 bold-900 fs-poppins"
+                >Apple Watch Series</span
+              ><span class="text-black fs-poppins fs-50"
+                >Feature packed at a better value than ever Powerful sensirs to
+                monitor your fitness</span
+              >
+            </h1>
+            <img src="image/h1-removebg.png" alt="" />
           </div>
-        </div>
-      </div>
-
-      <div class="slider-item">
-        <div class="slider-wrap">
-          <div class="slider-img">
-            <a href="/collections/iphone">
-              <img src="image/slider7.jpg" alt="Product 3" />
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="slider-item">
-        <div class="slider-wrap">
-          <div class="slider-img">
-            <a href="/collections/iphone">
-              <img src="image/slider8.jpg" alt="Product 3" />
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="slider-item">
-        <div class="slider-wrap">
-          <div class="slider-img">
-            <a href="/collections/iphone">
-              <img src="image/slider9.jpg" alt="Product 3" />
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="slider-item">
-        <div class="slider-wrap">
-          <div class="slider-img">
-            <a href="/collections/iphone">
-              <img src="image/slider10.jpg" alt="Product 3" />
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="slider-item">
-        <div class="slider-wrap">
-          <div class="slider-img">
-            <a href="/collections/iphone">
-              <img src="image/slider11.jpg" alt="Product 3" />
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="slider-item">
-        <div class="slider-wrap">
-          <div class="slider-img">
-            <a href="/collections/iphone">
-              <img src="image/slider12.jpg" alt="Product 3" />
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Flèches de navigation -->
-    <!-- <div class="carousel-nav">
-      <button class="prev">←</button>
-      <button class="next">→</button>
-    </div> -->
-
-    <div class="categories-area">
-      <div class="custom-container">
-        <div class="section-title-1">
-          <h2>Produits d'actualité</h2>
-        </div>
-        <div class="categories-slider">
-          <div class="category-item">
-            <div class="categories-wrap">
-              <div class="categories-img">
-                <a href="/collections/watch">
-                  <img
-                    src="https://www.tunisianet.com.tn/modules/ps_imagegrid/images/45a593f2aa60f81afef7cb003dccd2fd22b4c43f_cyborg 15.jpg"
-                    alt="msi cyborg gaming"
-                  />
-                </a>
-              </div>
+          <div class="hero-inner flex">
+            <div>
+              <button class="large-btn bg-red text-white fs-poppins fs-50">
+                Shop By Category
+              </button>
             </div>
           </div>
-          <div class="category-item">
-            <div class="categories-wrap">
-              <div class="categories-img">
-                <a href="/collections/iphone">
-                  <img
-                    src="https://www.tunisianet.com.tn/modules/ps_imagegrid/images/0db68c532f32e2b24cd5e29d4c197e328a6e21bd_samsung 43.jpg"
-                    alt='TV Samsung 43"'
-                  />
-                </a>
-              </div>
+        </main>
+        <main class="hero-section">
+          <div>
+            <h1 class="fs-200 text-red fs-poppins">
+              New Arrivals collection
+              <span
+                class="big-wireless text-black block fs-300 bold-900 fs-poppins"
+                >iPhone Accessories</span
+              ><span class="text-black fs-poppins fs-50"
+                >Snap on a case, wallet, wireless charger battery pack all
+                accessories you're looking</span
+              >
+            </h1>
+            <img src="image/h2-removebg-preview.png" alt="" />
+          </div>
+          <div class="hero-inner flex">
+            <div>
+              <button class="large-btn bg-red text-white fs-poppins fs-50">
+                Shop By Category
+              </button>
             </div>
           </div>
-          <!-- Add more category items here -->
-          <div class="category-item">
-            <div class="categories-wrap">
-              <div class="categories-img">
-                <a href="/collections/iphone">
-                  <img
-                    src="https://www.tunisianet.com.tn/modules/ps_imagegrid/images/07d9e138ecc3bf75e8a1ed04ccbbdac9d8f00da0_asus aio.jpg"
-                    alt="pc tout-en-un Asus"
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
+        </main>
+      </section> -->
 
-          <div class="category-item">
-            <div class="categories-wrap">
-              <div class="categories-img">
-                <a href="/collections/iphone">
-                  <img
-                    src="https://www.tunisianet.com.tn/modules/ps_imagegrid/images/dde9baafb85790d677a349f99c1c6d5890a57a61_mal brandt.jpg"
-                    alt="machine à laver brand 7kg"
-                  />
-                </a>
-              </div>
+      <div class="slider">
+        <div class="hero-slider-active-2">
+          <!-- Slide 1 -->
+          <div
+            class="single-hero-slider bg-img slider-height-2"
+            style="
+              background-image: url('image/h1.jpg');
+              width: 100%;
+              height: 520px;
+            "
+          >
+            <div class="hero-slider-content">
+              <h4 class="animate-text delay-1">SALE UP TO 30% OFF</h4>
+              <h1 class="animate-text delay-2">Apple Watch Series</h1>
+              <p class="animate-text delay-3">
+                Feature packed at a better value than ever Powerful sensors to
+                monitor your fitness
+              </p>
+              <a href="#" class="btn-style-1 animate-text delay-4"
+                >Shop Now <i class="uil uil-arrow-right"></i
+              ></a>
+            </div>
+          </div>
+          <!-- Slide 2 -->
+          <div
+            class="single-hero-slider bg-img slider-height-2"
+            style="
+              background-image: url('image/h2.jpg');
+              width: 100%;
+              height: 520px;
+            "
+          >
+            <div class="hero-slider-content">
+              <h4 class="animate-text delay-1">New arrivals collection</h4>
+              <h1 class="animate-text delay-2">iPhone Accessories</h1>
+              <p class="animate-text delay-3">
+                Snap on a case, wallet, wireless charger battery pack all
+                accessories you’re looking
+              </p>
+              <a href="#" class="btn-style-1 animate-text delay-4"
+                >Shop Now <i class="uil uil-arrow-right"></i
+              ></a>
             </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- ======================Service Section================================ -->
-
-    <section class="service-section">
-      <div class="service">
-        <img src="image/free.svg" />
-        <div class="service-info">
-          <h3 class="fs-poppins fs-200">Livraison gratuite</h3>
-          <p class="fs-montserrat fs-50">
-            Livraison gratuite sur toutes les commandes
-          </p>
-        </div>
-      </div>
-      <div class="service">
-        <img src="image/sett.svg" />
-        <div class="service-info">
-          <h3 class="fs-poppins fs-200">Garantie d'argent</h3>
-          <p class="fs-montserrat fs-50">30 jours de remboursement</p>
-        </div>
-      </div>
-      <div class="service">
-        <img src="image/supt.svg" />
-        <div class="service-info">
-          <h3 class="fs-poppins fs-200">Assistance en ligne 24h/24 et 7j/7</h3>
-          <p class="fs-montserrat fs-50">Assistance technique 24h/24 et 7j/7</p>
-        </div>
-      </div>
-      <div class="service">
-        <img src="image/pay.svg" />
-        <div class="service-info">
-          <h3 class="fs-poppins fs-200">Paiement sécurisé</h3>
-          <p class="fs-montserrat fs-50">Toutes les cartes acceptées</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================Service Section================================ -->
-
-    <div class="categories-area">
-      <div class="custom-container">
-        <div class="section-title-1">
-          <h2>Produits tendance</h2>
-        </div>
-        <div class="categories-slider2">
-          <div class="category-item">
-            <div class="categories-wrap">
-              <div class="categories-img">
-                <a href="/collections/iphone">
-                  <img
-                    src="https://www.tunisianet.com.tn/modules/ps_imagegrid/images/3e49c5ed50ad6926312bf88ed70c036df29a709c_itel p65.jpg"
-                    alt="itel p65"
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="category-item">
-            <div class="categories-wrap">
-              <div class="categories-img">
-                <a href="/collections/iphone">
-                  <img
-                    src="https://www.tunisianet.com.tn/modules/ps_imagegrid/images/6584a25bfa8e6942f682aa4018f945d1ecf79960_b1502cva.jpg"
-                    alt="B1502CVA-NJ1267"
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="category-item">
-            <div class="categories-wrap">
-              <div class="categories-img">
-                <a href="/collections/iphone">
-                  <img
-                    src="https://www.tunisianet.com.tn/modules/ps_imagegrid/images/9947f8c72b7db8e2f0b4112f609b38ffd5657b51_tcl tab 11.jpg"
-                    alt='tablette tcl tab 11"'
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="category-item">
-            <div class="categories-wrap">
-              <div class="categories-img">
-                <a href="/collections/iphone">
-                  <img
-                    src="https://www.tunisianet.com.tn/modules/ps_imagegrid/images/165d9e173b8b7051d8de9ebbfcac0a144e6a8856_mibro.jpg"
-                    alt="mibro lite 3 pro"
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="slider-container1">
-      <div id="slider1" class="slider1">
-        <img src="image/marque/acer.png" alt="Acer" />
-        <img src="image/marque/asus.png" alt="Asus" />
-        <img src="image/marque/dell.png" alt="Dell" />
-        <img src="image/marque/huawei.png" alt="Huawei" />
-        <img src="image/marque/iphone.png" alt="iPhone" />
-        <img src="image/marque/lenovo.png" alt="Lenovo" />
-        <img src="image/marque/msi.png" alt="MSI" />
-        <img src="image/marque/ph.png" alt="HP" />
-        <img src="image/marque/samsung.png" alt="Samsung" />
-      </div>
-    </div>
-
-    <!-- =================== Footer Section========================== -->
-
-    <section class="footer grid">
-      <div class="footer-logo grid">
-        <!-- <img src="image/logo.png" alt="" /> -->
-        <div class="logoTexte fs-300">Niger.<span>Net</span></div>
-        <p class="fs-montserrat fs-100">
-          There are many variations passages of Lorem Ipsum available, but the
-          majority have
-        </p>
-        <div class="social-media flex">
-          <i class="uil uil-facebook"></i>
-          <i class="uil uil-instagram"></i>
-          <i class="uil uil-twitter"></i>
-          <i class="uil uil-linkedin"></i>
-        </div>
-      </div>
-      <div class="footer-menu grid">
-        <h3>Quick Links</h3>
-        <ul>
-          <li>
-            <a class="fs-100 fs-montserrat text-black" href="/index.html"
-              >Home</a
-            >
-          </li>
-          <li>
-            <a class="fs-100 fs-montserrat text-black" href="/shop.html"
-              >Shop</a
-            >
-          </li>
-          <li>
-            <a class="fs-100 fs-montserrat text-black" href="/about.html"
-              >Abouts Us</a
-            >
-          </li>
-          <li>
-            <a class="fs-100 fs-montserrat text-black" href="/blog.html"
-              >Blog</a
-            >
-          </li>
-          <li>
-            <a class="fs-100 fs-montserrat text-black" href="/contactus.html"
-              >Contact Us</a
-            >
-          </li>
-        </ul>
-      </div>
-      <div class="contact grid">
-        <h3 class="fs-poppins fs-200 bold-800">Contact</h3>
-        <p class="fs-montserrat">
-          +99 (0) 101 0000 888 Patricie C. Amedee 4401 Waldeck Street Grapevine
-          Nashville, Tx 76051
-        </p>
-      </div>
-      <div class="emails grid">
-        <h3 class="fs-poppins fs-200 bold-800">Subscrib To Our Email</h3>
-        <p class="updates fs-poppins fs-300 bold-800">
-          For Latest News & Updates
-        </p>
-
-        <div class="inputField flex bg-gray">
-          <input
-            type="email"
-            placeholder="Enter Your Email"
-            class="fs-montserrat bg-gray"
-          />
-          <button class="bg-red text-white fs-poppins fs-50">Subscribe</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- =================== Footer Section========================== -->
-
-    <!-- =================== CopyRight Section========================== -->
-
-    <section class="copyRight">
-      <p class="c-font fs-montserrat fs-100">
-        @ 2022 Store. All rights reserved
-      </p>
-      <p class="fs-montserrat fs-100 text-align p-top">
-        Privacy Policy Term condition
-      </p>
-    </section>
+    </main>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/glide.js"></script> -->
     <script src="script.js"></script>
   </body>
 </html>

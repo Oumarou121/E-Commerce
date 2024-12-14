@@ -699,7 +699,7 @@ body {
 
 /* ======================Hero Section Css================================ */
 
-.hero-section {
+/* .hero-section {
   width: 93vw;
   margin-inline: auto;
   padding-inline: 2rem;
@@ -723,11 +723,11 @@ body {
 
 .hero-info {
   display: none;
-}
+} */
 
 /* =============Ipad =========================== */
 
-@media (min-width: 35em) and (max-width: 59em) {
+/* @media (min-width: 35em) and (max-width: 59em) {
   .hero-section {
     width: 95vw;
     margin-inline: auto;
@@ -743,11 +743,11 @@ body {
   .lineheight2 {
     --line2: 7rem;
   }
-}
+} */
 
 /* =============Desktop =========================== */
 
-@media (min-width: 59em) {
+/* @media (min-width: 59em) {
   .hero-section {
     width: 95vw;
     margin-inline: auto;
@@ -781,7 +781,7 @@ body {
     margin-top: -14rem;
     padding-bottom: 8rem;
   }
-}
+} */
 
 /* =================Product section======================= */
 

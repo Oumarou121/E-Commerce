@@ -1,181 +1,104 @@
-$(document).ready(function () {
-  $(".slider").slick({
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    dots: false,
-    arrows: false, // Désactive les flèches Slick par défaut
-    fade: true, // Ajoute un effet de fondu au lieu du glissement
-    speed: 1000, // Durée de la transition
-    pauseOnHover: true, // Pause l'auto-défilement au survol
-    swipe: true, // Active le glissement avec la souris
-    touchMove: true, // Permet le glissement tactile sur mobile
-    swipeToSlide: true, // Permet de glisser directement vers un élément spécifique
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  });
-
-  // Ajout des flèches de navigation manuelles
-  $(".prev").click(function () {
-    $(".categories-slider").slick("slickPrev");
-  });
-
-  $(".next").click(function () {
-    $(".categories-slider").slick("slickNext");
-  });
-});
-
-$(document).ready(function () {
-  $("#slider1").slick({
-    slidesToShow: 7, // Affiche 7 images sur grand écran
-    slidesToScroll: 1, // Défile 1 image à la fois
-    autoplay: true, // Active le défilement automatique
-    autoplaySpeed: 5000, // Intervalle de défilement (en ms)
-    infinite: true, // Rend le défilement infini
-    arrows: false, // Désactive les flèches
-    dots: false, // Pas de points de navigation
-    responsive: [
-      {
-        breakpoint: 1024, // Pour les écrans < 1024px
-        settings: {
-          slidesToShow: 4, // Affiche 4 images
-        },
-      },
-      {
-        breakpoint: 768, // Pour les écrans < 768px
-        settings: {
-          slidesToShow: 2, // Affiche 2 images
-        },
-      },
-    ],
-  });
-});
-
-$(document).ready(function () {
-  $(".categories-slider").slick({
-    slidesToShow: 4, // 4 images affichées sur desktop
-    slidesToScroll: 1, // Défilement de 1 image à la fois
-    autoplay: true, // Active le défilement automatique
-    autoplaySpeed: 3000, // Intervalle de défilement (en ms)
-    dots: false, // Affiche les points de navigation
-    arrows: false, // Affiche les flèches de navigation
-    responsive: [
-      {
-        breakpoint: 1024, // Pour les écrans < 1024px (tablette)
-        settings: {
-          slidesToShow: 2, // Affiche 2 images
-        },
-      },
-      {
-        breakpoint: 768, // Pour les écrans < 768px (mobile)
-        settings: {
-          slidesToShow: 1, // Affiche 1 image
-        },
-      },
-    ],
-  });
-});
-
-$(document).ready(function () {
-  $(".categories-slider2").slick({
-    slidesToShow: 4, // 4 images affichées sur desktop
-    slidesToScroll: 1, // Défilement de 1 image à la fois
-    autoplay: true, // Active le défilement automatique
-    autoplaySpeed: 3000, // Intervalle de défilement (en ms)
-    dots: false, // Affiche les points de navigation
-    arrows: false, // Affiche les flèches de navigation
-    responsive: [
-      {
-        breakpoint: 1024, // Pour les écrans < 1024px (tablette)
-        settings: {
-          slidesToShow: 2, // Affiche 2 images
-        },
-      },
-      {
-        breakpoint: 768, // Pour les écrans < 768px (mobile)
-        settings: {
-          slidesToShow: 1, // Affiche 1 image
-        },
-      },
-    ],
-  });
+window.addEventListener("load", function () {
+  const preloader = document.getElementById("preloader_active");
+  if (preloader) {
+    preloader.style.transition = "opacity 0.6s ease";
+    setTimeout(() => {
+      preloader.style.display = "none";
+    }, 600); // Correspond à la durée de la transition
+  }
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const show = document.getElementById("showNavBar");
-  const nav = document.getElementById("navbar");
-  const cat = document.getElementById("links-container");
-  const hid = document.getElementById("hiddenLink");
+  const show = document.getElementById("showMenu");
+  const hidden = document.getElementById("hiddenLink");
   const fond = document.getElementById("fond");
+  const links = document.getElementById("links-container");
 
-  if (show && nav) {
+  if (show && fond && links) {
     show.addEventListener("click", () => {
-      nav.classList.toggle("show");
+      fond.classList.add("show");
+      links.classList.add("show");
+      document.body.classList.add("modal-open");
     });
 
-    if (window.matchMedia("(max-width: 39rem)").matches) {
-      show.addEventListener("click", () => {
-        document.body.classList.add("modal-open");
-        cat.classList.toggle("show");
-        fond.classList.add("show");
+    hidden.addEventListener("click", () => {
+      fond.classList.remove("show");
+      links.classList.remove("show");
+      document.body.classList.remove("modal-open");
+    });
+  }
+
+  document.getElementById("hiddenSearch").addEventListener("click", () => {
+    document.getElementById("searchBar").classList.remove("active");
+  });
+
+  // Pour afficher la barre :
+  document.getElementById("showSearch").addEventListener("click", () => {
+    document.getElementById("searchBar").classList.add("active");
+  });
+
+  //   document.getElementById("showCart").addEventListener("click", () => {
+  //     const content = document.getElementById("ht-dropdown");
+  //     content.style.opacity = 1;
+  //     content.style.visibility = "visible";
+  //     content.style.transform = "scaleY(1)";
+  //   });
+});
+
+// const slider1 = document.querySelector("#glide1");
+// if (slider1) {
+//   new Glide(slider1, {
+//     type: "carousel",
+//     startAt: 0,
+//     autoplay: 3000,
+//     gap: 0,
+//     hoverpause: true,
+//     perView: 1,
+//     animationDuration: 800,
+//     animationTimingFunc: "linear", // Correction ici
+//   }).mount();
+// }
+
+$(document).ready(function () {
+  // Initialisation de Slick Slider
+  $(".hero-slider-active-2").slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    dots: false,
+    autoplay: true,
+    autoplaySpeed: 8000,
+    arrows: false,
+    fade: true,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          autoplaySpeed: 9000, // Change speed for mobile
+        },
+      },
+    ],
+  });
+
+  // Ajouter une animation au changement de diapositive
+  $(".hero-slider-active-2").on(
+    "afterChange",
+    function (event, slick, currentSlide) {
+      // Sélectionner la diapositive active
+      const currentSlideElement = $(slick.$slides[currentSlide]);
+
+      // Supprimer l'animation de toutes les diapositives
+      $(".hero-slider-content .animate-text").removeClass("active");
+
+      // Ajouter l'animation uniquement aux éléments de la diapositive active
+      currentSlideElement.find(".animate-text").each(function (index) {
+        const element = $(this);
+        setTimeout(() => {
+          element.addClass("active");
+        }, index * 300); // Délai pour chaque élément
       });
     }
+  );
 
-    hid.addEventListener("click", () => {
-      cat.classList.toggle("show");
-      document.body.classList.remove("modal-open");
-      fond.classList.remove("show");
-    });
-  } else {
-    console.error("Navbar or toggle button not found in the DOM.");
-  }
-
-  // // Fonction pour gérer le changement de position du header au scroll
-  // window.onscroll = function () {
-  //   const header = document.getElementById("header");
-  //   if (window.scrollY > 0) {
-  //     header.classList.add("fixed"); // Ajouter la classe 'fixed' au scroll
-  //   } else {
-  //     header.classList.remove("fixed"); // Retirer la classe quand on revient tout en haut
-  //   }
-  // };
-
-  function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-      const context = this;
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(context, args), wait);
-    };
-  }
-
-  const handleScroll = debounce(() => {
-    const header = document.getElementById("header");
-    if (window.scrollY > 50) {
-      header.classList.add("fixed");
-    } else {
-      header.classList.remove("fixed");
-    }
-  }, 100);
-
-  window.addEventListener("scroll", handleScroll);
+  // Activer les animations sur la première diapositive
+  $(".hero-slider-active-2").trigger("afterChange", [null, 0]);
 });
