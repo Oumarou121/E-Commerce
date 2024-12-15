@@ -45,26 +45,23 @@ document.addEventListener("DOMContentLoaded", () => {
   //   });
 });
 
-// const slider1 = document.querySelector("#glide1");
-// if (slider1) {
-//   new Glide(slider1, {
-//     type: "carousel",
-//     startAt: 0,
-//     autoplay: 3000,
-//     gap: 0,
-//     hoverpause: true,
-//     perView: 1,
-//     animationDuration: 800,
-//     animationTimingFunc: "linear", // Correction ici
-//   }).mount();
-// }
-
 $(document).ready(function () {
   // Initialisation de Slick Slider
+  $(".hero-slider-active-2").on("init", function (event, slick) {
+    // Activer les animations sur la première diapositive
+    const firstSlide = $(slick.$slides[0]);
+    firstSlide.find(".animate-text").each(function (index) {
+      const element = $(this);
+      setTimeout(() => {
+        element.addClass("active");
+      }, index * 300); // Délai pour chaque élément
+    });
+  });
+
   $(".hero-slider-active-2").slick({
     slidesToShow: 1,
     slidesToScroll: 1,
-    dots: false,
+    dots: true,
     autoplay: true,
     autoplaySpeed: 8000,
     arrows: false,
@@ -98,7 +95,4 @@ $(document).ready(function () {
       });
     }
   );
-
-  // Activer les animations sur la première diapositive
-  $(".hero-slider-active-2").trigger("afterChange", [null, 0]);
 });
