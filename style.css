@@ -37,6 +37,32 @@
   padding: 0;
 }
 
+a,
+button,
+img,
+input,
+span {
+  -webkit-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+a,
+button {
+  color: inherit;
+  line-height: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  color: #333;
+}
+a,
+button,
+a:before,
+img,
+input {
+  -webkit-transition: all 0.5s ease-in-out 0s;
+  transition: all 0.5s ease-in-out 0s;
+}
+
 body {
   color: #666;
   background-color: #fff;
@@ -507,6 +533,37 @@ svg {
   } */
 }
 
+header {
+  width: 100%;
+  position: relative; /* Le header commence en position normale */
+  top: 0;
+  z-index: 9999;
+}
+
+.fixed {
+  -webkit-animation: 0.8s ease-in-out 0s normal none 1 running fadeInDown;
+  animation: 0.8s ease-in-out 0s normal none 1 running fadeInDown;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.3rem 0;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =====================Slider================================ */
+
 /* Conteneur des dots */
 .slick-dots {
   position: absolute !important;
@@ -546,3 +603,167 @@ svg {
   height: 10px !important;
   border-radius: 50% !important;
 }
+
+/* ==================Trending Categories============================== */
+
+.categories-area {
+  padding-bottom: 70px;
+}
+
+.custom-container1 {
+  max-width: 90vw;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.section-title-1 {
+  margin-bottom: 40px;
+}
+
+.categories-wrap {
+  background: #fff;
+  padding: 25px 30px 30px;
+  margin: 0 0.5rem;
+  border: 1px solid #f8f8f8;
+}
+
+@media only screen and (min-width: 1366px) and (max-width: 1600px) {
+  .categories-wrap {
+    padding: 25px 15px 30px;
+  }
+}
+
+.categories-wrap .categories-img-zoom {
+  overflow: hidden;
+}
+
+.categories-wrap .categories-img a {
+  display: block;
+}
+
+.categories-wrap .categories-content {
+  margin: 13px 0 0;
+}
+.text-center {
+  text-align: center !important;
+}
+
+.categories-img a img {
+  transition: transform 1s ease;
+  display: block;
+}
+
+.categories-img a:hover img {
+  transform: scale(1.1);
+}
+
+.categories-content a:hover {
+  color: red;
+}
+
+/* =================Banner========================= */
+
+.custom-container .row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+/* Colonne : pleine largeur par défaut */
+.col-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Colonne pour les écrans moyens et plus (≥768px) */
+@media (min-width: 768px) {
+  .col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+/* Colonne pour les écrans larges et plus (≥992px) */
+@media (min-width: 992px) {
+  .col-lg-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+/* Colonne pour les écrans extra larges et plus (≥1200px) */
+@media (min-width: 1200px) {
+  .col-xl-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+.pb-40 {
+  padding-bottom: 40px;
+}
+
+.mb-30 {
+  margin-bottom: 30px;
+}
+
+.banner-wrap {
+  position: relative;
+}
+
+.banner-wrap .banner-img {
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-wrap .banner-content-1 span {
+  display: block;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+
+.banner-wrap .banner-content-1 h2 {
+  font-size: 24px;
+  font-weight: 400;
+  margin: 10px 0 12px;
+}
+
+.btn-style-1 a {
+  color: white;
+}
+
+.banner-wrap .banner-content-1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+}
+
+@media (min-width: 59rem) {
+  .banner-wrap .banner-content-1 {
+    top: 30%;
+  }
+}
+
+.btn-style-1:hover {
+  background-color: #333;
+}
+
+/* ====================Last Products===================== */
+

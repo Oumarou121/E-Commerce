@@ -95,4 +95,57 @@ $(document).ready(function () {
       });
     }
   );
+
+  function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+      const context = this;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+  }
+
+  const handleScroll = debounce(() => {
+    const header = document.getElementById("header");
+    const headerTop = document.getElementById("headerTop");
+    const mediaQuery = window.matchMedia("(min-width: 59rem)");
+    if (window.scrollY > 20) {
+      header.classList.add("fixed");
+      if (mediaQuery.matches) {
+        headerTop.style.display = "none";
+      }
+    } else {
+      header.classList.remove("fixed");
+      if (mediaQuery.matches) {
+        headerTop.style.display = "flex";
+      }
+    }
+  }, 100);
+
+  window.addEventListener("scroll", handleScroll);
+});
+
+$(document).ready(function () {
+  $(".categories-slider-1").slick({
+    slidesToShow: 6,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    arrows: true,
+    dots: false,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  });
 });
