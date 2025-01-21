@@ -1398,8 +1398,8 @@ Scroll Up
 
 /* Modal Content */
 .modalContent {
-  width: 90%;
-  max-width: 800px;
+  max-width: 90%;
+  /* max-width: 800px; */
   margin: 50px auto;
   background-color: #fff;
   padding: 20px;
@@ -1805,4 +1805,12 @@ td img {
 
 .blog-wrap .blog-meta{
   margin-bottom: .5rem;
+}
+
+.btn-style-1 a{
+  font-size: 14;
+}
+
+#bannerImage:hover{
+  transform: scale(1.1);
 }
