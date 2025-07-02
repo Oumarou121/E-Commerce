@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account - Niger.net</title>
+    <title id="title"></title>
     <link rel="stylesheet" href="css/base.css?v=1.0" />
-    <link rel="stylesheet" href="css/account.css" />
+    <link rel="stylesheet" href="css/news.css" />
 
     <!--============Icon Cdn==============-->
     <link
@@ -118,7 +118,9 @@
               </a>
             </div>
             <div id="showMenu" class="header-action-icon">
+              <!-- <a href="#"> -->
               <i class="uil uil-align-justify"></i>
+              <!-- </a> -->
             </div>
           </div>
         </div>
@@ -165,39 +167,63 @@
           </symbol>
         </svg>
       </header>
-
-      <main id="account-page">
-        <section class="account-feature">
+      <main id="main">
+        <section class="news-feature mb-40">
           <div class="custom-container">
-            <a href="index.html">Home</a> <span>/</span>
-            <span class="text-red">Account</span>
+            <a href="index.html">Home</a> <span>|</span>
+            <a href="blogs.html">News</a> <span>|</span>
+            <span id="news-name" class="text-red"></span>
           </div>
         </section>
+
         <div class="custom-container">
-          <h1>
-            My Account
-            <span id="logout" class="logout-link">Logout</span>
-          </h1>
-
-          <hr class="divider-small" />
-
-          <div class="grid">
-            <div class="grid-item two-thirds">
-              <h2 class="section-title">Order History</h2>
-              <div id="last-order-content" class="last-order"></div>
-              <p id="nbr-orders"></p>
+          <div class="content">
+            <div class="article-content">
+              <div class="article">
+                <div class="article-top">
+                  <div class="tag"></div>
+                  <h1 class="article-title"></h1>
+                  <div class="article-meta">
+                    <ul>
+                      <li id="date"></li>
+                      <li id="nbr-comment"></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="article-content">
+                  <img id="p1-image" src="" alt="" />
+                  <p id="p1-des"></p>
+                </div>
+              </div>
+              <blockquote class="importent-title">
+                <h4></h4>
+              </blockquote>
+              <div id="article-list"></div>
             </div>
-
-            <div class="grid-item one-third">
-              <h2 class="section-title">Account Details</h2>
-              <h3 id="name" class="account-name"></h3>
-              <address id="address" class="account-address"></address>
-              <p>
-                <a id="nbr-address" href="addresses.html"></a>
-              </p>
-              <p>
-                <a id="messages-link" href="messages.html"></a>
-              </p>
+            <div class="comments-content">
+              <h3 class="comment-title"></h3>
+              <ul id="reviews-list" class="comment-list"></ul>
+              <div class="add-comment">
+                <h2>Ajouter un commentaire</h2>
+                <input
+                  type="text"
+                  id="user-name"
+                  placeholder="Votre nom"
+                  style="height: 45px"
+                />
+                <textarea
+                  id="user-comment"
+                  placeholder="Message"
+                  rows="10"
+                ></textarea>
+                <div id="error-content" class="error text-red">
+                  <svg class="error-icon" width="12px" height="12px">
+                    <use href="#warning" />
+                  </svg>
+                  <span>Veillez remplir tous les champs</span>
+                </div>
+                <button id="submit-comment">Soumettre</button>
+              </div>
             </div>
           </div>
         </div>
@@ -344,6 +370,7 @@
     </div>
 
     <script src="js/base.js"></script>
-    <script src="js/account.js"></script>
+    <!-- <script src="js/filtre.js"></script> -->
+    <script src="js/news.js"></script>
   </body>
 </html>

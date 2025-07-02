@@ -1,1066 +1,546 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!--============Google Fonts==============-->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-    <!--============Google Fonts==============-->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop</title>
+    <link rel="stylesheet" href="css/base.css?v=1.0" />
+    <link rel="stylesheet" href="css/shop.css" />
 
     <!--============Icon Cdn==============-->
     <link
       rel="stylesheet"
       href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
     />
-    <link rel="stylesheet" 
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.css">
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
 
     <!--============Icon Cdn==============-->
 
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/shop.css">
-    <script src="js/index.js" type="module"></script>
-    <script src="js/shop.js" type="module"></script>
-    <title>Ecommerce Website</title>
-</head>
-<body class="home">
+    <!--============Google Fonts==============-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!--============Google Fonts==============-->
+  </head>
+  <body>
+    <!-- ============Preloader============ -->
+    <div id="preloader_active">
+      <div id="loading-center">
+        <div id="loading-center-absolute">
+          <div class="object" id="object_one"></div>
+          <div class="object" id="object_two"></div>
+          <div class="object" id="object_three"></div>
+        </div>
+      </div>
+    </div>
 
-    <!-- ========================Symbol========================= -->
-    
+    <!-- ===========Search============= -->
+    <div id="searchBar">
+      <div class="exit">
+        <svg
+          id="closeSearch"
+          xmlns="http://www.w3.org/2000/svg"
+          height="32"
+          viewBox="0 -960 960 960"
+          width="32"
+        >
+          <path
+            fill="black"
+            d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+          />
+        </svg>
+      </div>
 
-    <!-- ====================== Header Section================================ -->
+      <div class="search-results">
+        <input class="searchInput" type="text" placeholder="Search our store" />
+        <div class="result-content">
+          <h3>Products</h3>
+          <ul class="results-list">
+            <li class="result-item search-option">
+              <button>
+                <i class="uil uil-arrow-right"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-    <header class="primary-header container flex">
-        <div class="header-inner-one flex">
-            <div class="logo">
-                <img src="image/logo.png" alt="">
+    <div class="wrapper">
+      <header id="header" class="myheader">
+        <div
+          id="headerTop"
+          class="headerTop fs-body-small"
+          style="display: none"
+        >
+          <div class="phone">+227 98 66 32 48</div>
+          <div class="location">Store location</div>
+          <div class="log">
+            <a href="#">Log In</a> / <a href="#">Sign Up</a>
+          </div>
+        </div>
+        <div class="custom-container flex">
+          <div class="logo logo-width-1">
+            <a href="/" class="theme-logo">
+              <img width="165px" src="assets/images/logo/logo1-3.png" alt="" />
+            </a>
+          </div>
+
+          <nav class="navBar" style="display: none">
+            <ul class="flex" role="list">
+              <li><a href="index.html">HOME</a></li>
+              <li id="showCategoryDesktop">
+                <a href="shop.html">SHOP</a>
+                <div class="category-section-desktop">
+                  <ul id="category-list-desktop"></ul>
+                </div>
+              </li>
+              <li><a href="blogs.html">BLOG</a></li>
+              <li><a href="contact.html">CONTACT US</a></li>
+            </ul>
+          </nav>
+
+          <div class="header-action-right flex fs-body-large">
+            <div id="showSearch" class="header-action-icon">
+              <i class="uil uil-search"></i>
             </div>
-                         
-            <nav>
-                <ul id="primary-navigation" data-visible="false"
-                class="primary-navigation flex">
-                <li>
-                    <i class="uil mobile-close-btn uil-times-circle"></i>
-                    <a class="fs-100 fs-montserrat bold-500" href="/index.html">Home</a>
-                </li>
-                <li><a class="active fs-100 fs-montserrat bold-500" href="/shop.html">Shop</a></li>
-                <li><a class="fs-100 fs-montserrat bold-500" href="/about.html">Abouts Us</a></li>
-                <li><a class="fs-100 fs-montserrat bold-500" href="/blog.html">Blog</a></li>
-                <li><a class="fs-100 fs-montserrat bold-500" href="/contactus.html">Contact Us</a></li>
-                </ul>
-            </nav>
+            <div class="header-action-icon">
+              <a href="wishlist.html"><i class="uil uil-heart"></i></a>
+            </div>
+            <div class="header-action-icon">
+              <a href="/cart.html">
+                <span class="uil uil-shopping-bag"></span>
+                <span class="total-pro bigcounter">5</span>
+              </a>
+            </div>
+            <div id="showMenu" class="header-action-icon">
+              <i class="uil uil-align-justify"></i>
+            </div>
+          </div>
         </div>
 
-        <div class="header-login flex">
-          <div class="menu-bar">
-              <div class="dropdown1">
-                  <div class="dropbtn fs-100 fs-montserrat bold-500 text-black"><i class="uil uil-user"></i>  Profil</div>
-                  <div class="dropdown-content">
-                      <div id="login-show"></div>
-                      <div><a class="bbb text-black uil fs-150" href="/commande.html"><i class="uil fs-150 uil-box"></i>Vos Commandes</a></div>
-                      <div><a class="bbb text-black uil fs-150" href="/favoris.html"><i class="uil fs-150 uil-heart-alt"></i>Favoris</a></div>
-                      <div id="logout-btn"><a class="bbb text-red uil fs-150" href="#"><i class="uil fs-150 text-red uil-signout"></i>Déconnexion</a></div>
-                  </div>
-                  </div>
-              </div> 
-  
-              <i class="uil uil-search"></i>
-              <i id="cart-box" aria-controls="cart-icon" class="uil uil-shopping-bag"></i>    
-  
-              <!-- ================================================ -->
-  
-                  <!-- Cart Box -->
-                  <div id="cart-icon" data-visible="false" class="cart-icon">
-                      <div class="shopping flex">
-                          <p>Shopping Basket</p>
-                          <i id="cross-btn" class="uil uil-times"></i>
-                      </div>
-                      <div class="cart bold-800 flex">
-                          <i class="uil uil-shopping-cart-alt"></i>
-                          <p>Cart Is Empty</p>
-                      </div>
-                  </div>
-              <!-- ================================================ -->
+        <div id="fond" class="fond">
+          <nav id="links-container" class="links-container">
+            <ul class="flex">
+              <div id="hiddenLink" class="category-title">
+                <h2>PAGES</h2>
+                <i class="uil uil-times"></i>
+              </div>
+              <li><a href="index.html">Home</a></li>
+              <li>
+                <div id="showCategory" href="#">SHOP</div>
+              </li>
 
-              <!-- ================================================ -->
-  
-                  <!-- Filtre Box -->
-                    <input type="checkbox" id="sidebar-active">
-                    <label id="overlay" for="sidebar-active"></label>
-                    <div class="links-container">
+              <li><a href="blogs.html">BLOG</a></li>
+              <li><a href="contact.html">CONTACTS US</a></li>
+              <li><a href="account.html">PROFILE</a></li>
+              <li>
+                <a href="login.html">Log In</a> <span>/</span>
+                <a href="register.html">Sign Up</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
 
-                        <div class="block">
-
-                        <div class="selectedFilters">
-                            <div id="clearAllFilters" class="clearAll">
-                                <a href="#" class="all fs-poppins text-black">
-                                    <span class="txt">Effacer les filtres</span>
-                                    <i class="uil uil-trash"></i>
-                                </a>
-                            </div>
-                            <!-- <div class="filtre-item">
-                                Informatique
-                                <i id="cross-btn" class="uil uil-times"></i>
-                            </div> -->
-                            
-                        </div>
-
-                        <div class="filter-container-mobile" id="filter-container-mobile">
-                            
-                            <!-- Catégories -->
-                            <div class="categories">
-                                <div class="filtre-top" filtre-id="1">
-                                    <h3>Catégories</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="1"></i>
-                                </div>
-
-                                <ul class="first-content">
-                                    <li class="first"><input name="Catégories" id="informatique" type="checkbox" data-id="1"> Informatique <span class="filtre-span span-plus" span-id="1"></span></li>
-                                    <ul class="second-content1">
-                                        <li class="second"><input id="informatique1" name="Catégories" type="checkbox" data-id="2"> Ordinateur de Bureau <span class="filtre-span span-plus" span-id="3"></span></li>
-                                        <ul class="third-content1">
-                                            <li class="third"><input id="informatique2" name="Catégories" type="checkbox" data-id="3"> PC de Bureau</li>
-                                            <li class="third"><input id="informatique3" name="Catégories" type="checkbox" data-id="4"> PC Tout en Un</li>
-                                        </ul>
-                                        <li class="second"><input id="informatique4" name="Catégories" type="checkbox" data-id="5"> Ordinateur Portable <span class="filtre-span span-plus" span-id="4"></span></li>
-                                        <ul class="third-content2">
-                                            <li class="third"><input id="informatique5" name="Catégories" type="checkbox" data-id="6"> Intel</li>
-                                            <li class="third"><input id="informatique6" name="Catégories" type="checkbox" data-id="7"> PC Portable</li>
-                                            <li class="third"><input id="informatique7" name="Catégories" type="checkbox" data-id="8"> PC Portable Gamer</li>
-                                            <li class="third"><input id="informatique8" name="Catégories" type="checkbox" data-id="9"> PC Portable Pro</li>
-                                        </ul>
-                                    </ul>                                       
-                                    <li class="first  fs-poppins"><input name="Catégories" id="phone" type="checkbox" data-id="10"> Téléphonie & Tablette <span class="filtre-span span-plus" span-id="2"></span></li>
-                                    <ul class="second-content2">
-                                        <li class="second"><input id="phone1" name="Catégories" type="checkbox" data-id="11"> Smartphone</li>
-                                        <li class="second"><input id="phone2" name="Catégories" type="checkbox" data-id="12"> SmartWatch</li>
-                                        <li class="second"><input id="phone3" name="Catégories" type="checkbox" data-id="13"> Accessoires</li>
-                                    </ul>
-                                </ul>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- Prix -->
-                            <div class="categories">
-                                <div class="filtre-top" filtre-id="2">
-                                    <h3>Prix</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="2"></i>
-                                </div>
-
-                                <div class="price-content">
-                                    <div class="slider">
-                                      <div class="progress"></div>
-                                    </div>
-
-                                    <div class="range-input">
-                                      <input type="range" class="range-min" min="2500" max="500000" value="2500" step="5000">
-                                      <input type="range" class="range-max" min="0" max="500000" value="500000" step="5000">
-                                    </div>
-
-                                    <div class="price-input">
-                                        <div class="field">
-                                          <input type="number" class="input-min" value="2500">
-                                          <!-- <span>FCFA</span> -->
-                                        </div>
-                                        <!-- <div class="separator">-</div> -->
-                                        <div class="field">                                      
-                                          <input type="number" class="input-max" value="500000">
-                                          <!-- <span>FCFA</span> -->
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- Fabricants -->
-                            <div class="categories">
-                                <div class="filtre-top" filtre-id="3">
-                                    <h3>Fabricants</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="3"></i>
-                                </div>
-
-                                <div class="fabricants-content">
-                                    <select name="text-fab">
-                                        <option value="text">--</option>
-                                        <option value="text">Made in china</option>
-                                        <option value="text">Made in Vietnam</option>
-                                        <option value="text">Made in India</option>
-                                        <option value="text">Made in USA</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- Processeur -->
-                            <div class="categories" data-type="informatique">
-                                <div class="filtre-top" filtre-id="4">
-                                    <h3>Processeur</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="4"></i>
-                                </div>
-
-                                <div class="processeur-content">
-                                    <ul>
-                                        <li><input name="Processeur" type="checkbox" data-id="15"> AMD Ryzen 5</li>
-                                        <li><input name="Processeur" type="checkbox" data-id="16"> AMD Ryzen 7</li>
-                                        <li><input name="Processeur" type="checkbox" data-id="17"> Intel Core i3</li>
-                                        <li><input name="Processeur" type="checkbox" data-id="18"> Intel Core i5</li>
-                                        <li><input name="Processeur" type="checkbox" data-id="19"> Intel Core i7</li>
-                                        <li><input name="Processeur" type="checkbox" data-id="20"> Intel Core i9</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- Mémoire -->
-                            <div class="categories">
-                                <div class="filtre-top" filtre-id="5">
-                                    <h3>Mémoire</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="5"></i>
-                                </div>
-
-                                <div class="memoire-content">
-                                    <ul>
-                                        <li><input name="Mémoire" type="checkbox" data-id="21">258 Go</li>
-                                        <li><input name="Mémoire" type="checkbox" data-id="22">128 Go</li>
-                                        <li><input name="Mémoire" type="checkbox" data-id="23">64 Go</li>
-                                        <li><input name="Mémoire" type="checkbox" data-id="24">32 Go</li>
-                                        <li><input name="Mémoire" type="checkbox" data-id="25">16 Go</li>
-                                        <li><input name="Mémoire" type="checkbox" data-id="26">8 Go</li>
-                                        <li><input name="Mémoire" type="checkbox" data-id="27">4 Go</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- Stockage -->
-                            <div class="categories" data-type="phone">
-                                <div class="filtre-top" filtre-id="6">
-                                    <h3>Stockage</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="6"></i>
-                                </div>
-
-                                <div class="stockage-content">
-                                    <ul>
-                                        <li><input name="Stockage" type="checkbox" data-id="28">64 Go</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- Taille de l'écran -->
-                            <div class="categories" data-type="phone">
-                                <div class="filtre-top" filtre-id="7">
-                                    <h3>Taille de l'écran</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="7"></i>
-                                </div>
-
-                                <div class="taille-de-ecran-content">
-                                    <ul>
-                                        <li><input name="Taille de l'écran" type="checkbox" data-id="29">Supérieur à 6"</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- Garantie -->
-                            <div class="categories">
-                                <div class="filtre-top" filtre-id="8">
-                                    <h3>Garantie</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="8"></i>
-                                </div>
-
-                                <div class="garantie-content">
-                                    <ul>
-                                        <li><input name="Garantie" type="checkbox" data-id="30">1 an</li>
-                                        <li><input name="Garantie" type="checkbox" data-id="31">2 ans</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- Type processeur -->
-                            <div class="categories" data-type="phone">
-                                <div class="filtre-top" filtre-id="9">
-                                    <h3>Type processeur</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="9"></i>
-                                </div>
-
-                                <div class="type-processeur-content">
-                                    <ul>
-                                        <li><input name="Type processeur" type="checkbox" data-id="32">Quadri Core</li>
-                                        <li><input name="Type processeur" type="checkbox" data-id="33">Octa Core</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- Ecran Tactile -->
-                            <div class="categories" data-type="informatique">
-                                <div class="filtre-top" filtre-id="10">
-                                    <h3>Ecran Tactile</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="10"></i>
-                                </div>
-
-                                <div class="ecran-tactile-content">
-                                    <ul>
-                                        <li><input name="Ecran Tactile" type="checkbox" data-id="34">Oui</li>
-                                        <li><input name="Ecran Tactile" type="checkbox" data-id="35">Non</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- Carte Graphique -->
-                            <div class="categories" data-type="informatique">
-                                <div class="filtre-top" filtre-id="11">
-                                    <h3>Carte Graphique</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="11"></i>
-                                </div>
-
-                                <div class="carte-graphique-content">
-                                    <ul>
-                                        <li><input name="Carte Graphique" type="checkbox" data-id="36">AMD Radeon</li>
-                                        <li><input name="Carte Graphique" type="checkbox" data-id="37">Graphique Intégrée</li>
-                                        <li><input name="Carte Graphique" type="checkbox" data-id="38">Nvidia GeForce</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- Système d'exploitation -->
-                            <div class="categories" data-type="informatique">
-                                <div class="filtre-top" filtre-id="12">
-                                    <h3>Système d'exploitation</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="12"></i>
-                                </div>
-
-                                <div class="se-content">
-                                    <ul>
-                                        <li><input name="Système d'exploitation" type="checkbox" data-id="39">FreeDos</li>
-                                        <li><input name="Système d'exploitation" type="checkbox" data-id="40">Windows 11</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- Taille Ecran -->
-                            <div class="categories" data-type="informatique">
-                                <div class="filtre-top" filtre-id="13">
-                                    <h3>Taille Ecran</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="13"></i>
-                                </div>
-
-                                <div class="taille-ecran-content">
-                                    <ul>
-                                        <li><input name="Taille Ecran" type="checkbox" data-id="41">14"</li>
-                                        <li><input name="Taille Ecran" type="checkbox" data-id="42">15.6"</li>
-                                        <li><input name="Taille Ecran" type="checkbox" data-id="43">16"</li>
-                                        <li><input name="Taille Ecran" type="checkbox" data-id="44">17.3"</li>
-                                        <li><input name="Taille Ecran" type="checkbox" data-id="45">24"</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- Type Ecran -->
-                            <div class="categories" data-type="informatique">
-                                <div class="filtre-top" filtre-id="14">
-                                    <h3>Type Ecran</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="14"></i>
-                                </div>
-
-                                <div class="type-ecran-content">
-                                    <ul>
-                                        <li><input name="Type Ecran" type="checkbox" data-id="46">Full HD</li>
-                                        <li><input name="Type Ecran" type="checkbox" data-id="47">WQXGA</li>
-                                        <li><input name="Type Ecran" type="checkbox" data-id="48">WUXGA</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- Double SIM -->
-                            <div class="categories" data-type="phone">
-                                <div class="filtre-top" filtre-id="15">
-                                    <h3>Double SIM</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="15"></i>
-                                </div>
-
-                                <div class="sim-content">
-                                    <ul>
-                                        <li><input name="Double SIM" type="checkbox" data-id="49">Oui</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-
-                            <!-- RAM -->
-                            <div class="categories" data-type="phone">
-                                <div class="filtre-top" filtre-id="16">
-                                    <h3>RAM</h3>
-                                    <i class="uil icon-arrow rotated-plus uil-angle-right" filtre-id="16"></i>
-                                </div>
-
-                                <div class="ram-content">
-                                    <ul>
-                                        <li><input name="RAM" type="checkbox" data-id="50">2</li>
-                                        <li><input name="RAM" type="checkbox" data-id="51">3</li>
-                                        <li><input name="RAM" type="checkbox" data-id="52">4</li>
-                                        <li><input name="RAM" type="checkbox" data-id="53">6</li>
-                                        <li><input name="RAM" type="checkbox" data-id="54">8</li>
-                                        <li><input name="RAM" type="checkbox" data-id="55">12</li>
-                                        <li><input name="RAM" type="checkbox" data-id="56">16</li>
-                                        <li><input name="RAM" type="checkbox" data-id="57">32</li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <hr class="custom-hr">
-                                </div>
-                            </div>
-                                
-                            
-                            </div>
-                            </div>
-                            <div class="confirm flex">
-                                <button type="button">Appliquer le filtre</button>
-                            </div>
-                            
-                        </div>
-                      
-                    </div>
-            <!-- ================================================ -->
-              
+        <div id="fondCategory" class="fond">
+          <div id="category" class="category-section">
+            <div id="hiddenCategory" class="category-title">
+              <h2>CATEGORIES</h2>
+              <i class="uil uil-times"></i>
+            </div>
+            <ul id="category-list"></ul>
           </div>
-        <div class="mobile-open-btn">
-            <i class="uil uil-align-right"></i>
-        </div>        
-    </header>
+        </div>
 
-    <!-- ======================End Header Section================================ -->
-    
-    <!-- ======================Shop Section================================ -->
+        <input type="checkbox" id="sidebar-active" hidden />
+        <label id="overlay" for="sidebar-active"></label>
+        <div class="other-filtre">
+          <div class="selectedFilters">
+            <div
+              id="clearAllFilters"
+              class="clearAll"
+              onclick="clearAllFilters()"
+            >
+              <a href="#" class="all fs-poppins text-black">
+                <span class="txt">Effacer les filtres</span>
+                <i class="uil uil-trash"></i>
+              </a>
+            </div>
+          </div>
+          <div id="filter-container" class="filter-container">
+            <!-- Prix -->
+            <div class="categories">
+              <div class="filtre-top">
+                <h3>Prix</h3>
+                <i class="uil icon-arrow rotated uil-angle-down"></i>
+              </div>
 
+              <div class="price-content visible">
+                <div class="slider">
+                  <div class="progress"></div>
+                </div>
 
-    <!-- ======================Shop Feature Section================================ -->
+                <div class="range-input">
+                  <input
+                    type="range"
+                    class="range-min"
+                    min="2500"
+                    max="500000"
+                    value="2500"
+                    step="5000"
+                  />
+                  <input
+                    type="range"
+                    class="range-max"
+                    min="0"
+                    max="500000"
+                    value="500000"
+                    step="5000"
+                  />
+                </div>
 
-    <section class="shop-feature bg-gray grid">
-      <div>
-        <p class="fs-montserrat text-black">Home <span aria-haspopup="true" class="margin"></span>Shop</p>
-      </div>
-      <h2 class="fs-poppins fs-300 bold-700">Shop</h2>
-    </section>
-
-    <!-- ======================Shop Feature Section================================ -->
-
-    <!-- ======================Section 2================================ -->
-
-
-    <main class="shop-main-container grid">
-      <div>
-
-        <section class="search-section">
-            <div class="sidebar-search text-black bg-gray flex">
-                <input type="text" placeholder="Search Her" 
-                class="fs-montserrat bg-gray">
-                <div>
-                  <i class="uil bg-red text-white uil-search"></i>
+                <div class="price-input">
+                  <div class="field">
+                    <input
+                      type="number"
+                      class="input-min"
+                      value="2500"
+                      step="5000"
+                      step="500"
+                      min="2500"
+                      max="500000"
+                    />
+                    <span>FCFA</span>
+                  </div>
+                  <div class="field">
+                    <input
+                      type="number"
+                      class="input-max"
+                      value="500000"
+                      step="500"
+                      min="2500"
+                      max="500000"
+                    />
+                    <span>FCFA</span>
+                  </div>
                 </div>
               </div>
+
+              <div>
+                <hr class="custom-hr" />
+              </div>
+            </div>
+          </div>
+          <div class="otherConfirm">
+            <button id="switchCategory" type="button">Apply Filters</button>
+          </div>
+        </div>
+      </header>
+
+      <main id="main">
+        <section class="shop-feature mb-40">
+          <div class="custom-container">
+            <a href="index.html">Home</a> <span>/</span>
+            <span class="text-red">Shop</span>
+          </div>
         </section>
 
-        <div class="shop-title flex">
-          <div class="notif1">
-            <h2 class="fs-poppins fs-300">Shop</h2>
-            <p class="fs-montserrat"> Showing 1-9 of 10 results</p>
-          </div>
-    
-          <div class="filtre-open">
-          <input type="checkbox" id="sidebar-active">
-          <label for="sidebar-active" class="open-sidebar-button">
-            <!-- <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg> -->
-            <div id="filtre-box" class="close-sidebar-button">
-                <h3>Filtre</h3>
-            </div>
-          </label>
-          </div>
-          <div>
-            <select name="text" class="fs-poppins bg-black text-white">
-              <option value="text">Default Sorting</option>
-              <option value="text">Short By Popularity</option>
-              <option value="text">Short By rating</option>
-              <option value="text">Short By matest</option>
-              <option value="text">Short By price</option>
-              <option value="text">Short By Low To Hight</option>
-              <option value="text">Short By Hight To Low </option>
-            </select>
-          </div>
-        </div>
+        <section class="shop-content">
+          <div class="custom-container">
+            <div class="shop-left">
+              <div>
+                <div
+                  id="clearAllDesktop"
+                  class="clearDesktop"
+                  onclick="clearAllFilters()"
+                >
+                  <i class="uil uil-trash-alt"></i>
+                  CLEAR ALL
+                </div>
+                <div class="selectedFilters-desktop"></div>
+              </div>
 
-        <div class="notif2">
-            <!-- <h2 class="fs-poppins fs-300">Shop</h2> -->
-            <p class="fs-montserrat"> Showing 1-9 of 10 results</p>
-        </div>
+              <div id="filter-containerDesktop" class="filter-container">
+                <!-- Prix -->
+                <div class="categories">
+                  <div class="filtre-top">
+                    <h3>Prix</h3>
+                  </div>
 
-        <!-- =====================End of inner section================ -->
-
-      <!-- ===================Shop Product===================== -->
-
-      <section class="shop-product">
- 
-      </section>
-              
-      </div>
-
-        
-      <!-- ===================Shop Product===================== -->
-
-      <!-- ===========================Side bar Section=================== -->
-
-      <section>
-        <!-- <div class="sidebar-search text-black bg-gray flex">
-          <input type="text" placeholder="Search Her" 
-          class="fs-montserrat bg-gray">
-          <div>
-            <i class="uil bg-red text-white uil-search"></i>
-          </div>
-        </div> -->
-        <!-- <aside class="sidebar-category">
-          <div class="category-list flex">
-            <h3 class="fs-poppins bold-700 fs-200">Product categories</h3>
-            <i id="arrow" class="uil uil-angle-right" data-category="false"></i>
-          </div>
-
-           -----------------Category list------------------------- 
-
-          <div class="shop-category-list">
-            <ul id="side-nav" class="sidebar-nav" data-category="false">
-              <li class="papa"><a href="#" class="fs-montserrat text-black bold-500">Earphone</a></li>
-              <li class="papa"><a href="#" class="fs-montserrat text-black bold-500">Gedgets</a></li>
-              <li class="papa"><a href="#" class="fs-montserrat text-black bold-500">Headphone</a></li>
-              <li class="papa"><a href="#" class="fs-montserrat text-black bold-500">Speakers</a></li>
-              <li class="papa"><a href="#" class="fs-montserrat text-black bold-500">Uncategorized</a></li>
-              <li class="papa"><a href="#" class="fs-montserrat text-black bold-500">Gifts</a></li>
-          </ul>
-          </div>
-
-        </aside> -->
-        <aside>
-            <div class="filter-container" id="filter-container">
-
-                <h2>Filtrer</h2>
-
-                <div class="selectedFilters-desktop">
-                    <div id="clearAllFilters-desktop" class="clearAll-desktop">
-                        <a href="#" class="all-desktop fs-poppins text-black">
-                            <span class="txt-desktop">Effacer les filtres</span>
-                            <i class="uil uil-trash"></i>
-                        </a>
+                  <div class="price-content-desktop visible">
+                    <div class="slider-desktop">
+                      <div class="progress"></div>
                     </div>
-                    
-                    
+
+                    <div class="range-input-desktop">
+                      <input
+                        type="range"
+                        class="range-min"
+                        min="2500"
+                        max="500000"
+                        value="2500"
+                        step="5000"
+                      />
+                      <input
+                        type="range"
+                        class="range-max"
+                        min="0"
+                        max="500000"
+                        value="500000"
+                        step="5000"
+                      />
+                    </div>
+
+                    <div class="price-input-desktop">
+                      <div class="field">
+                        <input
+                          type="number"
+                          class="input-min"
+                          value="2500"
+                          step="500"
+                          min="2500"
+                          max="500000"
+                        />
+                        <span>FCFA</span>
+                      </div>
+                      <!-- <div class="separator">-</div> -->
+                      <div class="field">
+                        <input
+                          type="number"
+                          class="input-max"
+                          value="500000"
+                          step="500"
+                          min="2500"
+                          max="500000"
+                        />
+                        <span>FCFA</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <hr class="custom-hr" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="shop-right">
+              <div class="grid-list-top">
+                <input type="checkbox" id="sidebar-active" hidden />
+                <label
+                  id="show-filtre"
+                  for="sidebar-active"
+                  class="open-sidebar-button"
+                >
+                  <div id="filtre-btn">
+                    <h3>Filtre</h3>
+                  </div>
+                </label>
+                <div class="grid-list-view">
+                  <button id="grid" class="change-view active">
+                    <i class="fa fa-th"></i>
+                  </button>
+                  <button id="list" class="change-view">
+                    <i class="fa fa-list-ul"></i>
+                  </button>
+                </div>
+                <span id="desktop-result" class="show-items"> </span>
+                <div class="main-toolbar-sorter clearfix">
+                  <div class="toolbar-sorter d-md-flex align-items-center">
+                    <label for="SortBy">Sort by:</label>
+                    <select class="sorter wide" name="SortBy" id="SortBy">
+                      <option value="manual">Featured</option>
+                      <option value="best-selling">Best Selling</option>
+                      <option value="title-ascending">
+                        Alphabetically, A-Z
+                      </option>
+                      <option value="title-descending">
+                        Alphabetically, Z-A
+                      </option>
+                      <option value="price-ascending">
+                        Price, low to high
+                      </option>
+                      <option value="price-descending">
+                        Price, high to low
+                      </option>
+                      <option value="created-descending">
+                        Date, new to old
+                      </option>
+                      <option value="created-ascending">
+                        Date, old to new
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div id="show-categories" class="categories-btn mb-30">
+                <span class="cat-title">Categories</span>
+                <i class="fa fa-reorder"></i>
+              </div>
+
+              <div id="listProducts" class="listProducts grid"></div>
+
+              <div class="grid-list-top grid-list-top1 mb-30">
+                <span id="orther-result" class="show-items"> </span>
+
+                <div class="shop_pagi">
+                  <ul></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <div id="shopify-section-footer" class="shopify-section">
+        <div id="section-footer">
+          <footer class="footer-area">
+            <div class="custom-container">
+              <div class="rowFooter">
+                <div>
+                  <div class="footer-widget mb-30">
+                    <h3 class="footer-title">Contact us</h3>
+
+                    <div class="footer-info">
+                      <ul class="footer-block__details-content information">
+                        <li>
+                          <span
+                            >Drou Demo Store <br />
+                            No. 1259 Freedom, New York <br />
+                            United States</span
+                          >
+                        </li>
+                        <li><span>+91-987654321</span></li>
+                        <li><span>demo@exampledemo.com</span></li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
 
-                <!-- <div class="links-container"> -->
-                    <div class="filter-container-desktop" id="filter-container-desktop">
-                        
-                        <!-- Catégories -->
-                        <div class="categories">
-                            <div class="filtre-top" filtre-desktop-id="1">
-                                <h3>Catégories</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="1"></i>
-                            </div>
+                <div>
+                  <div class="footer-widget mb-30">
+                    <h3 class="footer-title">Information</h3>
 
-                            <ul class="first-content-desktop">
-                                <li class="first"><input name="Catégories" id="informatique-desktop" type="checkbox"> Informatique <span class="filtre-span span-plus" span-desktop-id="1"></span></li>
-                                <ul class="second-content-desktop1">
-                                    <li class="second"><input name="Catégories" type="checkbox"> Ordinateur de Bureau <span class="filtre-span span-plus" span-desktop-id="3"></span></li>
-                                    <ul class="third-content-desktop1">
-                                        <li class="third"><input name="Catégories" type="checkbox"> PC de Bureau</li>
-                                        <li class="third"><input name="Catégories" type="checkbox"> PC Tout en Un</li>
-                                    </ul>
-                                    <li class="second"><input name="Catégories" type="checkbox"> Ordinateur Portable <span class="filtre-span span-plus" span-desktop-id="4"></span></li>
-                                    <ul class="third-content-desktop2">
-                                        <li class="third"><input name="Catégories" type="checkbox"> Intel</li>
-                                        <li class="third"><input name="Catégories" type="checkbox"> PC Portable</li>
-                                        <li class="third"><input name="Catégories" type="checkbox"> PC Portable Gamer</li>
-                                        <li class="third"><input name="Catégories" type="checkbox"> PC Portable Pro</li>
-                                    </ul>
-                                </ul>                                       
-                                <li class="first  fs-poppins"><input name="Catégories" id="phone-desktop" type="checkbox"> Téléphonie & Tablette <span class="filtre-span span-plus" span-desktop-id="2"></span></li>
-                                <ul class="second-content-desktop2">
-                                    <li class="second"><input name="Catégories" type="checkbox"> Smartphone</li>
-                                    <li class="second"><input name="Catégories" type="checkbox"> SmartWatch</li>
-                                    <li class="second"><input name="Catégories" type="checkbox"> Accessoires</li>
-                                </ul>
-                            </ul>
+                    <div class="footer-info-list">
+                      <ul>
+                        <li>
+                          <a href="#">Product Support</a>
+                        </li>
 
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
+                        <li>
+                          <a href="/checkout">Checkout</a>
+                        </li>
 
-                        <!-- Prix -->
-                        <div class="categories">
-                            <div class="filtre-top" filtre-desktop-id="2">
-                                <h3>Prix</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="2"></i>
-                            </div>
+                        <li>
+                          <a href="#">License Policy</a>
+                        </li>
 
-                            <div class="price-content-desktop">
-                                <div class="slider-desktop">
-                                  <div class="progress"></div>
-                                </div>
+                        <li>
+                          <a href="#">Affiliate</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
 
-                                <div class="range-input-desktop">
-                                  <input type="range" class="range-min" min="2500" max="500000" value="2500" step="5000">
-                                  <input type="range" class="range-max" min="0" max="500000" value="500000" step="5000">
-                                </div>
+                <div>
+                  <div class="footer-widget mb-30">
+                    <h3 class="footer-title">Customer Service</h3>
 
-                                <div class="price-input-desktop">
-                                    <div class="field">
-                                      <input type="number" class="input-min" value="2500">
-                                      <!-- <span>FCFA</span> -->
-                                    </div>
-                                    <!-- <div class="separator">-</div> -->
-                                    <div class="field">                                      
-                                      <input type="number" class="input-max" value="500000">
-                                      <!-- <span>FCFA</span> -->
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="footer-info-list">
+                      <ul>
+                        <li>
+                          <a href="/pages/about-us">Help Center</a>
+                        </li>
 
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
+                        <li>
+                          <a href="/pages/about-us">Redeem Voucher</a>
+                        </li>
 
-                        <!-- Fabricants -->
-                        <div class="categories">
-                            <div class="filtre-top" filtre-desktop-id="3">
-                                <h3>Fabricants</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="3"></i>
-                            </div>
+                        <li>
+                          <a href="contact.html">Contact Us</a>
+                        </li>
 
-                            <div class="fabricants-content-desktop">
-                                <select name="text-fab1">
-                                    <option value="text">--</option>
-                                    <option value="text">Made in china</option>
-                                    <option value="text">Made in Vietnam</option>
-                                    <option value="text">Made in India</option>
-                                    <option value="text">Made in USA</option>
-                                </select>
-                            </div>
+                        <li>
+                          <a href="#">Policies &amp; Rules</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
 
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
+                <div>
+                  <div class="footer-widget mb-30">
+                    <h3 class="footer-title">Download Our App</h3>
 
-                        <!-- Processeur -->
-                        <div class="categories" data-type="informatique-desktop">
-                            <div class="filtre-top" filtre-desktop-id="4">
-                                <h3>Processeur</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="4"></i>
-                            </div>
+                    <div class="app-visa-wrap">
+                      <p>
+                        Download our App and get extra 15% Discount on your
+                        first Order..!
+                      </p>
 
-                            <div class="processeur-content-desktop">
-                                <ul>
-                                    <li><input name="Processeur" type="checkbox"> AMD Ryzen 5</li>
-                                    <li><input name="Processeur" type="checkbox"> AMD Ryzen 7</li>
-                                    <li><input name="Processeur" type="checkbox"> Intel Core i3</li>
-                                    <li><input name="Processeur" type="checkbox"> Intel Core i5</li>
-                                    <li><input name="Processeur" type="checkbox"> Intel Core i7</li>
-                                    <li><input name="Processeur" type="checkbox"> Intel Core i9</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
-
-                        <!-- Mémoire -->
-                        <div class="categories">
-                            <div class="filtre-top" filtre-desktop-id="5">
-                                <h3>Mémoire</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="5"></i>
-                            </div>
-
-                            <div class="memoire-content-desktop">
-                                <ul>
-                                    <li><input name="Mémoire" type="checkbox">258 Go</li>
-                                    <li><input name="Mémoire" type="checkbox">128 Go</li>
-                                    <li><input name="Mémoire" type="checkbox">64 Go</li>
-                                    <li><input name="Mémoire" type="checkbox">32 Go</li>
-                                    <li><input name="Mémoire" type="checkbox">16 Go</li>
-                                    <li><input name="Mémoire" type="checkbox">8 Go</li>
-                                    <li><input name="Mémoire" type="checkbox">4 Go</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
-
-                        <!-- Stockage -->
-                        <div class="categories" data-type="phone-desktop">
-                            <div class="filtre-top" filtre-desktop-id="6">
-                                <h3>Stockage</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="6"></i>
-                            </div>
-
-                            <div class="stockage-content-desktop">
-                                <ul>
-                                    <li><input name="Stockage" type="checkbox">64 Go</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
-
-                        <!-- Taille de l'écran -->
-                        <div class="categories" data-type="phone-desktop">
-                            <div class="filtre-top" filtre-desktop-id="7">
-                                <h3>Taille de l'écran</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="7"></i>
-                            </div>
-
-                            <div class="taille-de-ecran-content-desktop">
-                                <ul>
-                                    <li><input name="Taille de l'écran" type="checkbox">Supérieur à 6"</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
-
-                        <!-- Garantie -->
-                        <div class="categories">
-                            <div class="filtre-top" filtre-desktop-id="8">
-                                <h3>Garantie</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="8"></i>
-                            </div>
-
-                            <div class="garantie-content-desktop">
-                                <ul>
-                                    <li><input name="Garantie" type="checkbox">1 an</li>
-                                    <li><input name="Garantie" type="checkbox">2 ans</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
-
-                        <!-- Type processeur -->
-                        <div class="categories" data-type="phone-desktop">
-                            <div class="filtre-top" filtre-desktop-id="9">
-                                <h3>Type processeur</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="9"></i>
-                            </div>
-
-                            <div class="type-processeur-content-desktop">
-                                <ul>
-                                    <li><input name="Type processeur" type="checkbox">Quadri Core</li>
-                                    <li><input name="Type processeur" type="checkbox">Octa Core</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
-
-                        <!-- Ecran Tactile -->
-                        <div class="categories" data-type="informatique-desktop">
-                            <div class="filtre-top" filtre-desktop-id="10">
-                                <h3>Ecran Tactile</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="10"></i>
-                            </div>
-
-                            <div class="ecran-tactile-content-desktop">
-                                <ul>
-                                    <li><input name="Ecran Tactile" type="checkbox">Oui</li>
-                                    <li><input name="Ecran Tactile" type="checkbox">Non</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
-
-                        <!-- Carte Graphique -->
-                        <div class="categories" data-type="informatique-desktop">
-                            <div class="filtre-top" filtre-desktop-id="11">
-                                <h3>Carte Graphique</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="11"></i>
-                            </div>
-
-                            <div class="carte-graphique-content-desktop">
-                                <ul>
-                                    <li><input name="Carte Graphique" type="checkbox">AMD Radeon</li>
-                                    <li><input name="Carte Graphique" type="checkbox">Graphique Intégrée</li>
-                                    <li><input name="Carte Graphique" type="checkbox">Nvidia GeForce</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
-
-                        <!-- Système d'exploitation -->
-                        <div class="categories" data-type="informatique-desktop">
-                            <div class="filtre-top" filtre-desktop-id="12">
-                                <h3>Système d'exploitation</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="12"></i>
-                            </div>
-
-                            <div class="se-content-desktop">
-                                <ul>
-                                    <li><input name="Système d'exploitation" type="checkbox">FreeDos</li>
-                                    <li><input name="Système d'exploitation" type="checkbox">Windows 11</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
-
-                        <!-- Taille Ecran -->
-                        <div class="categories" data-type="informatique-desktop">
-                            <div class="filtre-top" filtre-desktop-id="13">
-                                <h3>Taille Ecran</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="13"></i>
-                            </div>
-
-                            <div class="taille-ecran-content-desktop">
-                                <ul>
-                                    <li><input name="Taille Ecran" type="checkbox">14"</li>
-                                    <li><input name="Taille Ecran" type="checkbox">15.6"</li>
-                                    <li><input name="Taille Ecran" type="checkbox">16"</li>
-                                    <li><input name="Taille Ecran" type="checkbox">17.3"</li>
-                                    <li><input name="Taille Ecran" type="checkbox">24"</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
-
-                        <!-- Type Ecran -->
-                        <div class="categories" data-type="informatique-desktop">
-                            <div class="filtre-top" filtre-desktop-id="14">
-                                <h3>Type Ecran</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="14"></i>
-                            </div>
-
-                            <div class="type-ecran-content-desktop">
-                                <ul>
-                                    <li><input name="Type Ecran" type="checkbox">Full HD</li>
-                                    <li><input name="Type Ecran" type="checkbox">WQXGA</li>
-                                    <li><input name="Type Ecran" type="checkbox">WUXGA</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
-
-                        <!-- Double SIM -->
-                        <div class="categories" data-type="phone-desktop">
-                            <div class="filtre-top" filtre-desktop-id="15">
-                                <h3>Double SIM</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="15"></i>
-                            </div>
-
-                            <div class="sim-content-desktop">
-                                <ul>
-                                    <li><input name="Double SIM" type="checkbox">Oui</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
-
-                        <!-- RAM -->
-                        <div class="categories" data-type="phone-desktop">
-                            <div class="filtre-top" filtre-desktop-id="16">
-                                <h3>RAM</h3>
-                                <i class="uil icon-arrow rotated-minus uil-angle-right" filtre-desktop-id="16"></i>
-                            </div>
-
-                            <div class="ram-content-desktop">
-                                <ul>
-                                    <li><input name="RAM" type="checkbox">2</li>
-                                    <li><input name="RAM" type="checkbox">3</li>
-                                    <li><input name="RAM" type="checkbox">4</li>
-                                    <li><input name="RAM" type="checkbox">6</li>
-                                    <li><input name="RAM" type="checkbox">8</li>
-                                    <li><input name="RAM" type="checkbox">12</li>
-                                    <li><input name="RAM" type="checkbox">16</li>
-                                    <li><input name="RAM" type="checkbox">32</li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <hr class="custom-hr">
-                            </div>
-                        </div>
-                        
-                            
-                        </div>
-                    <!-- </div> -->
-
+                      <div class="app-google-img">
+                        <a href=""
+                          ><img
+                            src=" https://cdn.shopify.com/s/files/1/0495/8021/2387/files/app-store.jpg?v=1603274799"
+                            alt=""
+                        /></a>
+                        <a href=""
+                          ><img
+                            src=" https://cdn.shopify.com/s/files/1/0495/8021/2387/files/google-play.jpg?v=1603274809  "
+                            alt=""
+                        /></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </aside>
-      </section>
-      
-    </main>
-
-    <!-- ======================Section 2================================ -->
-
-    
-
-    <!-- ======================Shop Section================================ -->
-
-    <!-- =================== Brands Section========================== -->
-
-    <section class="brands grid">
-      <div>
-          <img src="image/br-1.png" alt="">
+          </footer>
+        </div>
       </div>
-      <div>
-          <img src="image/br-2.png" alt="">
-      </div>
-      <div>
-          <img src="image/br-3.png" alt="">
-      </div>
-      <div>
-          <img src="image/br-4.png" alt="">
-      </div>
-      <div>
-          <img src="image/br-5.png" alt="">
-      </div>
-  </section>
 
-  <!-- =================== Brands Section========================== -->
-
- <!-- =================== Footer Section========================== -->
-
- <section class="footer grid">
-  <div class="footer-logo grid">
-      <img src="image/logo.png" alt="">
-      <p class="fs-montserrat fs-100">There are many variations passages of Lorem Ipsum available,
-          but the majority have
-      </p>
-      <div class="social-media flex">
-          <i class="uil uil-facebook"></i>
-          <i class="uil uil-instagram"></i>
-          <i class="uil uil-twitter"></i>
-          <i class="uil uil-linkedin"></i>
+      <div id="shopify-section-footer-copy-right" class="shopify-section">
+        <div id="section-footer-copy-right">
+          <footer class="footer-copyright-area">
+            <div class="custom-container">
+              <div class="row">
+                <div>
+                  <p>
+                    Copyright © Team90Degree | Built with Drou by Team90Degree.
+                  </p>
+                </div>
+                <div>
+                  <div class="payment-img">
+                    <a href=""
+                      ><img
+                        src=" https://cdn.shopify.com/s/files/1/0495/8021/2387/files/payment-method.png?v=1603274813  "
+                        alt=""
+                    /></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </footer>
+        </div>
       </div>
-  </div>
-      <div class="footer-menu grid">
-          <h3>Quick Links</h3>
-          <ul>
-          <li><a class="fs-100 fs-montserrat text-black" href="/index.html">Home</a></li>
-          <li><a class="fs-100 fs-montserrat text-black" href="/shop.html">Shop</a></li>
-          <li><a class="fs-100 fs-montserrat text-black" href="/about.html">Abouts Us</a></li>
-          <li><a class="fs-100 fs-montserrat text-black" href="/blog.html">Blog</a></li>
-          <li><a class="fs-100 fs-montserrat text-black" href="/contactus.html">Contact Us</a></li>
-          </ul>
-      </div>
-      <div class="contact grid">
-          <h3 class="fs-poppins fs-200 bold-800">Contact</h3>
-          <p class="fs-montserrat">+99 (0) 101 0000 888 Patricie C. Amedee 4401 Waldeck 
-              Street Grapevine Nashville, Tx 76051
-          </p>
-      </div>
-      <div class="emails grid">
-          <h3 class="fs-poppins fs-200 bold-800">Subscrib To Our Email</h3>
-          <p class="updates fs-poppins fs-300 bold-800">For Latest News & Updates</p>
-      
-      <div class="inputField flex bg-gray">
-          <input type="email" placeholder="Enter Your Email"
-          class="fs-montserrat bg-gray">
-          <button class="bg-red text-white fs-poppins fs-5">Subscribe</button>
-      </div>
-  </div>
-</section>
+    </div>
 
-<!-- =================== Footer Section========================== -->
+    <!-- ============== Scroll Up ==================== -->
+    <div class="button-content">
+      <div id="chat" class="show"><i class="uil uil-comment-message"></i></div>
+      <div id="scrollUp"><i class="uil uil-arrow-up"></i></div>
+    </div>
 
-
-<!-- =================== CopyRight Section========================== -->
-
-<section class="copyRight">
-  <p class="c-font fs-montserrat fs-100">@ 2022 Store. All rights reserved</p>
-  <p class="fs-montserrat fs-100 text-align p-top">Privacy Policy Term condition</p>
-</section>
-
-</section>
-</body>
+    <script src="js/base.js"></script>
+    <script src="js/shop.js"></script>
+    <script src="js/filtre.js"></script>
+  </body>
 </html>

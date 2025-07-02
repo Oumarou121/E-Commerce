@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account - Niger.net</title>
+    <title>Contact - Niger.net</title>
     <link rel="stylesheet" href="css/base.css?v=1.0" />
-    <link rel="stylesheet" href="css/account.css" />
+    <link rel="stylesheet" href="css/contact.css" />
 
     <!--============Icon Cdn==============-->
     <link
@@ -100,13 +100,16 @@
                 </div>
               </li>
               <li><a href="blogs.html">BLOG</a></li>
+              <!-- <li><a href="#">ABOUT US</a></li> -->
               <li><a href="contact.html">CONTACT US</a></li>
             </ul>
           </nav>
 
           <div class="header-action-right flex fs-body-large">
             <div id="showSearch" class="header-action-icon">
+              <!-- <a class="search-active" href="#"> -->
               <i class="uil uil-search"></i>
+              <!-- </a> -->
             </div>
             <div class="header-action-icon">
               <a href="wishlist.html"><i class="uil uil-heart"></i></a>
@@ -118,7 +121,9 @@
               </a>
             </div>
             <div id="showMenu" class="header-action-icon">
+              <!-- <a href="#"> -->
               <i class="uil uil-align-justify"></i>
+              <!-- </a> -->
             </div>
           </div>
         </div>
@@ -166,38 +171,88 @@
         </svg>
       </header>
 
-      <main id="account-page">
-        <section class="account-feature">
+      <main id="main">
+        <section class="contact-feature mb-40">
           <div class="custom-container">
             <a href="index.html">Home</a> <span>/</span>
-            <span class="text-red">Account</span>
+            <span class="text-red">Contact</span>
           </div>
         </section>
+
         <div class="custom-container">
-          <h1>
-            My Account
-            <span id="logout" class="logout-link">Logout</span>
-          </h1>
+          <div class="section-title">
+            <h2>We're always eager to hear from you!</h2>
+            <p>
+              You can call us in working time or visit our office. All mails
+              will get the response within 24 hours. Love to hear from you!
+            </p>
+          </div>
 
-          <hr class="divider-small" />
+          <div class="contact-us-area">
+            <div class="single-contact">
+              <div class="single-contact-icon">
+                <i class="uil uil-map-marker-alt"></i>
+              </div>
 
-          <div class="grid">
-            <div class="grid-item two-thirds">
-              <h2 class="section-title">Order History</h2>
-              <div id="last-order-content" class="last-order"></div>
-              <p id="nbr-orders"></p>
+              <div class="single-contact-content">
+                <h3>ADDRESS</h3>
+
+                <p class="width-1">
+                  1800 Abbot Kinney Blvd. Unit D &amp; E Venice
+                </p>
+              </div>
             </div>
 
-            <div class="grid-item one-third">
-              <h2 class="section-title">Account Details</h2>
-              <h3 id="name" class="account-name"></h3>
-              <address id="address" class="account-address"></address>
-              <p>
-                <a id="nbr-address" href="addresses.html"></a>
-              </p>
-              <p>
-                <a id="messages-link" href="messages.html"></a>
-              </p>
+            <div class="single-contact">
+              <div class="single-contact-icon">
+                <i class="uil uil-phone"></i>
+              </div>
+              <div class="single-contact-content">
+                <h3>Contact</h3>
+                <p>
+                  Mobile: <span> (+88) – 1990 – 6886 </span> <br />
+                  <!-- Hotline: <span>1800 – 1102 </span> <br /> -->
+                  Mail: <span>contact@drou.com</span>
+                </p>
+              </div>
+            </div>
+
+            <div class="single-contact">
+              <div class="single-contact-icon">
+                <i class="uil uil-clock"></i>
+              </div>
+
+              <div class="single-contact-content">
+                <h3>HOUR OF OPERATION</h3>
+
+                <p>
+                  Monday – Friday : 09:00 – 20:00 <br />
+                  Sunday &amp; Saturday: 10:30 – 22:00
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-us-maps">
+            <div id="map"></div>
+          </div>
+
+          <div class="contact-us-form">
+            <h3>Ask us anything here</h3>
+            <div class="form-content">
+              <div class="form-top">
+                <input id="name" type="text" placeholder="Name" />
+                <input id="email" type="email" placeholder="Email" />
+              </div>
+              <input id="subject" type="text" placeholder="Subject" />
+              <textarea id="message" placeholder="Message"></textarea>
+              <div id="error-message" class="error text-red">
+                <svg class="error-icon" width="12px" height="12px">
+                  <use href="#warning" />
+                </svg>
+                <span>Veillez remplir tous les champs</span>
+              </div>
+              <button id="submit-message">Send message</button>
             </div>
           </div>
         </div>
@@ -343,7 +398,29 @@
       <div id="scrollUp"><i class="uil uil-arrow-up"></i></div>
     </div>
 
+    <script>
+      function initMap() {
+        const location = { lat: 13.5126, lng: 2.1126 };
+
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 12,
+          center: location,
+        });
+
+        const marker = new google.maps.Marker({
+          position: location,
+          map: map,
+          title: "Niamey, Niger",
+        });
+      }
+    </script>
+    <!--N'oublie pas de chercher ta propre cle google maps sur google console api-->
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3mMuvl8IUlviRZiizBiX7uhsdIqunx94&callback=initMap"
+    ></script>
     <script src="js/base.js"></script>
-    <script src="js/account.js"></script>
+    <script src="js/contact.js"></script>
   </body>
 </html>

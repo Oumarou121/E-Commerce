@@ -1,223 +1,186 @@
-/* =============Detail Feature Section */
-
-.shop-feature{
-    width: 100vw;
-    place-items: center;
-    padding: 3rem 0;
-    display: grid;
-    /* text-decoration: underline; */
+.track-feature {
+  background-color: #f4f4f4;
+  margin-bottom: 80px;
 }
 
-
-.product-list{
-    display: grid;
+.track-feature .custom-container {
+  padding: 50px 0;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
-.shop-product{
-    display: grid;
-}
-/* =========Detail Section================== */
-
-.custom-hr {
-    border: 0;
-    height: 1px;
-    background-color: hsl(var(--clr-gray)); /* Couleur de la ligne */
-    width: 100%; /* Largeur de la ligne */
-    margin: 0 0; /* Espacement autour de la ligne */
+#track-list {
+  display: flex;
+  margin: 80px 0;
+  justify-content: center;
+  flex-wrap: nowrap;
+  transition: all 0.3s ease;
 }
 
-.custom-hr1 {
-    border: 0;
-    height: 1px;
-    background-color: hsl(var(--clr-black)); /* Couleur de la ligne */
-    width: 100%; /* Largeur de la ligne */
-    margin: 0 0; /* Espacement autour de la ligne */
+#track-list li {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin: 0 20px;
+  transition: all 0.3s ease;
+  text-align: center;
 }
 
-/* ================================== */
-
-/* ================================== */
-
-/* color: hsl(var(--clr-black) / 0.8); */
-
-.first{
-    font-family: 'Poppins', sans-serif;
+#track-list li .icon {
+  font-size: 35px;
+  margin: 0 60px;
+  transition: color 0.3s ease;
 }
 
-.exit{
-    /* padding: 10px 0; */
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+#track-list li .text {
+  font-size: 14px;
+  font-weight: 600;
+  transition: opacity 0.3s ease;
 }
 
-.exit i{
-    font-size: 2rem;
+#track-list li .progress {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #e52e06;
+  margin: 14px 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  position: relative;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+#track-list li .progress .uil {
+  display: none;
+}
 
-/* ======================================= */
+#track-list li .progress p {
+  font-size: 13px;
+}
 
-/* .head{
-    text-align: center;
+#track-list li.active .progress .uil {
+  display: block;
 }
-.head_1{
-    font-size: 30px;
-    font-weight: 600;
-    color: #333;
+
+#track-list li.active .progress p {
+  display: none;
 }
-.head_1 span{
-    color: #ff4732;
-}
-.head_2{
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-    margin-top: 3px;
-} */
-.second ul{
-    display: flex;
-    margin: 80px 0;
-    justify-content: center;
-}
-.second ul li{
-    list-style: none;
-    display: flex;
+
+@media (max-width: 768px) {
+  #track-list {
     flex-direction: column;
     align-items: center;
-}
-.second ul li .icon{
-    font-size: 35px;
-    color: #ff4732;
-    margin: 0 60px;
-}
-.second ul li .text{
-    font-size: 14px;
-    font-weight: 600;
-    color: #ff4732;
+  }
+
+  #track-list li {
+    flex-direction: row;
+    margin: 15px 0;
+  }
+
+  #track-list li .icon {
+    font-size: 30px;
+  }
+
+  #track-list li .text {
+    font-size: 12px;
+  }
+
+  #track-list li .progress p {
+    font-size: 10px;
+  }
+
+  #track-list li .progress {
+    margin: 14px 14px 14px 0;
+  }
 }
 
-h2{
-    color: #ff4732;
+.txt-yellow {
+  color: #f1c40f;
 }
 
-.second ul li .text1{
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
+.txt-light-blue {
+  color: #3498db;
 }
 
-/* Progress Div Css  */
-
-.second ul li .progress{
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: rgba(68, 68, 68, 0.781);
-    margin: 14px 0;
-    display: grid;
-    place-items: center;
-    color: #fff;
-    position: relative;
-    /* cursor: pointer; */
-}
-.progress::after{
-    content: " ";
-    position: absolute;
-    width: 125px;
-    height: 5px;
-    background-color: rgba(68, 68, 68, 0.781);
-    right: 30px;
-}
-.one::after{
-    width: 0;
-    height: 0;
+.txt-blue {
+  color: #004466;
 }
 
-.second ul li .progress .uil{
-    display: none;
-}
-.second  ul li .progress p{
-    font-size: 13px;
+.txt-green {
+  color: #2ecc71;
 }
 
-/* Active Css  */
-
-.second ul li .active{
-    background-color: #ff4732;
-    display: grid;
-    place-items: center;
-}
-.second  li .active::after{
-    background-color: #ff4732;
-}
-.second  ul li .active p{
-    display: none;
-}
-.second  ul li .active .uil{
-    /* font-size: 20px; */
-    display: flex;
+.txt-purple {
+  color: #9b59b6;
 }
 
-i{
-    font-size: 20px;
+.txt-red {
+  color: #e74c3c;
 }
 
-/* Responsive Css  */
+.txt-orange {
+  color: #e67e22;
+}
 
-/* @media (max-width: 980px) { */
-    .second ul{
-        flex-direction: column;
-        display: grid;
-        justify-content: center;
-        margin: 20px 0;
-    }
-    .second ul li{
-        flex-direction: row;
-    }
-    .second ul li .progress{
-        margin: 0 30px;
-    }
-    .progress::after{
-        width: 5px;
-        height: 55px;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: -1;
-    }
-    .one::after{
-        height: 0;
-    }
-    .second ul li .icon{
-        margin: 15px 0;
-    }
-/* } */
+.txt-dark-red {
+  color: #c0392b;
+}
 
-/* @media (max-width:600px) {
-    .head .head_1{
-        font-size: 24px;
-    }
-    .head .head_2{
-        font-size: 16px;
-    }
-} */
+.txt-gray {
+  color: #95a5a6;
+}
 
+.txt-dark-green {
+  color: #27ae60;
+}
+
+.txt-light-gray {
+  color: #ecf0f1;
+}
+
+.txt-brown {
+  color: #8d6e63;
+}
 
 .custom-style {
-    background: white;
-    border-radius: 15px;
-    width: 50%;
-    height: 50%;
-    font-size: 0;
+  background: white;
+  border-radius: 15px;
+  width: 50%;
+  height: 50%;
+  font-size: 0;
 }
 
-li {
-    transition: opacity 0.5s ease; /* Transition sur 0.5s pour l'opacité */
-    display: none; /* Masque l'élément au départ */
+.track-item .uil-check::after {
+  content: "";
+  transform: rotate(-90deg);
+  position: absolute;
+  width: 5px;
+  left: 120px;
+  height: 210px;
+  bottom: -300%;
+  background-color: #e52e06;
 }
 
-.masque::after{
-    width: 0;
-    height: 0;
+@media (max-width: 767px) {
+  .track-item .uil-check::after {
+    transform: rotate(-180deg);
+    left: 12px;
+    bottom: -260%;
+    height: 90px;
+  }
+}
+
+#track-list li:last-child::after {
+  display: none;
+}
+
+.track-item {
+  position: relative;
+}
+
+.track-item .progress {
+  z-index: 1;
 }

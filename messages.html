@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account - Niger.net</title>
+    <title>Messagerie - Niger.net</title>
     <link rel="stylesheet" href="css/base.css?v=1.0" />
-    <link rel="stylesheet" href="css/account.css" />
+    <link rel="stylesheet" href="css/messages.css" />
 
     <!--============Icon Cdn==============-->
     <link
@@ -100,13 +100,16 @@
                 </div>
               </li>
               <li><a href="blogs.html">BLOG</a></li>
+              <!-- <li><a href="#">ABOUT US</a></li> -->
               <li><a href="contact.html">CONTACT US</a></li>
             </ul>
           </nav>
 
           <div class="header-action-right flex fs-body-large">
             <div id="showSearch" class="header-action-icon">
+              <!-- <a class="search-active" href="#"> -->
               <i class="uil uil-search"></i>
+              <!-- </a> -->
             </div>
             <div class="header-action-icon">
               <a href="wishlist.html"><i class="uil uil-heart"></i></a>
@@ -118,7 +121,9 @@
               </a>
             </div>
             <div id="showMenu" class="header-action-icon">
+              <!-- <a href="#"> -->
               <i class="uil uil-align-justify"></i>
+              <!-- </a> -->
             </div>
           </div>
         </div>
@@ -166,175 +171,24 @@
         </svg>
       </header>
 
-      <main id="account-page">
-        <section class="account-feature">
-          <div class="custom-container">
-            <a href="index.html">Home</a> <span>/</span>
-            <span class="text-red">Account</span>
-          </div>
-        </section>
-        <div class="custom-container">
-          <h1>
-            My Account
-            <span id="logout" class="logout-link">Logout</span>
-          </h1>
-
-          <hr class="divider-small" />
-
-          <div class="grid">
-            <div class="grid-item two-thirds">
-              <h2 class="section-title">Order History</h2>
-              <div id="last-order-content" class="last-order"></div>
-              <p id="nbr-orders"></p>
+      <main id="messages-page" class="custom-container">
+        <div class="container">
+          <aside class="messages-list">
+            <h2>Messages</h2>
+            <ul id="messages"></ul>
+          </aside>
+          <section class="message-content">
+            <div id="message-display">
+              <h3 id="message-title">Sélectionnez un message</h3>
+              <p id="message-body">Cliquez sur un message pour l'afficher.</p>
+              <p id="message-time"></p>
+              <button id="delete-btn" class="delete-btn" style="display: none">
+                Supprimer
+              </button>
             </div>
-
-            <div class="grid-item one-third">
-              <h2 class="section-title">Account Details</h2>
-              <h3 id="name" class="account-name"></h3>
-              <address id="address" class="account-address"></address>
-              <p>
-                <a id="nbr-address" href="addresses.html"></a>
-              </p>
-              <p>
-                <a id="messages-link" href="messages.html"></a>
-              </p>
-            </div>
-          </div>
+          </section>
         </div>
       </main>
-
-      <div id="shopify-section-footer" class="shopify-section">
-        <div id="section-footer">
-          <footer class="footer-area">
-            <div class="custom-container">
-              <div class="rowFooter">
-                <div>
-                  <div class="footer-widget mb-30">
-                    <h3 class="footer-title">Contact us</h3>
-
-                    <div class="footer-info">
-                      <ul class="footer-block__details-content information">
-                        <li>
-                          <span
-                            >Drou Demo Store <br />
-                            No. 1259 Freedom, New York <br />
-                            United States</span
-                          >
-                        </li>
-                        <li><span>+91-987654321</span></li>
-                        <li><span>demo@exampledemo.com</span></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <div class="footer-widget mb-30">
-                    <h3 class="footer-title">Information</h3>
-
-                    <div class="footer-info-list">
-                      <ul>
-                        <li>
-                          <a href="#">Product Support</a>
-                        </li>
-
-                        <li>
-                          <a href="/checkout">Checkout</a>
-                        </li>
-
-                        <li>
-                          <a href="#">License Policy</a>
-                        </li>
-
-                        <li>
-                          <a href="#">Affiliate</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <div class="footer-widget mb-30">
-                    <h3 class="footer-title">Customer Service</h3>
-
-                    <div class="footer-info-list">
-                      <ul>
-                        <li>
-                          <a href="/pages/about-us">Help Center</a>
-                        </li>
-
-                        <li>
-                          <a href="/pages/about-us">Redeem Voucher</a>
-                        </li>
-
-                        <li>
-                          <a href="contact.html">Contact Us</a>
-                        </li>
-
-                        <li>
-                          <a href="#">Policies &amp; Rules</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <div class="footer-widget mb-30">
-                    <h3 class="footer-title">Download Our App</h3>
-
-                    <div class="app-visa-wrap">
-                      <p>
-                        Download our App and get extra 15% Discount on your
-                        first Order..!
-                      </p>
-
-                      <div class="app-google-img">
-                        <a href=""
-                          ><img
-                            src=" https://cdn.shopify.com/s/files/1/0495/8021/2387/files/app-store.jpg?v=1603274799"
-                            alt=""
-                        /></a>
-                        <a href=""
-                          ><img
-                            src=" https://cdn.shopify.com/s/files/1/0495/8021/2387/files/google-play.jpg?v=1603274809  "
-                            alt=""
-                        /></a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </footer>
-        </div>
-      </div>
-
-      <div id="shopify-section-footer-copy-right" class="shopify-section">
-        <div id="section-footer-copy-right">
-          <footer class="footer-copyright-area">
-            <div class="custom-container">
-              <div class="row">
-                <div>
-                  <p>
-                    Copyright © Team90Degree | Built with Drou by Team90Degree.
-                  </p>
-                </div>
-                <div>
-                  <div class="payment-img">
-                    <a href=""
-                      ><img
-                        src=" https://cdn.shopify.com/s/files/1/0495/8021/2387/files/payment-method.png?v=1603274813  "
-                        alt=""
-                    /></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </footer>
-        </div>
-      </div>
     </div>
 
     <!-- ============== Scroll Up ==================== -->
@@ -344,6 +198,6 @@
     </div>
 
     <script src="js/base.js"></script>
-    <script src="js/account.js"></script>
+    <script src="js/messages.js"></script>
   </body>
 </html>

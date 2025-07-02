@@ -3,426 +3,399 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!--============Google Fonts==============-->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <!--============Google Fonts==============-->
+    <title>Your Shopping Cart - Niger.net</title>
+    <link rel="stylesheet" href="css/base.css?v=1.0" />
+    <link rel="stylesheet" href="css/cart.css" />
 
     <!--============Icon Cdn==============-->
     <link
       rel="stylesheet"
       href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
     />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+
     <!--============Icon Cdn==============-->
 
-    <link rel="stylesheet" href="css/index.css" />
-    <link rel="stylesheet" href="css/shop.css" />
-    <link rel="stylesheet" href="css/cart.css" />
-    <script src="js/index.js" type="module"></script>
-    <!-- <script src="js/shop.js" defer></script> -->
-    <script src="js/cart.js" type="module"></script>
-    <script
-      type="module"
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <title>Ecommerce Website</title>
+    <!--============Google Fonts==============-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!--============Google Fonts==============-->
   </head>
-  <body class="home">
-    <!-- ========================Symbol========================= -->
-
-    <!-- ====================== Header Section================================ -->
-
-    <header class="primary-header container flex">
-      <div class="header-inner-one flex">
-        <div class="logo">
-          <img src="image/logo.png" alt="" />
+  <body>
+    <div id="preloader_active">
+      <div id="loading-center">
+        <div id="loading-center-absolute">
+          <div class="object" id="object_one"></div>
+          <div class="object" id="object_two"></div>
+          <div class="object" id="object_three"></div>
         </div>
+      </div>
+    </div>
 
-        <nav>
-          <ul
-            id="primary-navigation"
-            data-visible="false"
-            class="primary-navigation flex"
-          >
-            <li>
-              <i class="uil mobile-close-btn uil-times-circle"></i>
-              <a class="fs-100 fs-montserrat bold-500" href="/index.html"
-                >Home</a
-              >
-            </li>
+    <!-- ===========Search============= -->
+    <div id="searchBar">
+      <div class="exit">
+        <svg
+          id="closeSearch"
+          xmlns="http://www.w3.org/2000/svg"
+          height="32"
+          viewBox="0 -960 960 960"
+          width="32"
+        >
+          <path
+            fill="black"
+            d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+          />
+        </svg>
+      </div>
 
-            <li>
-              <a class="fs-100 fs-montserrat bold-500" href="/shop.html"
-                >Shop</a
-              >
-            </li>
-            <!--<li><a class="fs-100 fs-montserrat bold-500" href="/product.html">Product</a></li>-->
-            <li>
-              <a class="fs-100 fs-montserrat bold-500" href="/about.html"
-                >Abouts Us</a
-              >
-            </li>
-            <li>
-              <a class="fs-100 fs-montserrat bold-500" href="/blog.html"
-                >Blog</a
-              >
-            </li>
-            <li>
-              <a class="fs-100 fs-montserrat bold-500" href="/contactus.html"
-                >Contact Us</a
-              >
+      <div class="search-results">
+        <input class="searchInput" type="text" placeholder="Search our store" />
+        <div class="result-content">
+          <h3>Products</h3>
+          <ul class="results-list">
+            <li class="result-item search-option">
+              <button>
+                <i class="uil uil-arrow-right"></i>
+              </button>
             </li>
           </ul>
-        </nav>
+        </div>
       </div>
+    </div>
 
-      <div class="header-login flex">
-        <div class="menu-bar">
-          <div class="dropdown1">
-            <div class="dropbtn fs-100 fs-montserrat bold-500 text-black">
-              <i class="uil uil-user"></i> Profil
-            </div>
-            <div class="dropdown-content">
-              <div id="login-show"></div>
-              <div>
-                <a class="bbb text-black uil fs-150" href="/commande.html"
-                  ><i class="uil fs-150 uil-box"></i>Vos Commandes</a
-                >
-              </div>
-              <div>
-                <a class="bbb text-black uil fs-150" href="/favoris.html"
-                  ><i class="uil fs-150 uil-heart-alt"></i>Favoris</a
-                >
-              </div>
-              <div id="logout-btn">
-                <a class="bbb text-red uil fs-150" href="#"
-                  ><i class="uil fs-150 text-red uil-signout"></i>Déconnexion</a
-                >
-              </div>
-            </div>
+    <div class="wrapper">
+      <header id="header" class="myheader">
+        <div
+          id="headerTop"
+          class="headerTop fs-body-small"
+          style="display: none"
+        >
+          <div class="phone">+227 98 66 32 48</div>
+          <div class="location">Store location</div>
+          <div class="log">
+            <a href="#">Log In</a> / <a href="#">Sign Up</a>
           </div>
         </div>
-
-        <i class="uil uil-search"></i>
-        <i
-          id="cart-box"
-          aria-controls="cart-icon"
-          class="uil uil-shopping-bag"
-        ></i>
-      </div>
-      <div class="mobile-open-btn">
-        <i class="uil uil-align-right"></i>
-      </div>
-
-      <!-- Alerte personnalisée -->
-      <div id="customAlertDelete" class="custom-alertDelete">
-        <div class="alert-contentDelete">
-          <span class="close-btn" id="closeAlertDelete">&times;</span>
-          <h2>Alerte !</h2>
-          <p>Voulez-vous vraiment le Supprimer ?</p>
-          <button class="confirmBtn text-white" id="confirmBtnDelete">
-            Confirmer
-          </button>
-        </div>
-      </div>
-
-      <div id="customAdresse" class="custom-alert">
-        <div class="alert-content-adresse">
-          <div class="block">
-            <div id="alert-content" class="alert-content1">
-              <div>
-                <h3>Adresses</h3>
-                <span class="close-btn" id="closeAdresse">&times;</span>
-              </div>
-            </div>
+        <div class="custom-container flex">
+          <div class="logo logo-width-1">
+            <a href="/" class="theme-logo">
+              <img width="165px" src="assets/images/logo/logo1-3.png" alt="" />
+            </a>
           </div>
-          <div id="add" class="confirmer">Ajouter</div>
-        </div>
-      </div>
 
-      <!-- Alerte personnalisée -->
-      <div id="customAlert" class="custom-alert">
-        <div class="alert-content">
-          <!-- <span class="close-btn" id="closeAlert">&times;</span> -->
-          <div class="block">
-            <div>
-              <h3>RÉSUMÉ DE COMMANDE</h3>
-              <span class="close-btn" id="closeAlert">&times;</span>
-            </div>
-            <div class="commande-detail">
-              <div class="top-commande">
-                <p>Total articles (<span class="orderNbr"></span>)</p>
-                <p class="orderTotal"></p>
-              </div>
-              <div class="top-commande">
-                <p>Frais de livraison</p>
-                <p>2,000 FCFA</p>
-              </div>
-              <div>
-                <hr class="custom-hr" />
-              </div>
-              <div class="top-commande">
-                <p>Total</p>
-                <p class="finalTotal"></p>
-              </div>
-            </div>
-
-            <div class="mode">
-              <div class="mode-title">
-                <h3>MODE DE PAIEMENT</h3>
-                <!-- <p class="mode-modifier">MODIFIER</p> -->
-              </div>
-
-              <div class="mode-content">
-                <!-- <i class="uil fs-200 uil-money-bill"></i> -->
-                <ion-icon class="fs-200" name="id-card-outline"></ion-icon>
-                <div>
-                  <h4>
-                    Payez plus tard à la livraison par Virtual Wallet ou par
-                    cash
-                  </h4>
-                  <p>
-                    Paiement au moment de la livraison une fois que votre
-                    commande est livrée
-                  </p>
+          <nav class="navBar" style="display: none">
+            <ul class="flex" role="list">
+              <li><a href="index.html">HOME</a></li>
+              <li id="showCategoryDesktop">
+                <a href="shop.html">SHOP</a>
+                <div class="category-section-desktop">
+                  <ul id="category-list-desktop"></ul>
                 </div>
+              </li>
+              <li><a href="blogs.html">BLOG</a></li>
+              <!-- <li><a href="#">ABOUT US</a></li> -->
+              <li><a href="contact.html">CONTACT US</a></li>
+            </ul>
+          </nav>
+
+          <div class="header-action-right flex fs-body-large">
+            <div id="showSearch" class="header-action-icon">
+              <!-- <a class="search-active" href="#"> -->
+              <i class="uil uil-search"></i>
+              <!-- </a> -->
+            </div>
+            <div class="header-action-icon">
+              <a href="wishlist.html"><i class="uil uil-heart"></i></a>
+            </div>
+            <div class="header-action-icon">
+              <a href="/cart.html">
+                <span class="uil uil-shopping-bag"></span>
+                <span class="total-pro bigcounter">5</span>
+              </a>
+            </div>
+            <div id="showMenu" class="header-action-icon">
+              <!-- <a href="#"> -->
+              <i class="uil uil-align-justify"></i>
+              <!-- </a> -->
+            </div>
+          </div>
+        </div>
+
+        <div id="fond" class="fond">
+          <nav id="links-container" class="links-container">
+            <ul class="flex">
+              <div id="hiddenLink" class="category-title">
+                <h2>PAGES</h2>
+                <i class="uil uil-times"></i>
+              </div>
+              <li><a href="index.html">Home</a></li>
+              <li>
+                <div id="showCategory" href="#">SHOP</div>
+              </li>
+
+              <li><a href="blogs.html">BLOG</a></li>
+              <li><a href="contact.html">CONTACTS US</a></li>
+              <li><a href="account.html">PROFILE</a></li>
+              <li>
+                <a href="login.html">Log In</a> <span>/</span>
+                <a href="register.html">Sign Up</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <div id="fondCategory" class="fond">
+          <div id="category" class="category-section">
+            <div id="hiddenCategory" class="category-title">
+              <h2>CATEGORIES</h2>
+              <i class="uil uil-times"></i>
+            </div>
+            <ul id="category-list"></ul>
+          </div>
+        </div>
+
+        <svg style="display: none">
+          <symbol id="warning" viewBox="0 0 24 24">
+            <path
+              fill="currentColor"
+              d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,16a1,1,0,1,1,1-1A1,1,0,0,1,12,18Zm1-5a1,1,0,0,1-2,0V7a1,1,0,0,1,2,0Z"
+            />
+          </symbol>
+        </svg>
+      </header>
+
+      <main id="main">
+        <section class="cart-feature mb-40">
+          <div class="custom-container">
+            <a href="index.html">Home</a> <span>/</span>
+            <span class="text-red">Your Shopping Cart</span>
+          </div>
+        </section>
+
+        <div class="cart-content custom-container">
+          <div id="cart-content" class="cart-first"></div>
+
+          <div id="cart-second" class="cart-second">
+            <!-- <div class="cart-btn">Update Cart</div> -->
+            <div class="cart-btn">
+              <a href="shop.html">Continue Shopping</a>
+            </div>
+            <div id="clear-cart" class="cart-btn">Clear Cart</div>
+          </div>
+
+          <div id="cart-thrid" class="cart-thrid">
+            <!-- <div class="pick_delivery_date mb-50">
+              <h3>Pick a delivery date and Time</h3>
+              <div class="form-box">
+                <input
+                  id="date"
+                  class="form-input"
+                  type="date"
+                  value=""
+                  class="hasDatepicker"
+                />
+                <input
+                  id="time"
+                  class="form-input"
+                  type="time"
+                  placeholder="Write delivery time"
+                  value=""
+                />
+              </div>
+              <p class="m-0">
+                Pick delivery date and time as you choose. Delivery Time takes
+                place between 12PM - 4PM MON-FRI AND 8AM-11AM SAT.
+              </p>
+            </div> -->
+            <div class="cart-summary">
+              <h2 class="cart-summary-title">Cart Totals</h2>
+              <table class="cart-summary-table">
+                <tbody>
+                  <tr class="cart-subtotal">
+                    <th>Subtotal</th>
+                    <td>
+                      <span id="sub-total"></span>
+                    </td>
+                  </tr>
+                  <tr class="cart-subtotal">
+                    <th>Shipping</th>
+                    <td>
+                      <span id="shipping-total"></span>
+                    </td>
+                  </tr>
+                  <tr class="order-total">
+                    <th>Total</th>
+                    <td>
+                      <strong>
+                        <span id="total"></span>
+                      </strong>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="cart-actions">
+                <input type="checkbox" id="cart-terms" />
+                <label for="cart-terms"
+                  >I agree with the terms and conditions</label
+                >
+                <button type="submit" class="checkout-button" disabled>
+                  <a href="checkout.html">Proceed to Checkout</a>
+                </button>
               </div>
             </div>
+          </div>
+        </div>
+      </main>
 
-            <div class="adresse">
-              <div class="adresse-title">
-                <h3>ADRESSE</h3>
-                <p id="adresse" class="adresse-modifier">MODIFIER</p>
-              </div>
+      <div id="shopify-section-footer" class="shopify-section">
+        <div id="section-footer">
+          <footer class="footer-area">
+            <div class="custom-container">
+              <div class="rowFooter">
+                <div>
+                  <div class="footer-widget mb-30">
+                    <h3 class="footer-title">Contact us</h3>
 
-              <div class="adresse-content">
-                <h4 class="userName"></h4>
-                <p class="userAdresse"></p>
-              </div>
-            </div>
-
-            <div class="livraison">
-              <div class="livraison-title">
-                <h3>LIVRAISON</h3>
-                <p class="livraison-modifier">MODIFIER</p>
-              </div>
-
-              <div class="livraison-content">
-                <div class="content">
-                  <ion-icon class="fs-200" name="cart-outline"></ion-icon>
-                  <div>
-                    <h4>Livraison à domicile</h4>
-                    <p>
-                      Livraison entre le <strong id="debut"></strong> et le
-                      <strong id="fin"></strong>
-                    </p>
+                    <div class="footer-info">
+                      <ul class="footer-block__details-content information">
+                        <li>
+                          <span
+                            >Drou Demo Store <br />
+                            No. 1259 Freedom, New York <br />
+                            United States</span
+                          >
+                        </li>
+                        <li><span>+91-987654321</span></li>
+                        <li><span>demo@exampledemo.com</span></li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
 
-                <div class="content-item"></div>
+                <div>
+                  <div class="footer-widget mb-30">
+                    <h3 class="footer-title">Information</h3>
+
+                    <div class="footer-info-list">
+                      <ul>
+                        <li>
+                          <a href="#">Product Support</a>
+                        </li>
+
+                        <li>
+                          <a href="/checkout">Checkout</a>
+                        </li>
+
+                        <li>
+                          <a href="#">License Policy</a>
+                        </li>
+
+                        <li>
+                          <a href="#">Affiliate</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="footer-widget mb-30">
+                    <h3 class="footer-title">Customer Service</h3>
+
+                    <div class="footer-info-list">
+                      <ul>
+                        <li>
+                          <a href="/pages/about-us">Help Center</a>
+                        </li>
+
+                        <li>
+                          <a href="/pages/about-us">Redeem Voucher</a>
+                        </li>
+
+                        <li>
+                          <a href="contact.html">Contact Us</a>
+                        </li>
+
+                        <li>
+                          <a href="#">Policies &amp; Rules</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="footer-widget mb-30">
+                    <h3 class="footer-title">Download Our App</h3>
+
+                    <div class="app-visa-wrap">
+                      <p>
+                        Download our App and get extra 15% Discount on your
+                        first Order..!
+                      </p>
+
+                      <div class="app-google-img">
+                        <a href=""
+                          ><img
+                            src=" https://cdn.shopify.com/s/files/1/0495/8021/2387/files/app-store.jpg?v=1603274799"
+                            alt=""
+                        /></a>
+                        <a href=""
+                          ><img
+                            src=" https://cdn.shopify.com/s/files/1/0495/8021/2387/files/google-play.jpg?v=1603274809  "
+                            alt=""
+                        /></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div id="confirmer" class="confirmer">CONFIRMER LA COMMANDE</div>
+          </footer>
         </div>
       </div>
-    </header>
 
-    <!-- ======================End Header Section================================ -->
-
-    <!-- ======================Cart Feature Section================================ -->
-
-    <main id="main">
-      <section class="shop-feature bg-gray grid">
-        <div>
-          <p class="fs-montserrat text-black">
-            Home <span aria-haspopup="true" class="margin"></span>Cart
-          </p>
-        </div>
-        <h2 class="fs-poppins fs-300 bold-700">Cart</h2>
-      </section>
-
-      <!-- ======================Cart Feature Section================================ -->
-
-      <section class="main">
-        <div class="cart">
-          <ul class="cart-items">
-            <div class="shopping flex">
-              <p>Shopping Basket</p>
+      <div id="shopify-section-footer-copy-right" class="shopify-section">
+        <div id="section-footer-copy-right">
+          <footer class="footer-copyright-area">
+            <div class="custom-container">
+              <div class="row">
+                <div>
+                  <p>
+                    Copyright © Team90Degree | Built with Drou by Team90Degree.
+                  </p>
+                </div>
+                <div>
+                  <div class="payment-img">
+                    <a href=""
+                      ><img
+                        src=" https://cdn.shopify.com/s/files/1/0495/8021/2387/files/payment-method.png?v=1603274813  "
+                        alt=""
+                    /></a>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <!-- Message de panier vide -->
-            <div class="cart vide bold-800 flex" id="emptyCartMessage">
-              <i class="uil uil-shopping-cart-alt"></i>
-              <p>Cart Is Empty</p>
-            </div>
-
-            <!-- Représentation d'un article -->
-            <!-- <li class="cart-item" data-unit-price="125000">
-                    <div class="image">
-                        <img src="image/vivo1.png" alt="SMARTPHONE VIVO Y03">
-                    </div>
-                    
-                    <div class="name text-black fs-100">
-                        SMARTPHONE VIVO Y03 4/64 / VERT
-                    </div>
-                    <div class="Price text-black">125,000 FCFA</div>
-                    <div class="quantity">
-                        <button class="btn minus" type="button">
-                            <i class="uil uil-minus"></i>
-                        </button>
-                        <input type="text" value="1" class="qtyInput" readonly>
-                        <button class="btn plus" type="button">
-                            <i class="uil uil-plus"></i>
-                        </button>
-                    </div>
-                    <div class="totalPrice text-black">125,000 FCFA</div>
-                    <div class="delete text-red">
-                        <i class="uil uil-trash"></i>
-                    </div>
-                </li> -->
-
-            <!-- Autres articles peuvent être ajoutés ici de la même manière -->
-          </ul>
-
-          <!-- Affichage du total global -->
-          <div class="total">
-            <span class="label">Total</span>
-            <span class="value text-red" id="cartTotal">0 FCFA</span>
-          </div>
-
-          <div class="buttons">
-            <button id="exit">
-              <span class="span1">
-                <i class="uil uil-angle-left"></i>
-              </span>
-              Retourner
-            </button>
-            <button id="Commander">
-              Commander
-              <span class="span2">
-                <i class="uil uil-angle-right"></i>
-              </span>
-            </button>
-          </div>
+          </footer>
         </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- ============================Cart Main Section======================= -->
+    <!-- ============== Scroll Up ==================== -->
+    <div class="button-content">
+      <div id="chat" class="show"><i class="uil uil-comment-message"></i></div>
+      <div id="scrollUp"><i class="uil uil-arrow-up"></i></div>
+    </div>
 
-      <!-- =================== Brands Section========================== -->
-
-      <section class="brands grid">
-        <div>
-          <img src="image/br-1.png" alt="" />
-        </div>
-        <div>
-          <img src="image/br-2.png" alt="" />
-        </div>
-        <div>
-          <img src="image/br-3.png" alt="" />
-        </div>
-        <div>
-          <img src="image/br-4.png" alt="" />
-        </div>
-        <div>
-          <img src="image/br-5.png" alt="" />
-        </div>
-      </section>
-
-      <!-- =================== Brands Section========================== -->
-
-      <!-- =================== Footer Section========================== -->
-
-      <section class="footer grid">
-        <div class="footer-logo grid">
-          <img src="image/logo.png" alt="" />
-          <p class="fs-montserrat fs-100">
-            There are many variations passages of Lorem Ipsum available, but the
-            majority have
-          </p>
-          <div class="social-media flex">
-            <i class="uil uil-facebook"></i>
-            <i class="uil uil-instagram"></i>
-            <i class="uil uil-twitter"></i>
-            <i class="uil uil-linkedin"></i>
-          </div>
-        </div>
-        <div class="footer-menu grid">
-          <h3>Quick Links</h3>
-          <ul>
-            <li>
-              <a class="fs-100 fs-montserrat text-black" href="/index.html"
-                >Home</a
-              >
-            </li>
-            <li>
-              <a class="fs-100 fs-montserrat text-black" href="/shop.html"
-                >Shop</a
-              >
-            </li>
-            <li>
-              <a class="fs-100 fs-montserrat text-black" href="/about.html"
-                >Abouts Us</a
-              >
-            </li>
-            <li>
-              <a class="fs-100 fs-montserrat text-black" href="/blog.html"
-                >Blog</a
-              >
-            </li>
-            <li>
-              <a class="fs-100 fs-montserrat text-black" href="/contactus.html"
-                >Contact Us</a
-              >
-            </li>
-          </ul>
-        </div>
-        <div class="contact grid">
-          <h3 class="fs-poppins fs-200 bold-800">Contact</h3>
-          <p class="fs-montserrat">
-            +99 (0) 101 0000 888 Patricie C. Amedee 4401 Waldeck Street
-            Grapevine Nashville, Tx 76051
-          </p>
-        </div>
-        <div class="emails grid">
-          <h3 class="fs-poppins fs-200 bold-800">Subscrib To Our Email</h3>
-          <p class="updates fs-poppins fs-300 bold-800">
-            For Latest News & Updates
-          </p>
-
-          <div class="inputField flex bg-gray">
-            <input
-              type="email"
-              placeholder="Enter Your Email"
-              class="fs-montserrat bg-gray"
-            />
-            <button class="bg-red text-white fs-poppins fs-50">
-              Subscribe
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- =================== Footer Section========================== -->
-
-      <!-- =================== CopyRight Section========================== -->
-
-      <section class="copyRight">
-        <p class="c-font fs-montserrat fs-100">
-          @ 2022 Store. All rights reserved
-        </p>
-        <p class="fs-montserrat fs-100 text-align p-top">
-          Privacy Policy Term condition
-        </p>
-      </section>
-    </main>
+    <script src="js/base.js"></script>
+    <script src="js/cart.js"></script>
   </body>
 </html>

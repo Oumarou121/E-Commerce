@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account - Niger.net</title>
+    <title>Blogs - Niger.net</title>
     <link rel="stylesheet" href="css/base.css?v=1.0" />
-    <link rel="stylesheet" href="css/account.css" />
+    <link rel="stylesheet" href="css/blogs.css" />
 
     <!--============Icon Cdn==============-->
     <link
@@ -28,6 +28,7 @@
     <!--============Google Fonts==============-->
   </head>
   <body>
+    <!-- ============Preloader============ -->
     <div id="preloader_active">
       <div id="loading-center">
         <div id="loading-center-absolute">
@@ -100,13 +101,16 @@
                 </div>
               </li>
               <li><a href="blogs.html">BLOG</a></li>
+              <!-- <li><a href="#">ABOUT US</a></li> -->
               <li><a href="contact.html">CONTACT US</a></li>
             </ul>
           </nav>
 
           <div class="header-action-right flex fs-body-large">
             <div id="showSearch" class="header-action-icon">
+              <!-- <a class="search-active" href="#"> -->
               <i class="uil uil-search"></i>
+              <!-- </a> -->
             </div>
             <div class="header-action-icon">
               <a href="wishlist.html"><i class="uil uil-heart"></i></a>
@@ -118,7 +122,9 @@
               </a>
             </div>
             <div id="showMenu" class="header-action-icon">
+              <!-- <a href="#"> -->
               <i class="uil uil-align-justify"></i>
+              <!-- </a> -->
             </div>
           </div>
         </div>
@@ -155,49 +161,49 @@
             <ul id="category-list"></ul>
           </div>
         </div>
-
-        <svg style="display: none">
-          <symbol id="warning" viewBox="0 0 24 24">
-            <path
-              fill="currentColor"
-              d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,16a1,1,0,1,1,1-1A1,1,0,0,1,12,18Zm1-5a1,1,0,0,1-2,0V7a1,1,0,0,1,2,0Z"
-            />
-          </symbol>
-        </svg>
       </header>
 
-      <main id="account-page">
-        <section class="account-feature">
+      <main id="main">
+        <section class="blogs-feature mb-40">
           <div class="custom-container">
             <a href="index.html">Home</a> <span>/</span>
-            <span class="text-red">Account</span>
+            <span class="text-red">News</span>
           </div>
         </section>
-        <div class="custom-container">
-          <h1>
-            My Account
-            <span id="logout" class="logout-link">Logout</span>
-          </h1>
 
-          <hr class="divider-small" />
+        <div class="blogs-content custom-container">
+          <div class="left-content">
+            <div class="sidebar-widget">
+              <h4 class="sidebar-title">Search</h4>
+              <div class="search-box">
+                <form>
+                  <input
+                    id="searchBlog"
+                    type="search"
+                    placeholder="Search our blogs"
+                  />
+                  <button id="search-btn" type="button">
+                    <i class="uil uil-search"></i>
+                  </button>
+                </form>
+              </div>
 
-          <div class="grid">
-            <div class="grid-item two-thirds">
-              <h2 class="section-title">Order History</h2>
-              <div id="last-order-content" class="last-order"></div>
-              <p id="nbr-orders"></p>
+              <div id="tags-list" class="tags-list">
+                <ul></ul>
+              </div>
             </div>
 
-            <div class="grid-item one-third">
-              <h2 class="section-title">Account Details</h2>
-              <h3 id="name" class="account-name"></h3>
-              <address id="address" class="account-address"></address>
-              <p>
-                <a id="nbr-address" href="addresses.html"></a>
-              </p>
-              <p>
-                <a id="messages-link" href="messages.html"></a>
-              </p>
+            <!-- <div class="sidebar-widget">
+              <h4 class="sidebar-title">Tags</h4>
+            </div> -->
+          </div>
+          <div class="right-content">
+            <div id="blogs-list" class="blogs-list"></div>
+
+            <div class="blogs-pagi-content">
+              <div class="blogs-pagi">
+                <ul></ul>
+              </div>
             </div>
           </div>
         </div>
@@ -344,6 +350,7 @@
     </div>
 
     <script src="js/base.js"></script>
-    <script src="js/account.js"></script>
+    <script src="js/blogs.js"></script>
+    <!-- <script src="js/filtre.js"></script> -->
   </body>
 </html>

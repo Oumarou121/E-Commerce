@@ -1,294 +1,512 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!--============Google Fonts==============-->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-    <!--============Google Fonts==============-->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="title"></title>
+    <link rel="stylesheet" href="css/base.css?v=1.0" />
+    <link rel="stylesheet" href="css/product.css?v=1.0" />
 
     <!--============Icon Cdn==============-->
     <link
       rel="stylesheet"
       href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
     />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+
     <!--============Icon Cdn==============-->
 
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/product.css">
-    <script src="js/index.js" type="module"></script>
-    <script src="js/product.js" type="module"></script>
-    <title>Ecommerce Website</title>
-</head>
-<body class="home">
-
-    <!-- ========================Symbol========================= -->
-     
-
-    <!-- ====================== Header Section================================ -->
-
-    <header class="primary-header container flex">
-        <div class="header-inner-one flex">
-            <div class="logo">
-                <img src="image/logo.png" alt="">
-            </div>
-                         
-            <nav>
-                <ul id="primary-navigation" data-visible="false"
-                class="primary-navigation flex">
-                <li>
-                    <i class="uil mobile-close-btn uil-times-circle"></i>
-                    <a class="fs-100 fs-montserrat bold-500" href="/index.html">Home</a>
-                </li>
-                <li><a class="fs-100 fs-montserrat bold-500" href="/shop.html">Shop</a></li>
-                <!-- <li><a class="active fs-100 fs-montserrat bold-500" href="/product.html">Product</a></li> -->
-                <li><a class="fs-100 fs-montserrat bold-500" href="/about.html">Abouts Us</a></li>
-                <li><a class="fs-100 fs-montserrat bold-500" href="/blog.html">Blog</a></li>
-                <li><a class="fs-100 fs-montserrat bold-500" href="/contactus.html">Contact Us</a></li>
-                </ul>
-            </nav>
+    <!--============Google Fonts==============-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!--============Google Fonts==============-->
+  </head>
+  <body>
+    <!-- ============Preloader============ -->
+    <div id="preloader_active">
+      <div id="loading-center">
+        <div id="loading-center-absolute">
+          <div class="object" id="object_one"></div>
+          <div class="object" id="object_two"></div>
+          <div class="object" id="object_three"></div>
         </div>
+      </div>
+    </div>
 
-        <div class="header-login flex">
-            <div class="menu-bar">
-                <div class="dropdown1">
-                    <div class="dropbtn fs-100 fs-montserrat bold-500 text-black"><i class="uil uil-user"></i>  Profil</div>
-                    <div class="dropdown-content">
-                        <div id="login-show"></div>
-                        <div><a class="bbb text-black uil fs-150" href="/commande.html"><i class="uil fs-150 uil-box"></i>Vos Commandes</a></div>
-                        <div><a class="bbb text-black uil fs-150" href="/favoris.html"><i class="uil fs-150 uil-heart-alt"></i>Favoris</a></div>
-                        <div id="logout-btn"><a class="bbb text-red uil fs-150" href="#"><i class="uil fs-150 text-red uil-signout"></i>Déconnexion</a></div>
-                    </div>
-                    </div>
-                </div> 
-    
-                <i class="uil uil-search"></i>
-                <i id="cart-box" aria-controls="cart-icon" class="uil uil-shopping-bag"></i>
-                     
-    
-                <!-- ================================================ -->
-    
-                    <!-- Cart Box -->
-                    <div id="cart-icon" data-visible="false" class="cart-icon">
-                        <div class="shopping flex">
-                            <p>Shopping Basket</p>
-                            <i id="cross-btn" class="uil uil-times"></i>
-                        </div>
-                        <div class="cart bold-800 flex">
-                            <i class="uil uil-shopping-cart-alt"></i>
-                            <p>Cart Is Empty</p>
-                        </div>
-                    </div>
-                <!-- ================================================ -->
-            </div>
-        <div class="mobile-open-btn">
-            <i class="uil uil-align-right"></i>
+    <div class="wrapper">
+      <header id="header" class="myheader">
+        <div
+          id="headerTop"
+          class="headerTop fs-body-small"
+          style="display: none"
+        >
+          <div class="phone">+227 98 66 32 48</div>
+          <div class="location">Store location</div>
+          <div class="log">
+            <a href="#">Log In</a> / <a href="#">Sign Up</a>
+          </div>
         </div>
-    </header>
+        <div class="custom-container flex">
+          <div class="logo logo-width-1">
+            <a href="/" class="theme-logo">
+              <img width="165px" src="assets/images/logo/logo1-3.png" alt="" />
+            </a>
+          </div>
 
-    <!-- ======================End Header Section================================ -->
-    
-    <!-- ======================Shop Feature Section================================ -->
-
-    <section class="shop-feature bg-gray grid">
-        <!-- <div>
-          <p class="fs-montserrat text-black">Home <span aria-haspopup="true" class="margin"></span>Product</p>
-        </div> -->
-        <h2 class="fs-poppins fs-200 bold-700" id="name"></h2>
-      </section>
-  
-      <!-- ======================Shop Feature Section================================ -->
-
-    <!-- ======================Shop Section================================ -->
-
-    <!-- Main Content -->
-
-    <section class="about-section grid">
-        <section class="page-content" id="content">              
-            <div class="images-container">
-                <div class="product-cover">
-                    <img src="" alt="image principale" id="main-image">
-                </div>        
-        
-                <div id="webizoom" class="scroll">
-                    <ul class="product-images" id="thumbnail-list">
-                        <!-- Les vignettes seront ajoutées ici par JavaScript -->
-                    </ul>
+          <nav class="navBar" style="display: none">
+            <ul class="flex" role="list">
+              <li><a href="index.html">HOME</a></li>
+              <li id="showCategoryDesktop">
+                <a href="shop.html">SHOP</a>
+                <div class="category-section-desktop">
+                  <ul id="category-list-desktop"></ul>
                 </div>
-
-                <div class="scroll-box-arrows">
-                    <i class="uil uil-angle-left" id="scroll-left"></i>
-                    <i class="uil uil-angle-right" id="scroll-right"></i>
-                </div>
-            </div>
-        </section> 
-        
-        <div class="about-info">
-            <p class="fs-montserrat fs-50"><strong id="product-reference">Référence : VIVO-Y03-4/64-VR</strong><br><br>
-                <span id="product-description"></span>
-            </p>
-
-            <div class="about-btn">
-                <button class="large-btn bg-red text-white fs-poppins">Shop Now</button>
-            </div>
-        </div>
-
-        <div class="detail-bar">
-            <div class="div-image"><img src="" alt="" id="marque-icon"></div>
-            <div class="prix text-red fs-300 bold-700"> <span class="price" id="product-price"></span></div>
-            <div class="dispo fs-150">Disponibilité : <span class="in-stock text-green" id="product-stock"></span></div>
-            <div class="qty fs-150">
-                <span class="control-label">Quantité</span>
-                <div class="quantity">
-                    <button class="btn minus" type="button" id="decrement">
-                        <i class="uil uil-minus"></i>
-                    </button>
-                    <input type="text" value="1" id="qtyInput" readonly>
-                    <button class="btn plus" type="button" id="increment">
-                        <i class="uil uil-plus"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="buttons">
-                <button id="add-favori">Favoris 
-                    <span class="favori text-red">
-                        <i class="uil uil-heart-alt"></i>
-                    </span>
-                </button>
-                <button id="add-cart">Add To Cart 
-                    <span>
-                        <svg class="" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1"/>
-                        </svg>
-                    </span>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <section class="second">
-        <div>
-            <hr class="custom-hr">
-        </div>
-        <nav>
-            <ul class="bar-nav">
-                <li><a href="#description" class="active" data-tab="description">Description</a></li>
-                <li><a href="#reviews" data-tab="reviews">Reviews</a></li>
+              </li>
+              <li><a href="blogs.html">BLOG</a></li>
+              <li><a href="contact.html">CONTACT US</a></li>
             </ul>
-        </nav>
+          </nav>
 
-        <div class="all">
-            <div class="container1 tab-content" id="description">
-                <h2>Fiche Technique</h2>
-                <table class="specs-table" id="specs-table">
-                    <!-- Les spécifications seront ajoutées ici par JavaScript -->
-                </table>
+          <div class="header-action-right flex fs-body-large">
+            <div id="showSearch" class="header-action-icon">
+              <i class="uil uil-search"></i>
             </div>
-            <div class="container1 tab-content" id="reviews" style="display:none;">
-                <div class="reviews-section" id="reviews-section">
-                    <p>(0 avis clients)</p>
-                    <!-- Les avis seront ajoutés ici par JavaScript -->
-                </div>
+            <div class="header-action-icon">
+              <a href="wishlist.html"><i class="uil uil-heart"></i></a>
             </div>
+            <div class="header-action-icon">
+              <a href="/cart.html">
+                <span class="uil uil-shopping-bag"></span>
+                <span class="total-pro bigcounter">5</span>
+              </a>
+            </div>
+            <div id="showMenu" class="header-action-icon">
+              <i class="uil uil-align-justify"></i>
+            </div>
+          </div>
         </div>
-    </section>
 
-    <section class="third">
-        <div class="title fs-400 bold-500">Similar product</div>
+        <div id="fond" class="fond">
+          <nav id="links-container" class="links-container">
+            <ul class="flex">
+              <div id="hiddenLink" class="category-title">
+                <h2>PAGES</h2>
+                <i class="uil uil-times"></i>
+              </div>
+              <li><a href="index.html">Home</a></li>
+              <li>
+                <div id="showCategory" href="#">SHOP</div>
+              </li>
 
-        <section class="listProduct">
+              <li><a href="blogs.html">BLOG</a></li>
+              <li><a href="contact.html">CONTACTS US</a></li>
+              <li><a href="account.html">PROFILE</a></li>
+              <li>
+                <a href="login.html">Log In</a> <span>/</span>
+                <a href="register.html">Sign Up</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
 
-
-            
-
-            
+        <div id="fondCategory" class="fond">
+          <div id="category" class="category-section">
+            <div id="hiddenCategory" class="category-title">
+              <h2>CATEGORIES</h2>
+              <i class="uil uil-times"></i>
+            </div>
+            <ul id="category-list"></ul>
+          </div>
+        </div>
+      </header>
+      <svg style="display: none">
+        <symbol id="warning" viewBox="0 0 24 24">
+          <path
+            fill="currentColor"
+            d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,16a1,1,0,1,1,1-1A1,1,0,0,1,12,18Zm1-5a1,1,0,0,1-2,0V7a1,1,0,0,1,2,0Z"
+          />
+        </symbol>
+      </svg>
+      <main id="main">
+        <section class="product-feature mb-40">
+          <div class="custom-container">
+            <a href="index.html">Home</a> <span>|</span>
+            <span id="productName" class="productName text-red"></span>
+          </div>
         </section>
 
-    </section>
+        <section class="product-content">
+          <div class="custom-container">
+            <div class="firstContent">
+              <div class="product-left">
+                <div class="" id=" ">
+                  <img
+                    id="ProductPhoto"
+                    class="product-zoom product_variant_image"
+                    data-image-id=""
+                    alt=""
+                    src=""
+                  />
+                </div>
+                <div id="webizoom">
+                  <div id="scroll-left" class="arrow-left">
+                    <i class="uil uil-arrow-left"></i>
+                  </div>
+                  <div class="carousel-container">
+                    <ul class="product-images" id="thumbnail-list"></ul>
+                  </div>
+                  <div id="scroll-right" class="arrow-right">
+                    <i class="uil uil-arrow-right"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="product-right">
+                <h3 id="productName1" class="popup_cart_title"></h3>
+                <div class="product-variant-inventory">
+                  <span class="inventory-title">Availability:</span>
+                  <span id="qty-left" class="text-red"></span>
+                </div>
+                <div class="stock_countdown_progress">
+                  <span class="stock_progress_bar"></span>
+                </div>
+                <div class="product-ref"></div>
+                <div class="productPriceContent">
+                  <div class="price">
+                    <h3 id="productPrice"></h3>
+                  </div>
+                  <div class="last-price-1">
+                    <h4 id="lastProductPrice"></h4>
+                  </div>
+                  <span class="prev-price">
+                    <span id="previewPrice"></span>
+                  </span>
+                </div>
+                <div class="product_additional_information">
+                  <button type="button">
+                    <i class="fa fa-truck" aria-hidden="true"></i>
+                    Shipping
+                  </button>
+                  <button type="button">
+                    <i class="fa fa-comments"></i>
+                    Ask About This product
+                  </button>
+                </div>
+                <div class="action-bar-content">
+                  <div class="action-bar">
+                    <div class="quantity">
+                      <span
+                        class="uil uil-minus"
+                        onclick="updateQuantity(-1)"
+                      ></span>
+                      <input type="text" name="quantity" value="1" readonly />
+                      <span
+                        class="uil uil-plus"
+                        onclick="updateQuantity(1)"
+                      ></span>
+                    </div>
+                    <div class="product-cart-action addToCart">
+                      <button type="submit" class="pro-cart" id="AddToCart">
+                        <span>
+                          <span
+                            class="cart-title"
+                            id="AddToCartText"
+                            onclick="AddToCart(this, true)"
+                            >Add to cart</span
+                          >
+                        </span>
+                      </button>
+                    </div>
+                    <div class="product-cart-action addWishlist">
+                      <button
+                        class="action_btn addWishlist"
+                        onclick="AddToWish(this)"
+                      >
+                        <i class="uil text-black uil-heart"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="product-cart-buy">
+                    <button type="submit" class="pro-cart" id="AddToCart">
+                      <span>
+                        <span class="cart-title" id="AddToCartText"
+                          >Buy It Now</span
+                        >
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="secondContent">
+            <nav>
+              <ul class="bar-nav">
+                <li class="active" data-tab="description">Description</li>
+                <li data-tab="reviews">Reviews</li>
+              </ul>
+            </nav>
 
-    <!-- ======================Shop Section================================ -->
+            <div class="all">
+              <div class="container1 tab-content" id="description">
+                <h2>Fiche Technique</h2>
+                <table class="specs-table" id="specs-table"></table>
+              </div>
+              <div
+                class="container1 tab-content"
+                id="reviews"
+                style="display: none"
+              >
+                <div class="reviews-container">
+                  <div class="reviews-container-top">
+                    <div class="average-rating">
+                      <h2>Rating and Reviews</h2>
+                      <div class="rating-top">
+                        <div class="rating-top-content">
+                          <h2 id="average-rating">4.5</h2>
+                          <p id="total-reviews">1,234 reviews</p>
+                        </div>
+                        <div id="average-rating-stars" class="rating-bar"></div>
+                      </div>
+                      <div class="rating-bars">
+                        <div class="rating-bar">
+                          <span class="star-bars active">★</span>
+                          <span class="star-bars active">★</span>
+                          <span class="star-bars active">★</span>
+                          <span class="star-bars active">★</span>
+                          <span class="star-bars active">★</span>
+                          <progress value="80" max="100"></progress>
+                        </div>
+                        <div class="rating-bar">
+                          <span class="star-bars active">★</span>
+                          <span class="star-bars active">★</span>
+                          <span class="star-bars active">★</span>
+                          <span class="star-bars active">★</span>
+                          <span class="star-bars">★</span>
+                          <progress value="10" max="100"></progress>
+                        </div>
+                        <div class="rating-bar">
+                          <span class="star-bars active">★</span>
+                          <span class="star-bars active">★</span>
+                          <span class="star-bars active">★</span>
+                          <span class="star-bars">★</span>
+                          <span class="star-bars">★</span>
+                          <progress value="5" max="100"></progress>
+                        </div>
+                        <div class="rating-bar">
+                          <span class="star-bars active">★</span>
+                          <span class="star-bars active">★</span>
+                          <span class="star-bars">★</span>
+                          <span class="star-bars">★</span>
+                          <span class="star-bars">★</span>
+                          <progress value="3" max="100"></progress>
+                        </div>
+                        <div class="rating-bar">
+                          <span class="star-bars active">★</span>
+                          <span class="star-bars">★</span>
+                          <span class="star-bars">★</span>
+                          <span class="star-bars">★</span>
+                          <span class="star-bars">★</span>
+                          <progress value="2" max="100"></progress>
+                        </div>
+                      </div>
+                    </div>
 
-    <!-- =================== Brands Section========================== -->
+                    <div class="add-review">
+                      <h2>Ajouter un avis</h2>
+                      <div class="stars">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                      </div>
+                      <input
+                        type="text"
+                        id="user-name"
+                        placeholder="Votre nom"
+                      />
+                      <textarea
+                        id="user-review"
+                        placeholder="Votre avis"
+                      ></textarea>
+                      <div id="error-content" class="error">
+                        <svg class="error-icon" width="12px" height="12px">
+                          <use href="#warning" />
+                        </svg>
+                        <span>Veillez remplir tous les champs</span>
+                      </div>
+                      <button id="submit-review">Soumettre</button>
+                    </div>
+                  </div>
 
-    <section class="brands grid">
-      <div>
-          <img src="image/br-1.png" alt="">
+                  <!-- Liste des avis -->
+                  <div class="reviews-list" id="reviews-section"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="thridContent">
+            <div class="custom-container">
+              <div class="section-title-btn-wrap mb-30">
+                <div class="section-title-1">
+                  <h2>Similar Products</h2>
+                </div>
+              </div>
+
+              <div id="similars-products" class="similars-products grid"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <div id="shopify-section-footer" class="shopify-section">
+        <div id="section-footer">
+          <footer class="footer-area">
+            <div class="custom-container">
+              <div class="rowFooter">
+                <div>
+                  <div class="footer-widget mb-30">
+                    <h3 class="footer-title">Contact us</h3>
+
+                    <div class="footer-info">
+                      <ul class="footer-block__details-content information">
+                        <li>
+                          <span
+                            >Drou Demo Store <br />
+                            No. 1259 Freedom, New York <br />
+                            United States</span
+                          >
+                        </li>
+                        <li><span>+91-987654321</span></li>
+                        <li><span>demo@exampledemo.com</span></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="footer-widget mb-30">
+                    <h3 class="footer-title">Information</h3>
+
+                    <div class="footer-info-list">
+                      <ul>
+                        <li>
+                          <a href="#">Product Support</a>
+                        </li>
+
+                        <li>
+                          <a href="/checkout">Checkout</a>
+                        </li>
+
+                        <li>
+                          <a href="#">License Policy</a>
+                        </li>
+
+                        <li>
+                          <a href="#">Affiliate</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="footer-widget mb-30">
+                    <h3 class="footer-title">Customer Service</h3>
+
+                    <div class="footer-info-list">
+                      <ul>
+                        <li>
+                          <a href="/pages/about-us">Help Center</a>
+                        </li>
+
+                        <li>
+                          <a href="/pages/about-us">Redeem Voucher</a>
+                        </li>
+
+                        <li>
+                          <a href="contact.html">Contact Us</a>
+                        </li>
+
+                        <li>
+                          <a href="#">Policies &amp; Rules</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="footer-widget mb-30">
+                    <h3 class="footer-title">Download Our App</h3>
+
+                    <div class="app-visa-wrap">
+                      <p>
+                        Download our App and get extra 15% Discount on your
+                        first Order..!
+                      </p>
+
+                      <div class="app-google-img">
+                        <a href=""
+                          ><img
+                            src=" https://cdn.shopify.com/s/files/1/0495/8021/2387/files/app-store.jpg?v=1603274799"
+                            alt=""
+                        /></a>
+                        <a href=""
+                          ><img
+                            src=" https://cdn.shopify.com/s/files/1/0495/8021/2387/files/google-play.jpg?v=1603274809  "
+                            alt=""
+                        /></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </footer>
+        </div>
       </div>
-      <div>
-          <img src="image/br-2.png" alt="">
+
+      <div id="shopify-section-footer-copy-right" class="shopify-section">
+        <div id="section-footer-copy-right">
+          <footer class="footer-copyright-area">
+            <div class="custom-container">
+              <div class="row">
+                <div>
+                  <p>
+                    Copyright © Team90Degree | Built with Drou by Team90Degree.
+                  </p>
+                </div>
+                <div>
+                  <div class="payment-img">
+                    <a href=""
+                      ><img
+                        src=" https://cdn.shopify.com/s/files/1/0495/8021/2387/files/payment-method.png?v=1603274813  "
+                        alt=""
+                    /></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </footer>
+        </div>
       </div>
-      <div>
-          <img src="image/br-3.png" alt="">
-      </div>
-      <div>
-          <img src="image/br-4.png" alt="">
-      </div>
-      <div>
-          <img src="image/br-5.png" alt="">
-      </div>
-  </section>
+    </div>
 
-  <!-- =================== Brands Section========================== -->
-
- <!-- =================== Footer Section========================== -->
-
- <section class="footer grid">
-  <div class="footer-logo grid">
-      <img src="image/logo.png" alt="">
-      <p class="fs-montserrat fs-100">There are many variations passages of Lorem Ipsum available,
-          but the majority have
-      </p>
-      <div class="social-media flex">
-          <i class="uil uil-facebook"></i>
-          <i class="uil uil-instagram"></i>
-          <i class="uil uil-twitter"></i>
-          <i class="uil uil-linkedin"></i>
-      </div>
-  </div>
-      <div class="footer-menu grid">
-          <h3>Quick Links</h3>
-          <ul>
-          <li><a class="fs-100 fs-montserrat text-black" href="/index.html">Home</a></li>
-          <li><a class="fs-100 fs-montserrat text-black" href="/shop.html">Shop</a></li>
-          <li><a class="fs-100 fs-montserrat text-black" href="/about.html">Abouts Us</a></li>
-          <li><a class="fs-100 fs-montserrat text-black" href="/blog.html">Blog</a></li>
-          <li><a class="fs-100 fs-montserrat text-black" href="/contactus.html">Contact Us</a></li>
-          </ul>
-      </div>
-      <div class="contact grid">
-          <h3 class="fs-poppins fs-200 bold-800">Contact</h3>
-          <p class="fs-montserrat">+99 (0) 101 0000 888 Patricie C. Amedee 4401 Waldeck 
-              Street Grapevine Nashville, Tx 76051
-          </p>
-      </div>
-      <div class="emails grid">
-          <h3 class="fs-poppins fs-200 bold-800">Subscrib To Our Email</h3>
-          <p class="updates fs-poppins fs-300 bold-800">For Latest News & Updates</p>
-      
-      <div class="inputField flex bg-gray">
-          <input type="email" placeholder="Enter Your Email"
-          class="fs-montserrat bg-gray">
-          <button class="bg-red text-white fs-poppins fs-50">Subscribe</button>
-      </div>
-  </div>
-</section>
-
-<!-- =================== Footer Section========================== -->
-
-
-<!-- =================== CopyRight Section========================== -->
-
-<section class="copyRight">
-  <p class="c-font fs-montserrat fs-100">@ 2022 Store. All rights reserved</p>
-  <p class="fs-montserrat fs-100 text-align p-top">Privacy Policy Term condition</p>
-</section>
-
-
-
-</section>
-</body>
+    <!-- ============== Scroll Up ==================== -->
+    <div class="button-content">
+      <div id="chat" class="show"><i class="uil uil-comment-message"></i></div>
+      <div id="scrollUp"><i class="uil uil-arrow-up"></i></div>
+    </div>
+    <script src="js/base.js"></script>
+    <script src="js/shop.js"></script>
+    <script src="js/product.js"></script>
+    <!-- <script src="js/filtre.js"></script> -->
+  </body>
 </html>

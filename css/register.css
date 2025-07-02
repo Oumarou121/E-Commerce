@@ -1,0 +1,300 @@
+.register-feature {
+  background-color: #f4f4f4;
+  margin-bottom: 80px;
+}
+
+.register-feature .custom-container {
+  padding: 50px 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.register-content {
+  background: #fff none repeat scroll 0 0;
+  box-shadow: 2px 2px 11px #0000001a;
+  padding: 30px 30px 20px;
+  border-radius: 5px;
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+}
+
+.register-text,
+.login-text {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.register-text h2 {
+  color: #333;
+  font-size: 30px;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+}
+
+.register-text p {
+  color: #666;
+  font-size: 15px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+.register-content a,
+.login-content a {
+  color: #303030;
+  font-size: 16px;
+  transition: all 0.15s ease-in-out;
+}
+
+.register-content a:hover,
+.login-content a:hover {
+  color: #e52e06;
+}
+
+.form-group {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  padding-top: calc(0.375rem + 1px);
+  padding-bottom: calc(0.375rem + 1px);
+  margin-bottom: 0;
+  font-size: inherit;
+  line-height: 1.5;
+  font-size: 14px;
+  flex: 0 0 25%;
+  max-width: 25%;
+}
+
+.form-input {
+  position: relative;
+  background: #ebebeb;
+  border: 1px solid #ebebeb;
+  border-radius: 0;
+  height: 35px;
+  padding: 10px;
+  font-size: 14px;
+  color: #495057;
+  display: block;
+  line-height: 1.5;
+  box-shadow: none;
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.form-input:focus {
+  outline: none;
+  background: none;
+}
+
+@media (max-width: 768px) {
+  .form-group {
+    flex-direction: column;
+  }
+
+  .forg .form-input,
+  .logi .form-input {
+    max-width: 100% !important;
+    flex: 0 0 90% !important;
+  }
+  .form-label,
+  .form-input {
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+}
+
+.register-box {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.register-btn {
+  background: #e52e06 none repeat scroll 0 0;
+  border: medium none;
+  color: #fff;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 26px;
+  padding: 13px 30px 12px;
+  text-transform: uppercase;
+}
+
+.register-btn:hover {
+  background: #333;
+}
+
+.account-optional-action {
+  margin: 20px 0 20px 0;
+  text-align: center;
+}
+
+.password-content {
+  flex: 0 0 85%;
+  display: flex;
+  width: 100%;
+}
+
+.password-content .form-input {
+  flex: 1 1 auto;
+}
+
+.password-content .login__eye {
+  flex: 0 0 10%;
+  margin: 8px 0 10px 10px;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.login__eye-icon {
+  width: 20px;
+  height: 20px;
+  fill: #737373;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.text-red {
+  color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.hidden {
+  display: none;
+}
+
+.form-input.error {
+  border: 1px solid red !important;
+}
+
+.error-content {
+  color: #d02e2e;
+  background-color: #fff6f6;
+  border-color: #d02e2e;
+  border-radius: 3px;
+  padding: 6px 12px;
+  border: 1px solid #e52e06;
+  font-size: 0.9em;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.error-content ul {
+  list-style: disc outside;
+  margin-left: 20px;
+}
+
+/* ========================================================================= */
+
+.login-content,
+.forgot-content {
+  background: #fff none repeat scroll 0 0;
+  box-shadow: 2px 2px 11px #0000001a;
+  padding: 30px 30px 20px;
+  border-radius: 5px;
+  max-width: 500px;
+  margin: 0 auto 40px auto;
+}
+
+.login-text h2 {
+  color: #333;
+  font-size: 30px;
+  margin-bottom: 30px;
+  text-transform: capitalize;
+}
+
+.create-action {
+  margin-top: 20px;
+  padding-top: 20px;
+  text-align: center;
+  border-top: 1px solid #ccc;
+}
+
+.forgot-box {
+  text-align: center;
+  color: #303030;
+  font-size: 16px;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.forgot-box span:hover {
+  color: #e52e06;
+}
+
+.logi .form-label {
+  flex: 0 0 25%;
+  max-width: 25%;
+}
+
+.logi .form-input {
+  flex: 0 0 65%;
+  max-width: 65%;
+}
+
+.login-box {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* ==================================================== */
+
+.forgot-box-sub {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forgot-box-sub span {
+  cursor: pointer;
+}
+
+.forgot-box-sub span:hover {
+  color: #e52e06;
+}
+
+.forg .form-label {
+  flex: 0 0 25%;
+  max-width: 25%;
+}
+
+.forg .form-input {
+  flex: 0 0 75%;
+  max-width: 75%;
+}
+
+.forgot-content {
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.forgot-content.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.login-content {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.login-content.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}

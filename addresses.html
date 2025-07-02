@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account - Niger.net</title>
+    <title>Addresses - Niger.net</title>
     <link rel="stylesheet" href="css/base.css?v=1.0" />
-    <link rel="stylesheet" href="css/account.css" />
+    <link rel="stylesheet" href="css/addresses.css" />
 
     <!--============Icon Cdn==============-->
     <link
@@ -100,13 +100,16 @@
                 </div>
               </li>
               <li><a href="blogs.html">BLOG</a></li>
+              <!-- <li><a href="#">ABOUT US</a></li> -->
               <li><a href="contact.html">CONTACT US</a></li>
             </ul>
           </nav>
 
           <div class="header-action-right flex fs-body-large">
             <div id="showSearch" class="header-action-icon">
+              <!-- <a class="search-active" href="#"> -->
               <i class="uil uil-search"></i>
+              <!-- </a> -->
             </div>
             <div class="header-action-icon">
               <a href="wishlist.html"><i class="uil uil-heart"></i></a>
@@ -118,7 +121,9 @@
               </a>
             </div>
             <div id="showMenu" class="header-action-icon">
+              <!-- <a href="#"> -->
               <i class="uil uil-align-justify"></i>
+              <!-- </a> -->
             </div>
           </div>
         </div>
@@ -170,34 +175,119 @@
         <section class="account-feature">
           <div class="custom-container">
             <a href="index.html">Home</a> <span>/</span>
-            <span class="text-red">Account</span>
+            <span class="text-red">Addresses</span>
           </div>
         </section>
         <div class="custom-container">
           <h1>
             My Account
-            <span id="logout" class="logout-link">Logout</span>
+            <span id="addAddress" class="logout-link">Add a New Address</span>
           </h1>
 
           <hr class="divider-small" />
 
           <div class="grid">
             <div class="grid-item two-thirds">
-              <h2 class="section-title">Order History</h2>
-              <div id="last-order-content" class="last-order"></div>
-              <p id="nbr-orders"></p>
+              <a href="account.html">Return to Account Details</a>
             </div>
-
             <div class="grid-item one-third">
-              <h2 class="section-title">Account Details</h2>
-              <h3 id="name" class="account-name"></h3>
-              <address id="address" class="account-address"></address>
-              <p>
-                <a id="nbr-address" href="addresses.html"></a>
-              </p>
-              <p>
-                <a id="messages-link" href="messages.html"></a>
-              </p>
+              <div class="addAddress" style="display: none">
+                <h2 class="section-title">Add a New Address</h2>
+                <div class="form-address">
+                  <div class="column">
+                    <div class="form-group">
+                      <label class="form-label" for="first-name"
+                        >First Name</label
+                      >
+                      <input
+                        type="text"
+                        id="first-name"
+                        placeholder="First Name"
+                        class="form-input"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="last-name"
+                        >Last Name</label
+                      >
+                      <input
+                        type="text"
+                        id="last-name"
+                        placeholder="Last Name"
+                        class="form-input"
+                      />
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="form-group">
+                      <label class="form-label" for="phone-number1"
+                        >Phone Number</label
+                      >
+                      <input
+                        type="text"
+                        id="phone-number1"
+                        placeholder="Phone Number"
+                        class="form-input"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="phone-number2"
+                        >Secondary Phone Number</label
+                      >
+                      <input
+                        type="text"
+                        id="phone-number2"
+                        placeholder="Secondary Phone Number"
+                        class="form-input"
+                      />
+                    </div>
+                  </div>
+                  <div class="select-box">
+                    <label class="form-label" for="region-select">Region</label>
+                    <select id="region-select" required>
+                      <option value="" disabled hidden>
+                        Sélectionnez une région
+                      </option>
+                      <option value="Agadez">Agadez</option>
+                      <option value="Diffa">Diffa</option>
+                      <option value="Dosso">Dosso</option>
+                      <option value="Maradi">Maradi</option>
+                      <option value="Tahoua">Tahoua</option>
+                      <option value="Tillabéri">Tillabéri</option>
+                      <option value="Zinder">Zinder</option>
+                      <option value="Niamey">Niamey</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="district">District</label>
+                    <input
+                      type="text"
+                      id="district"
+                      placeholder="District"
+                      class="form-input"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="street">Street</label>
+                    <input
+                      type="text"
+                      id="street"
+                      placeholder="Street"
+                      class="form-input"
+                    />
+                  </div>
+                  <div class="setDefault">
+                    <input id="address" type="checkbox" />
+                    <label for="address">Set as default address</label>
+                  </div>
+                  <button id="submitAddress" type="submit">
+                    UPDATE ADDRESS
+                  </button>
+                  <div id="cancel"><span>Cancel</span></div>
+                </div>
+              </div>
+              <h2 class="section-title">Your Addresses</h2>
+              <div id="address-list"></div>
             </div>
           </div>
         </div>
@@ -344,6 +434,6 @@
     </div>
 
     <script src="js/base.js"></script>
-    <script src="js/account.js"></script>
+    <script src="js/addresses.js"></script>
   </body>
 </html>

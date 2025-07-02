@@ -1,106 +1,82 @@
-import { deleteAccount } from './firebase.js';
+document.addEventListener("DOMContentLoaded", function () {
+  const statusTranslations = {
+    pending: "En attente d'expédition",
+    shipping: "En cours d'expédition",
+    progress: "En cours de livraison",
+    delivered: "Livré",
+    checking: "En vérification",
+    cancelled: "Annulé",
+    returned: "Retourné",
+    "report-returned": "Retour reporté",
+    "dismiss-delivered": "Livraison rejetée",
+    "report-delivered": "Livraison reportée",
+    "dismiss-returned": "Retour rejeté",
+    postponed: "Commande reportée",
+  };
+  const logout = document.getElementById("logout");
+  const name = document.getElementById("name");
+  const address = document.getElementById("address");
+  const nbrAddress = document.getElementById("nbr-address");
+  const nbrOrders = document.getElementById("nbr-orders");
+  const currentAdress = user.addresses[user.currentIndex];
+  const lastOrderContent = document.getElementById("last-order-content");
+  const unrealMessage = document.getElementById("messages-link");
 
-const eyeButton = document.querySelector('.login__eye');
-const eyeIconOff = document.querySelector('[data-icon="eye-off"]');
-const eyeIconOn = document.querySelector('[data-icon="eye-on"]');
-const passwordInput = document.querySelector('#user-password'); // Assure-toi que cet ID correspond au champ de mot de passe
-const continueButton = document.querySelector('[data-action="continue"]');
-const loadingSpinner = document.getElementById('loading-spinner');
+  logout.addEventListener("click", () => {
+    alert("You have been logged out");
+  });
 
-// Initialisation : on cache l'icône 'eye-on' (l'œil ouvert) et on montre 'eye-off'
-eyeIconOff.classList.add('show');
-eyeIconOn.classList.add('hide');
+  name.innerHTML = "";
+  address.innerHTML = "";
+  nbrAddress.innerHTML = "";
 
-eyeButton.addEventListener('click', function() {
-    // Bascule la visibilité du mot de passe
-    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordInput.setAttribute('type', type);
+  name.innerHTML = currentAdress.firstName + " " + currentAdress.lastName;
+  address.innerHTML = `
+  ${currentAdress.district} / ${currentAdress.street}<br />
+  ${currentAdress.phoneNumber1} / ${currentAdress.phoneNumber2}<br />
+  ${currentAdress.region} / Niger<br />
+  <br />
+`;
+  if (
+    currentAdress.district &&
+    currentAdress.street &&
+    currentAdress.phoneNumber1 &&
+    currentAdress.phoneNumber2 &&
+    currentAdress.region
+  ) {
+    address.style.opacity = 1;
+  } else {
+    address.style.opacity = 0;
+  }
 
-    // Bascule les icônes en fonction du type de mot de passe
-    if (type === 'password') {
-        eyeIconOff.classList.add('show');
-        eyeIconOff.classList.remove('hide');
-        eyeIconOn.classList.add('hide');
-        eyeIconOn.classList.remove('show');
-    } else {
-        eyeIconOff.classList.add('hide');
-        eyeIconOff.classList.remove('show');
-        eyeIconOn.classList.add('show');
-        eyeIconOn.classList.remove('hide');
-    }
-});
+  nbrAddress.innerHTML = `View Addresses (${user.addresses.length})`;
+  const ordersList = orders.getOrders();
+  const ordersLength = ordersList.length;
 
-continueButton.addEventListener('click', async (e) => {
-    e.preventDefault();
+  lastOrderContent.innerHTML = "";
+  if (ordersLength > 0) {
+    const lastOrder = ordersList.sort((a, b) => b.updateAt - a.updateAt)[0];
+    const translatedStatus =
+      statusTranslations[lastOrder.status] || lastOrder.status;
+    lastOrderContent.innerHTML = `
+    <div class="order-card">
+      <p><strong>Order ID:</strong> #${lastOrder.id}</p>
+      <p><strong>Date:</strong> ${formatDate(lastOrder.updateAt)}</p>
+      <p><strong>Status:</strong> ${translatedStatus}</p>
+      <p><strong>Total:</strong> ${lastOrder.totalPrice.toLocaleString(
+        "de-DE"
+      )} FCFA</p>
+      <a href="detail.html?id=${
+        lastOrder.id
+      }" class="order-details">View Details</a>
+    </div>
+  `;
+    nbrOrders.innerHTML = `<a href="order.html">View Orders (${ordersLength})</a>`;
+  } else {
+    nbrOrders.innerHTML = "You haven't placed any orders yet.";
+  }
 
-    const emailInput = document.getElementById('user-email');
-    const emailError = document.getElementById('email-error');
-    const passwordError = document.getElementById('password-error');
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-    emailError.textContent = '';
-    emailInput.classList.remove('error');
-    passwordError.textContent = '';
-    passwordInput.classList.remove('error');
-
-    if (passwordInput.value.trim() === '' && emailInput.value === '') {
-        emailError.textContent = 'Required';
-        emailInput.classList.add('error');
-        passwordError.textContent = 'Required';
-        passwordInput.classList.add('error');
-        return;
-    }
-
-    if (passwordInput.value.trim() === '') {
-        passwordError.textContent = 'Required';
-        passwordInput.classList.add('error');
-        return;
-    }
-
-    if (emailInput.value === '') {
-        emailError.textContent = 'Required';
-        emailInput.classList.add('error');
-        return;
-    }
-
-    if (!emailPattern.test(emailInput.value)) {
-        emailError.textContent = 'Veuillez entrer une adresse email valide.';
-        emailInput.classList.add('error');
-        return;
-    }
-
-    loadingSpinner.style.display = 'block';
-    continueButton.disabled = true; // Désactiver le bouton pendant le traitement
-
-    const result = await deleteAccount(emailInput.value, passwordInput.value);
-
-    if (result.status === 200) {
-        setTimeout(() => {
-            loadingSpinner.style.display = 'none';
-            window.location.href = 'index.html';
-        }, 1000);
-    } else {
-        loadingSpinner.style.display = 'none';
-        continueButton.disabled = false; // Réactiver le bouton
-
-        if (result.status === 401) {
-            passwordError.textContent = "Utilisateur non connecté. Veuillez vous reconnecter.";
-        } else if (result.status === 403) {
-            if (result.message.includes("auth/user-mismatch")) {
-                passwordError.textContent = "Les informations d'identification fournies ne correspondent pas à l'utilisateur connecté.";
-            } else {
-                passwordError.textContent = "La réauthentification a échoué. Veuillez vérifier vos informations.";
-            }
-        } else if (result.status === 500) {
-            passwordError.textContent = "Une erreur s'est produite lors de la suppression du compte. Veuillez réessayer plus tard.";
-        } else {
-            passwordError.textContent = "Une erreur inattendue s'est produite. Veuillez réessayer.";
-        }
-    }
-});
-
-const log_btn_close = document.querySelector('.close-modal');
-
-log_btn_close.addEventListener('click', () => {
-    window.location.href = 'index.html';
+  unrealMessage.innerHTML = `View Messages (${
+    messages.filter((msg) => !msg.isRead).length
+  })`;
 });
